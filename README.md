@@ -53,6 +53,22 @@ npm run start
 - It needs a Node server (PM2, Docker, a VPS…). Files uploaded in the admin are written to
   `public/uploads/`, so that folder must be writable and must survive deployments.
 - Set a fresh `AUTH_SECRET` per environment and serve the site over HTTPS.
+- Set `SITE_URL` to the address the copy is served from. `SITE_NOINDEX=1` keeps a demo copy out of
+  search engines (both are read at build time).
+
+### Deploy files
+
+| File | What |
+| --- | --- |
+| `ecosystem.config.js` | PM2 process `frogis-web`: `next start` on `127.0.0.1:3040` |
+| `deploy/nginx-frogis.conf` | nginx site for `example.com` → that port; serves `/uploads/` from disk |
+| `deploy.sh` | Runs on the server: `git pull`, `npm ci`, `npm run build`, PM2 reload |
+
+Not in git, so copied to the server by hand: `.env.local`, `public/uploads/` and the database content.
+
+```bash
+ssh deploy-host "bash /var/www/frogis/deploy.sh"
+```
 
 ## Layout
 

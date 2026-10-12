@@ -8,8 +8,11 @@ export const site = {
   description:
     'Frog-is is an innovative pro-audio company. With our R&D in Florence, we offer the best in technology from Europe and Asia: speakers, subwoofers, amplifiers, mixers and microphones.',
 
-  /** Production origin, used for canonical URLs, Open Graph and the sitemap. */
-  origin: 'https://www.frog-is.com',
+  /** Public origin, used for canonical URLs, Open Graph and the sitemap. Set SITE_URL per environment. */
+  origin: (process.env.SITE_URL || 'https://www.frog-is.com').replace(/\/+$/, ''),
+
+  /** SITE_NOINDEX=1 keeps a demo / staging copy out of search engines. */
+  noindex: process.env.SITE_NOINDEX === '1',
 
   nav: [
     { label: 'Products', path: 'products/', mega: true },

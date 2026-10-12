@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(site.origin),
   title: { default: `${site.name} — ${site.tagline}`, template: `%s | ${site.name}` },
   description: site.description,
+  ...(site.noindex ? { robots: { index: false, follow: false } } : {}),
   icons: {
     icon: [
       { url: '/img/favicon-32.png', sizes: '32x32', type: 'image/png' },

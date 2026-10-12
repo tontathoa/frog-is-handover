@@ -20,7 +20,8 @@ export function pageMeta({ title, description = site.description, path, image, t
     title: absoluteTitle ? { absolute: title } : title,
     description,
     alternates: { canonical: path },
-    robots: noindex ? { index: false, follow: true } : undefined,
+    // Spread, not `robots: undefined`: an undefined key would still override the layout's value.
+    ...(site.noindex ? { robots: { index: false, follow: false } } : noindex ? { robots: { index: false, follow: true } } : {}),
     openGraph: {
       siteName: site.name,
       type,
