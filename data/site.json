@@ -1,0 +1,81 @@
+{
+ "title": "Frog-is Architects Favorite Audio Brand",
+ "slides": [
+  {
+   "image": "uploads/2018/02/slider-exemple.jpg",
+   "title": ""
+  },
+  {
+   "image": "uploads/2018/09/concertbar.jpg",
+   "title": ""
+  },
+  {
+   "image": "uploads/2023/09/slides-04.jpg",
+   "title": ""
+  }
+ ],
+ "new_products": [
+  "fi-mix6",
+  "fi-mix8a",
+  "fi-ct4ip",
+  "fi-sub12ip",
+  "fi-ct8",
+  "fs2x3",
+  "fi-amp1200dsp",
+  "fs12",
+  "fi-vox3",
+  "fa-x4t",
+  "fi-mix8",
+  "fi-cs2w",
+  "fi-hps5w-b"
+ ],
+ "menu": [
+  {
+   "title": "About us",
+   "href": "https://www.frog-is.com/about-us/"
+  },
+  {
+   "title": "Products",
+   "href": "#"
+  },
+  {
+   "title": "Download",
+   "href": "https://www.frog-is.com/brochure/"
+  },
+  {
+   "title": "Applications",
+   "href": "https://www.frog-is.com/applications/"
+  },
+  {
+   "title": "Contact",
+   "href": "https://www.frog-is.com/contact/"
+  }
+ ],
+ "socials": [
+  {
+   "network": "facebook-f",
+   "href": "https://www.facebook.com/profile.php?id=61551692529949"
+  },
+  {
+   "network": "twitter",
+   "href": "http://frog-is.com/"
+  },
+  {
+   "network": "instagram",
+   "href": "https://www.instagram.com/easelistening/"
+  },
+  {
+   "network": "linkedin-in",
+   "href": "http://frog-is.com/"
+  }
+ ],
+ "footer": "Copyright © 2018 Frog-Is. All Rights Reserved<br>Orient International Tower 1018 Tai Nan West Street,Lai Chi Lok, Kowloon, Hong Kong | Tel: +86 574 8757 6644 | Fax: +86 574 8757 6884",
+ "cookie_notice": "By continuing your navigation (on our website), you accept the use of third-party cookies in order to provide you with personalized contents and advertising and to analyze audience and visits statistics.",
+ "brand": {
+  "logo": "uploads/2023/09/logo-1ccdb5.png",
+  "site_icon": "uploads/2023/11/cropped--logo-01-cd27f8.png",
+  "logo_anim": "uploads/theme/frogis-logo-anim_81x51.gif",
+  "logo_footer": "uploads/theme/logo-footer.png",
+  "page_banner": "uploads/2018/08/BackgroundTop.jpg"
+ }
+}

@@ -1,0 +1,75 @@
+{
+ "about": {
+  "banner": "uploads/2018/08/BackgroundTop.jpg",
+  "sections": [
+   {
+    "layout": "full",
+    "title": "INTRODUCTION",
+    "html": "<p>Frog-is is an innovative pro-audio company. With our R&amp;D in Florence, we offer the best in technology from Europe and Asia. Our core mission is to offer the best sounding products at a minimalistic price. Frog-Is is an one-stop shop for any demanding sound engineer, rental company owner, restaurant and bar operator having to work on a budget.</p>\n<p>Frog-is specializes in providing speakers, amplifiers, mixing consoles, microphones, wireless microphones, speaker processors and all accessories necessary to provide high quality sound.</p>\n<p>Frog-Is is renowned for offering exceptional quality that is value for the cost. 90% of Frog-Is self powered and passive speaker product line is designed by one of the most innovative speaker manufacturers in Europe.</p>\n<p>Our brand wants to be modern, inventive, professional, while being fun, and bouncy!</p>\n<p>Why Frog-Is ?</p>",
+    "image": null
+   },
+   {
+    "layout": "full",
+    "title": "",
+    "html": "",
+    "image": "uploads/2018/09/banniereVerte.jpg"
+   },
+   {
+    "layout": "left",
+    "title": "FROG IS…",
+    "html": "<p>Frogs start singing after their winter hibernation. In the countryside, it is one of the clearest signs announcing spring. </p>\n<p>So let spring settle in your life with the help of our products! Like frogs that shout out their joy and lust for life in the fairest of the seasons, you can start singing, playing, speaking, celebrating your own spring wherever and whenever you want. Frog-Is gives you the right tools to spread your voice or your instrumental music. You can do it on the move or in your personal work space.</p>",
+    "image": "uploads/2018/09/Frog1.png"
+   },
+   {
+    "layout": "right",
+    "title": "…AN ITALIAN IDEA…",
+    "html": "<p>A team of expert Italian designers and manufacturers have created a portable two-way speaker line outfitted for many purposes. This Italian part of our company guarantees high quality, creativity and durability.</p>",
+    "image": "uploads/2018/09/Idea.png"
+   },
+   {
+    "layout": "left",
+    "title": "…BECOMING A PRODUCT…",
+    "html": "<p>You can choose the size of your speaker (8”, 12” or 15”), which is characterized by a manageable, strongly innovative and redesigned ABS box, assuring an accurate, clear, powerful full sound.</p>",
+    "image": "uploads/2018/09/Speaker.png"
+   },
+   {
+    "layout": "right",
+    "title": "…TO EXPRESS YOURSELF…",
+    "html": "<p>Whether you’re a singer, musician, DJ, public speaker, gym instructor, street artist, event organizer, or a free spirit, a rolling stone always on the road, our speakers enable you to reach ears all around the world and make your own lively springtime come wherever you go! As frogs in spring.</p>",
+    "image": "uploads/2018/09/Note.png"
+   },
+   {
+    "layout": "left",
+    "title": "…WITHOUT BREAKING THE BANK…",
+    "html": "<p>Get amazing quality, without draining your finances. The sound quality from an international brand you always wanted, at a price you always dreamed of paying. It is now a reality! </p>",
+    "image": "uploads/2018/09/dollar.png"
+   }
+  ]
+ },
+ "contact": {
+  "lines": [
+   "If you have any enquiry, problem or if you need other information, feel free to contact us.",
+   "Company address: Room 2303 Orient International Tower, 1018",
+   "Tai Nan West Street, Lai Chi Lok, Kowloon, Hong Kong",
+   "Tel: +86 574 8757 6644",
+   "HK Tel: (852) 9348 2310",
+   "For sales: sales@frog-is.com",
+   "For technical support: support@frog-is.com",
+   "For HK local business: hk@frog-is.com"
+  ],
+  "emails": [
+   {
+    "label": "For sales",
+    "email": "sales@frog-is.com"
+   },
+   {
+    "label": "For technical support",
+    "email": "support@frog-is.com"
+   },
+   {
+    "label": "For HK local business",
+    "email": "hk@frog-is.com"
+   }
+  ]
+ }
+}

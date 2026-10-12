@@ -1,0 +1,54 @@
+[
+ {
+  "id": 23430,
+  "slug": "mmp-shisha-lounge",
+  "title": "MMP Shisha Lounge",
+  "date": "2026-01-14T10:18:16",
+  "thumb": "uploads/2026/01/MMP-Shisha-Lounge.png",
+  "duration": "01:00",
+  "video": "uploads/2026/01/MMP-shihsa-Lounge.mp4",
+  "video_remote": "https://www.frog-is.com/wp-content/uploads/2026/01/MMP-shihsa-Lounge.mp4",
+  "poster": null,
+  "embed": null,
+  "description": ""
+ },
+ {
+  "id": 23426,
+  "slug": "pizza-4ps",
+  "title": "PIZZA 4P’S",
+  "date": "2026-01-09T15:33:33",
+  "thumb": "uploads/2026/01/PIZZA-4PS.png",
+  "duration": "00:49",
+  "video": "uploads/2026/01/PIZZA-4PS.mp4",
+  "video_remote": "https://www.frog-is.com/wp-content/uploads/2026/01/PIZZA-4PS.mp4",
+  "poster": null,
+  "embed": null,
+  "description": ""
+ },
+ {
+  "id": 23408,
+  "slug": "frog-is-5",
+  "title": "Kai Tak Stadium",
+  "date": "2025-12-22T10:36:50",
+  "thumb": "uploads/2025/12/Kai-Tak-Stadium.png",
+  "duration": "01:00",
+  "video": "uploads/2025/12/Kai-Tak-Stadium.mp4",
+  "video_remote": "https://www.frog-is.com/wp-content/uploads/2025/12/Kai-Tak-Stadium.mp4",
+  "poster": null,
+  "embed": null,
+  "description": ""
+ },
+ {
+  "id": 23407,
+  "slug": "frog-is-4",
+  "title": "Cretya Sunset",
+  "date": "2025-12-22T10:36:29",
+  "thumb": "uploads/2025/12/Cretya-Sunset.png",
+  "duration": "01:23",
+  "video": "uploads/2025/12/Cretya-Sunset.mp4",
+  "video_remote": "https://www.frog-is.com/wp-content/uploads/2025/12/Cretya-Sunset.mp4",
+  "poster": null,
+  "embed": null,
+  "description": ""
+ }
+]

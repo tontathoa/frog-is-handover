@@ -1,0 +1,27 @@
+node_modules/
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+.env
+.env*.local
+tools/.cache/
+__pycache__/
+storage/*
+!storage/.htaccess
+
+# Uploads: ~680 MB of mirrored and admin-uploaded media — kept on disk, never in git.
+# Copy the folder to the server separately (see README).
+public/uploads/*
+!public/uploads/.gitkeep
+
+# Claude memory / local tooling
+.claude/
+
+# OS, editor, logs
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.log

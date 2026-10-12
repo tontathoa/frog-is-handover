@@ -1,0 +1,174 @@
+[
+ {
+  "slug": "point-source-speakers",
+  "name": "Point source speakers",
+  "icon": "uploads/2018/02/collections-ppss.png",
+  "icon_hover": "uploads/2018/02/collections-ppss_hover.png",
+  "picto": "uploads/2018/02/collections-ppss.png",
+  "products": [
+   "fi-ct8",
+   "fi-ct8x2",
+   "fp8",
+   "fp12",
+   "fp15",
+   "fp8p",
+   "fp12p",
+   "fp15p",
+   "fi-sms4-b-w",
+   "fi-sms6-b-w",
+   "fi-sms6pro",
+   "fi-sms6eco",
+   "fi-m50",
+   "fi-ct4ip",
+   "fi-ct6ip",
+   "fi-ct5",
+   "fi-ct15p"
+  ]
+ },
+ {
+  "slug": "slimline-array-speaker-systems",
+  "name": "Slimline array speaker systems",
+  "icon": "uploads/2018/02/collections-pass.png",
+  "icon_hover": "uploads/2018/02/collections-pass_hover.png",
+  "picto": "uploads/2018/02/collections-pass.png",
+  "products": [
+   "fs12",
+   "fs15",
+   "fs2x3",
+   "fs4x3",
+   "fs12-array",
+   "fs15-array",
+   "fs4d",
+   "fs4ip"
+  ]
+ },
+ {
+  "slug": "high-performance-array-speaker-systems",
+  "name": "High Performance array speaker systems",
+  "icon": "uploads/2023/08/FN--1-e0573b.png",
+  "icon_hover": "uploads/2023/08/FN--2-160065.png",
+  "picto": "uploads/2023/08/FN--1-e0573b.png",
+  "products": [
+   "fa-x4t",
+   "fa-2x6t",
+   "fa-2x10s",
+   "fa-2x8a",
+   "fa-2x8tp",
+   "fa-3x10t",
+   "fa-sub18x2p",
+   "fi-sub21p"
+  ]
+ },
+ {
+  "slug": "ceiling-speakers",
+  "name": "Ceiling speakers",
+  "icon": "uploads/2025/07/Celing-speaker-02-1.png",
+  "icon_hover": "uploads/2025/07/Celing-speaker-01-1.png",
+  "picto": "uploads/2025/07/Celing-speaker-02-1.png",
+  "products": [
+   "fi-cs2w",
+   "fi-cs3",
+   "fi-cs4w",
+   "fi-cs5w",
+   "fi-cs6w",
+   "fi-cs8w",
+   "fi-cs6d",
+   "fi-cs8d",
+   "fi-cs6bt",
+   "csub6p",
+   "fi-hps5w-b",
+   "fi-hps6w-b"
+  ]
+ },
+ {
+  "slug": "subwoofers",
+  "name": "Subwoofers",
+  "icon": "uploads/2025/07/Subwoofer-02.png",
+  "icon_hover": "uploads/2025/07/Subwoofer-03.png",
+  "picto": "uploads/2025/07/Subwoofer-02.png",
+  "products": [
+   "sub6p",
+   "fi-sub6a",
+   "fi-sub12ip",
+   "fi-sub10p",
+   "fi-sub10a",
+   "fi-sub12p",
+   "fi-sub12a",
+   "fs-sub12",
+   "fs-sub12p",
+   "fs-sub15",
+   "fs-sub15p",
+   "fi-sub18a"
+  ]
+ },
+ {
+  "slug": "amplifier-mixer",
+  "name": "Amplifier & Mixer",
+  "icon": "uploads/2018/02/collections-ig.png",
+  "icon_hover": "uploads/2018/02/collections-ig_hover.png",
+  "picto": "uploads/2018/02/collections-ig.png",
+  "products": [
+   "fi-amp500x2",
+   "fi-amp850x2",
+   "fi-amp300dp",
+   "fi-amp600dsp",
+   "fi-amp850dsp",
+   "fi-amp1200dsp",
+   "fi-amp2",
+   "fi-amp4",
+   "fi-amp8",
+   "fi-amp4d",
+   "ttm-series",
+   "fi-amp4k",
+   "fi-amp300x2v",
+   "fi-amp500x2v",
+   "fi-amp350ktv",
+   "fi-p4x6k",
+   "fi-p4x8-2",
+   "fi-dsp1616",
+   "fi-mix6",
+   "fi-mix8",
+   "fi-mix8a",
+   "fi-mix16",
+   "fi-mix24"
+  ]
+ },
+ {
+  "slug": "microphones-headphones",
+  "name": "Microphones and headphones",
+  "icon": "uploads/2018/02/collections-wm.png",
+  "icon_hover": "uploads/2018/02/collections-wm_hover.png",
+  "picto": "uploads/2018/02/collections-wm.png",
+  "products": [
+   "fi-mc100",
+   "fi-urm500",
+   "fi-vox2",
+   "fi-vox3",
+   "fi-ins1",
+   "fi-eh300",
+   "fi-wp2hl",
+   "fi-wp2v",
+   "fi-wp2v100",
+   "fi-ak",
+   "fi-sp"
+  ]
+ },
+ {
+  "slug": "accessories",
+  "name": "Accessories and adaptors",
+  "icon": "uploads/2018/02/collections-access.png",
+  "icon_hover": "uploads/2018/02/collections-access_hover.png",
+  "picto": "uploads/2018/02/collections-access.png",
+  "products": [
+   "fp-bracket1",
+   "22827",
+   "fs-bracket2",
+   "fs-bracket3",
+   "fi-ang3",
+   "fi-ang",
+   "fi-pow8",
+   "fi-tms",
+   "fi-xlrf10"
+  ]
+ }
+]
