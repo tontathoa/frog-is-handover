@@ -66,9 +66,22 @@ npm run start
 
 Not in git, so copied to the server by hand: `.env.local`, `public/uploads/` and the database content.
 
+### Demo: example.com
+
+Runs on the demo machine (a shared demo machine) in `/var/www/frogis`, with its own
+MySQL database and user (`frogis`). `SITE_NOINDEX=1` is set there, so search engines skip it.
+
+After pushing to `main`, update the demo with:
+
 ```bash
 ssh deploy-host "bash /var/www/frogis/deploy.sh"
 ```
+
+- `ssh deploy-host` is an alias in `~/.ssh/config` (key `~/.ssh/deploy_key`).
+- The server pulls from GitHub with its own read-only deploy key (`github-deploy` in its `~/.ssh/config`).
+- The live nginx file is `/etc/nginx/sites-available/frogis`; certbot added the HTTPS block to it, so it is
+  no longer identical to `deploy/nginx-frogis.conf`.
+- Content edited in the demo's admin stays on the demo: deploys do not touch its database or uploads.
 
 ## Layout
 
