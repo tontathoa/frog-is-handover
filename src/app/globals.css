@@ -201,6 +201,9 @@ a:hover .tile__content .btn, a:hover .banner__content .btn, a:hover .dcard__body
 .mega__icon img { height: 84px; width: auto; }
 .mega__icon .is-hover, .ctile__icon .is-hover, .cstrip__icon .is-hover { position: absolute; inset: 0; margin: auto; opacity: 0; }
 .mega__icon img, .ctile__icon img, .cstrip__icon img { transition: opacity .2s; }
+/* Glow of the hover icon: done here, not baked into the image, so it is never clipped at the image edge. */
+.mega__icon .is-hover { filter: drop-shadow(0 0 5px rgba(78, 173, 71, .55)); }
+.ctile__icon .is-hover { filter: drop-shadow(0 0 10px rgba(78, 173, 71, .55)); }
 .mega__item:hover .is-hover, .ctile:hover .is-hover { opacity: 1; }
 .mega__item:hover img:not(.is-hover), .ctile:hover img:not(.is-hover) { opacity: 0; }
 .mega__name { font-size: 13px; font-weight: 400; text-transform: uppercase; line-height: 1.3; }
@@ -294,7 +297,7 @@ a.banner:hover > img { transform: scale(1.03); }
   aspect-ratio: 1; border-radius: var(--radius); background: var(--paper);
 }
 .tile__media { position: absolute; inset: 5% 8% 27%; display: flex; align-items: center; justify-content: center; }
-.tile__media img, .pcard__media img, .pdp__stage img, .pdp__thumb img {
+.tile__media img, .pcard__media img, .pdp__stage img {
   object-fit: contain;
   mix-blend-mode: multiply; /* product shots sit on white; blend them into the grey card */
 }
@@ -314,7 +317,7 @@ a.banner:hover > img { transform: scale(1.03); }
 }
 .ctile:hover { background: var(--black); }
 .ctile__icon { position: absolute; inset: 9% 12% 32%; }
-.ctile__icon img { max-height: 100%; width: auto; }
+.ctile__icon img { max-height: min(100%, 180px); width: auto; } /* icon files are 4x: cap at their design size */
 .ctile__name { font-size: clamp(15px, 1.45vw, 21px); font-weight: 750; font-stretch: var(--wide); line-height: 1.15; }
 .ctile__meta { font-size: 12px; text-transform: uppercase; color: var(--mute); }
 
@@ -433,7 +436,7 @@ a.banner:hover > img { transform: scale(1.03); }
   height: min(76vh, 860px); min-height: 420px;
   border-radius: var(--radius); background: var(--paper);
 }
-.pdp__stage img { padding: clamp(24px, 4vw, 56px); }
+.pdp__stage img { padding: clamp(44px, 5vw, 64px) clamp(24px, 4vw, 56px); } /* room for the dots below */
 .pdp__arrow {
   position: absolute; top: 50%; transform: translateY(-50%);
   width: 46px; height: 46px; padding: 0 0 4px; border: 0; border-radius: 50%; background: transparent;
@@ -442,14 +445,14 @@ a.banner:hover > img { transform: scale(1.03); }
 .pdp__arrow:hover { background: var(--white); color: var(--black); }
 .pdp__arrow--prev { left: 12px; }
 .pdp__arrow--next { right: 12px; }
-.pdp__thumbs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-.pdp__thumb {
-  display: flex; align-items: center; justify-content: center;
-  position: relative; width: 78px; height: 78px; padding: 0;
-  border: 1px solid transparent; border-radius: var(--radius); background: var(--paper); cursor: pointer;
+.pdp__dots { position: absolute; left: 0; right: 0; bottom: 14px; display: flex; justify-content: center; }
+.pdp__dots button { width: 26px; height: 26px; padding: 0; border: 0; background: none; cursor: pointer; }
+.pdp__dots button::before {
+  content: ""; display: block; width: 12px; height: 12px; margin: auto; border-radius: 50%;
+  background: #c8c8c8; transition: background-color .15s;
 }
-.pdp__thumb img { padding: 7px; }
-.pdp__thumb.is-active { border-color: var(--black); }
+.pdp__dots button:hover::before { background: var(--mute); }
+.pdp__dots button[aria-current]::before { background: var(--black); }
 .pdp__info { flex: 1; min-width: 0; padding: 4px 8px 0 clamp(16px, 2vw, 28px); }
 .pdp__title { margin: 4px 0 12px; font-size: clamp(28px, 2.7vw, 42px); font-weight: 800; font-stretch: var(--wide); line-height: 1.05; overflow-wrap: anywhere; }
 .pdp__sub { margin-bottom: 18px; font-size: clamp(17px, 1.4vw, 21px); color: var(--text-2); line-height: 1.35; }

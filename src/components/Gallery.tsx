@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 
-/** Product gallery: large stage, arrows and thumbnails. */
+/** Product gallery: large stage with arrows and one dot per picture. */
 export default function Gallery({ images, title }: { images: string[]; title: string }) {
   const [index, setIndex] = useState(0);
   const count = images.length;
@@ -38,25 +38,20 @@ export default function Gallery({ images, title }: { images: string[]; title: st
             <button className="pdp__arrow pdp__arrow--next" type="button" aria-label="Next image" onClick={() => go(index + 1)}>
               ›
             </button>
+            <div className="pdp__dots">
+              {images.map((image, i) => (
+                <button
+                  key={image}
+                  type="button"
+                  aria-label={`Image ${i + 1}`}
+                  aria-current={i === index ? 'true' : undefined}
+                  onClick={() => setIndex(i)}
+                />
+              ))}
+            </div>
           </>
         )}
       </div>
-      {count > 1 && (
-        <div className="pdp__thumbs">
-          {images.map((image, i) => (
-            <button
-              key={image}
-              type="button"
-              className={`pdp__thumb${i === index ? ' is-active' : ''}`}
-              aria-label={`Image ${i + 1}`}
-              aria-pressed={i === index}
-              onClick={() => setIndex(i)}
-            >
-              <Image src={image} alt="" fill sizes="78px" />
-            </button>
-          ))}
-        </div>
-      )}
     </div>
   );
 }
