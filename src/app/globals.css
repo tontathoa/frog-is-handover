@@ -314,13 +314,14 @@ a.banner:hover > img { transform: scale(1.03); }
 .cgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gap); }
 .ctile {
   position: relative; display: flex; flex-direction: column; justify-content: flex-end; gap: 2px;
-  aspect-ratio: 4 / 3; padding: 18px; overflow: hidden;
+  aspect-ratio: 4 / 3; padding: 18px; overflow: clip; /* clip, not hidden: the tile may grow past 4/3 when the text is long */
   border-radius: var(--radius); background: #0c0c0c; color: var(--white);
   transition: background-color .2s;
 }
 .ctile:hover { background: var(--black); }
-.ctile__icon { position: absolute; inset: 9% 12% 32%; }
-.ctile__icon img { max-height: min(100%, 180px); width: auto; } /* icon files are 4x: cap at their design size */
+/* The icon box is in the flow and takes whatever height the text leaves, so a long name can never sit on it. */
+.ctile__icon { flex: 1 1 0; min-height: 84px; margin: 0 6% 10px; }
+.ctile__icon img { position: absolute; inset: 0; margin: auto; max-width: 100%; max-height: min(100%, 180px); width: auto; } /* icon files are 4x: cap at their design size */
 .ctile__name { font-size: clamp(15px, 1.45vw, 21px); font-weight: 750; font-stretch: var(--wide); line-height: 1.15; }
 .ctile__meta { font-size: 12px; text-transform: uppercase; color: var(--mute); }
 
@@ -696,6 +697,9 @@ a.banner:hover > img { transform: scale(1.03); }
   .tiles, .pgrid, .dgrid, .ngrid, .vgrid, .vgrid--large { grid-template-columns: 1fr; }
   .drawer__sub { grid-template-columns: 1fr; }
   .tile { aspect-ratio: 4 / 5; }
+  .ctile { aspect-ratio: auto; padding: 14px; }
+  .ctile__icon { flex: 1 0 auto; min-height: 96px; margin: 0 0 10px; }
+  .ctile__meta { font-size: 11px; }
   .rail__track { grid-auto-columns: 72%; }
   .rail__track--news { grid-auto-columns: 84%; }
   .rail__btn { display: none; }
