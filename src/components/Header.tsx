@@ -196,6 +196,7 @@ export default function Header({ name, tagline, nav, collections }: Props) {
         >
           <span />
           <span />
+          <span />
         </button>
       </div>
 
@@ -223,7 +224,8 @@ export default function Header({ name, tagline, nav, collections }: Props) {
                   <div className="drawer__sub">
                     {collections.map((c) => (
                       <Link key={c.slug} href={`/collection/${c.slug}/`} onClick={closeAll}>
-                        {c.name}
+                        {c.icon && <img src={c.icon} alt="" loading="lazy" width={95} height={90} />}
+                        <span>{c.name}</span>
                       </Link>
                     ))}
                   </div>
