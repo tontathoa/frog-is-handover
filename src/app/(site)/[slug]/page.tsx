@@ -55,7 +55,7 @@ export default async function PostPage({ params }: Props) {
         <header className="article__head">
           <div className="ncard__meta">
             <time dateTime={post.publishedAt.slice(0, 10)}>{fmtDate(post.publishedAt, true)}</time>
-            <span className="label">News</span>
+            <span className="ncard__tag">News</span>
           </div>
           <h1 className="article__title">{post.title}</h1>
         </header>
