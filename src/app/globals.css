@@ -505,7 +505,7 @@ a.banner:hover > img { transform: scale(1.03); }
 .ncard__media, .vcard__media, .dcard__media { overflow: hidden; border-radius: var(--radius); background: var(--paper); }
 .ncard__media { position: relative; aspect-ratio: 16 / 10; border-radius: 0; background: #e9e9e9; }
 .ncard__media img, .vcard__media img { object-fit: cover; transition: transform .6s ease; }
-.ncard:hover .ncard__media img, .vcard:hover .vcard__media img { transform: scale(1.04); }
+.ncard:hover .ncard__media img { transform: scale(1.04); }
 .ncard__body { flex: 1; display: flex; flex-direction: column; padding: 14px 16px 16px; }
 .ncard__meta { display: flex; align-items: center; justify-content: space-between; gap: 14px; font-size: 14px; }
 .ncard__tag {
@@ -522,23 +522,46 @@ a.banner:hover > img { transform: scale(1.03); }
 .ncard__more { margin-top: auto; padding-top: 14px; font-size: 14px; font-weight: 600; }
 .ncard:hover .ncard__more { color: var(--green-ink); }
 
-.vgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px var(--gap); }
+.vgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gap); }
 .vgrid--large { grid-template-columns: repeat(2, 1fr); }
-.vcard { display: block; }
-.vcard__media { position: relative; aspect-ratio: 16 / 9; background: #111; }
+/* poster card: blurred, darkened still behind the play button and the title */
+.vcard {
+  position: relative; display: block; aspect-ratio: 16 / 10; overflow: hidden; isolation: isolate;
+  border-radius: var(--radius); background: #111; color: var(--white);
+}
+.vcard__media { position: absolute; inset: 0; z-index: -1; border-radius: 0; background: #111; }
+/* scaled up so the blurred edge never shows inside the card */
+.vcard__media img { filter: blur(3px) brightness(.82); transform: scale(1.08); transition: transform .6s ease; }
+.vcard:hover .vcard__media img { transform: scale(1.13); }
+.vcard__media::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(0deg, rgba(0, 0, 0, .78), rgba(0, 0, 0, .12) 58%, rgba(0, 0, 0, .34));
+}
+.vcard__top { position: absolute; top: 12px; left: 12px; right: 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.vcard__tag, .vcard__time {
+  padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; line-height: 1.3;
+}
+.vcard__tag { background: var(--white); color: var(--black); }
+.vcard__time { background: rgba(0, 0, 0, .6); color: var(--white); }
 .vcard__play {
-  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  position: absolute; top: 46%; left: 50%; transform: translate(-50%, -50%);
   display: flex; align-items: center; justify-content: center;
-  width: 58px; height: 58px; padding-left: 3px; border-radius: 50%;
+  width: 56px; height: 56px; padding-left: 3px; border-radius: 50%;
   background: var(--white); color: var(--black);
   box-shadow: 0 6px 24px rgba(0, 0, 0, .3);
   transition: background-color .18s, transform .18s;
 }
 .vcard:hover .vcard__play { background: var(--green); transform: translate(-50%, -50%) scale(1.08); }
-.vcard__time { position: absolute; right: 10px; bottom: 10px; padding: 3px 8px; border-radius: 4px; background: rgba(0, 0, 0, .78); color: var(--white); font-size: 12px; font-weight: 400; }
-.vcard__content { display: flex; flex-direction: column; gap: 4px; padding: 12px 4px 0; }
-.vcard__content .label { font-size: 11px; color: var(--text-2); }
-.vcard__title { font-size: clamp(17px, 1.5vw, 22px); font-weight: 750; font-stretch: var(--wide); line-height: 1.15; }
+.vcard__content { position: absolute; left: 16px; right: 16px; bottom: 14px; display: flex; flex-direction: column; gap: 3px; }
+.vcard__content .label { font-size: 11px; color: rgba(255, 255, 255, .78); }
+.vcard__title {
+  font-size: clamp(16px, 1.4vw, 21px); font-weight: 750; font-stretch: var(--wide); line-height: 1.15;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+/* twice the card width needs more blur for the same softness */
+.vgrid--large .vcard__media img { filter: blur(5px) brightness(.8); }
+.vgrid--large .vcard__play { width: 68px; height: 68px; }
+.vgrid--large .vcard__content { left: 22px; right: 22px; bottom: 20px; }
 .vgrid--large .vcard__title { font-size: clamp(22px, 2.3vw, 32px); }
 .vcard:hover .vcard__title { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
 

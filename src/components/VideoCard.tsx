@@ -29,17 +29,21 @@ export default function VideoCard({ video, heading: Heading = 'h3' }: { video: V
           setOpen(true);
         }}
       >
+        {/* The posters are soft video stills, so they sit blurred and darkened behind the text. */}
         <div className="vcard__media">
           {video.thumb && <Image src={video.thumb} alt="" fill sizes="(max-width: 640px) 100vw, (max-width: 960px) 50vw, 25vw" />}
-          <span className="vcard__play" aria-hidden="true">
-            <svg width="22" height="22" viewBox="0 0 22 22">
-              <path d="M6 3.5v15l12-7.5z" fill="currentColor" />
-            </svg>
-          </span>
+        </div>
+        <div className="vcard__top">
+          <span className="vcard__tag">Video</span>
           {video.duration && <span className="vcard__time">{video.duration}</span>}
         </div>
+        <span className="vcard__play" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 22 22">
+            <path d="M6 3.5v15l12-7.5z" fill="currentColor" />
+          </svg>
+        </span>
         <div className="vcard__content">
-          <span className="label">Application video</span>
+          <span className="label">Application</span>
           <Heading className="vcard__title">{video.title}</Heading>
         </div>
       </Link>
