@@ -64,7 +64,7 @@ export default function CollectionManager() {
   };
 
   const remove = async (row: Collection) => {
-    if (!window.confirm(`Xóa danh mục "${row.name}"?`)) return;
+    if (!window.confirm(`Delete collection "${row.name}"?`)) return;
     try {
       await api.del(`collections/${row.id}`);
       load();
@@ -75,9 +75,9 @@ export default function CollectionManager() {
 
   return (
     <>
-      <PageHead title="Danh mục sản phẩm" sub="Các nhóm sản phẩm hiện trên menu, trang chủ và trang Products">
+      <PageHead title="Product collections" sub="Product groups shown in the menu, on the home page and on the Products page">
         <button type="button" className="adm-btn adm-btn--primary adm-btn--sm" onClick={() => setForm(blank((rows?.length ?? 0) + 1))}>
-          + Thêm danh mục
+          + Add collection
         </button>
       </PageHead>
 
@@ -85,19 +85,19 @@ export default function CollectionManager() {
 
       <div className="adm-card adm-card--flush">
         {!rows && !error && <Loading />}
-        {rows && rows.length === 0 && <Empty icon="🗂" text="Chưa có danh mục nào." />}
+        {rows && rows.length === 0 && <Empty icon="🗂" text="No collections yet." />}
         {rows && rows.length > 0 && (
           <div className="adm-table-wrap">
             <table className="adm-table">
               <thead>
                 <tr>
                   <th>Icon</th>
-                  <th>Tên danh mục</th>
-                  <th>Tên ngắn</th>
-                  <th>Sản phẩm</th>
-                  <th>Thứ tự</th>
-                  <th>Trạng thái</th>
-                  <th>Thao tác</th>
+                  <th>Collection name</th>
+                  <th>Short name</th>
+                  <th>Products</th>
+                  <th>Order</th>
+                  <th>Status</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -114,8 +114,8 @@ export default function CollectionManager() {
                     <td>{row.productCount}</td>
                     <td>{row.sortOrder}</td>
                     <td>
-                      <button type="button" className={`adm-badge ${row.isActive ? 'adm-badge--green' : 'adm-badge--gray'}`} title="Bấm để đổi trạng thái" onClick={() => toggle(row)}>
-                        {row.isActive ? 'Hiện' : 'Ẩn'}
+                      <button type="button" className={`adm-badge ${row.isActive ? 'adm-badge--green' : 'adm-badge--gray'}`} title="Click to change status" onClick={() => toggle(row)}>
+                        {row.isActive ? 'Visible' : 'Hidden'}
                       </button>
                     </td>
                     <td>
@@ -128,10 +128,10 @@ export default function CollectionManager() {
                             setForm({ id: row.id, name: row.name, slug: row.slug, short: row.short, icon: row.icon ?? '', iconHover: row.iconHover ?? '', sortOrder: row.sortOrder, isActive: row.isActive });
                           }}
                         >
-                          Sửa
+                          Edit
                         </button>
                         <button type="button" className="adm-act adm-act--del" onClick={() => remove(row)}>
-                          Xóa
+                          Delete
                         </button>
                       </div>
                     </td>
@@ -144,34 +144,34 @@ export default function CollectionManager() {
       </div>
 
       {form && (
-        <Modal title={form.id === null ? 'Thêm danh mục' : 'Sửa danh mục'} onClose={() => setForm(null)} onSave={save} saving={saving}>
+        <Modal title={form.id === null ? 'Add collection' : 'Edit collection'} onClose={() => setForm(null)} onSave={save} saving={saving}>
           {formError && <div className="adm-error">{formError}</div>}
           <div className="adm-grid">
-            <Field label="Tên danh mục *" full>
+            <Field label="Collection name *" full>
               <input className="adm-input" value={form.name} autoFocus onChange={(event) => set('name', event.target.value)} />
             </Field>
-            <Field label="Slug (URL)" hint="Để trống sẽ tự tạo từ tên">
+            <Field label="Slug (URL)" hint="Leave empty to generate it from the name">
               <input className="adm-input a-mono" value={form.slug} onChange={(event) => set('slug', event.target.value)} />
             </Field>
-            <Field label="Tên ngắn" hint="Dùng trên thẻ sản phẩm và dải danh mục">
+            <Field label="Short name" hint="Used on product cards and the collection strip">
               <input className="adm-input" value={form.short} onChange={(event) => set('short', event.target.value)} />
             </Field>
-            <Field label="Thứ tự">
+            <Field label="Order">
               <input className="adm-input" type="number" value={form.sortOrder} onChange={(event) => set('sortOrder', Number(event.target.value) || 0)} />
             </Field>
             <div className="adm-group">
-              <span className="adm-label">Trạng thái</span>
+              <span className="adm-label">Status</span>
               <label className="adm-check" style={{ paddingTop: 8 }}>
                 <input type="checkbox" checked={form.isActive} onChange={(event) => set('isActive', event.target.checked)} />
-                Hiển thị trên web
+                Visible on website
               </label>
             </div>
             <div className="adm-group">
-              <span className="adm-label">Icon (nét trắng, nền trong suốt)</span>
+              <span className="adm-label">Icon (white strokes, transparent background)</span>
               <ImageUpload value={form.icon} onChange={(path) => set('icon', path)} aspect="19 / 18" contain dark />
             </div>
             <div className="adm-group">
-              <span className="adm-label">Icon khi rê chuột (nét xanh)</span>
+              <span className="adm-label">Hover icon (blue strokes)</span>
               <ImageUpload value={form.iconHover} onChange={(path) => set('iconHover', path)} aspect="19 / 18" contain dark />
             </div>
           </div>

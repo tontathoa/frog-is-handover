@@ -20,7 +20,7 @@ function contact(value: unknown): ContactInfo {
       .map((mail) => ({ label: str(mail.label, 60), email: str(mail.email, 190).toLowerCase() }))
       .filter((mail) => {
         if (!mail.email) return false;
-        if (!EMAIL.test(mail.email)) throw badRequest(`Email không hợp lệ: ${mail.email}`);
+        if (!EMAIL.test(mail.email)) throw badRequest(`Invalid email: ${mail.email}`);
         return true;
       }),
   };
@@ -70,7 +70,7 @@ export const PUT = route(async (request: Request) => {
   await guard(request);
   const body = await readBody(request);
   const keys = (Object.keys(EDITABLE) as Key[]).filter((key) => key in body);
-  if (keys.length === 0) throw badRequest('Không có thay đổi nào');
+  if (keys.length === 0) throw badRequest('No changes to save');
 
   for (const key of keys) {
     await execute('INSERT INTO settings (setting_key, setting_value) VALUES (?, ?) ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value)', [

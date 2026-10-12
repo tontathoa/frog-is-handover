@@ -17,7 +17,7 @@ const update = route(async (request: Request, { params }: Context) => {
   await guard(request);
   const { resource: name, id } = await params;
   const resource = getResource(name);
-  if (!resource?.update) throw new ApiError(405, 'Không hỗ trợ thao tác này');
+  if (!resource?.update) throw new ApiError(405, 'This action is not supported');
   await resource.update(parseId(id), await readBody(request));
   publish();
   return NextResponse.json({ success: true });
@@ -30,7 +30,7 @@ export const DELETE = route(async (request: Request, { params }: Context) => {
   await guard(request);
   const { resource: name, id } = await params;
   const resource = getResource(name);
-  if (!resource?.remove) throw new ApiError(405, 'Không hỗ trợ thao tác này');
+  if (!resource?.remove) throw new ApiError(405, 'This action is not supported');
   await resource.remove(parseId(id));
   publish();
   return NextResponse.json({ success: true });

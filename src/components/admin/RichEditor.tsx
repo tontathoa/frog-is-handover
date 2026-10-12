@@ -13,19 +13,19 @@ type Props = {
 };
 
 const FORMATS: [string, string][] = [
-  ['p', 'Đoạn văn'],
-  ['h2', 'Tiêu đề 2'],
-  ['h3', 'Tiêu đề 3'],
-  ['h4', 'Tiêu đề 4'],
-  ['blockquote', 'Trích dẫn'],
-  ['pre', 'Mã / chữ đều'],
+  ['p', 'Paragraph'],
+  ['h2', 'Heading 2'],
+  ['h3', 'Heading 3'],
+  ['h4', 'Heading 4'],
+  ['blockquote', 'Quote'],
+  ['pre', 'Code / monospace'],
 ];
 
 /**
  * Dependency-free rich text editor (contentEditable + execCommand), outputs HTML.
  * The server sanitises what it receives, so nothing typed or pasted here is trusted as-is.
  */
-export default function RichEditor({ value, onChange, placeholder = 'Soạn nội dung...', uploadType = 'posts', minHeight = 360 }: Props) {
+export default function RichEditor({ value, onChange, placeholder = 'Write content...', uploadType = 'posts', minHeight = 360 }: Props) {
   const area = useRef<HTMLDivElement>(null);
   const file = useRef<HTMLInputElement>(null);
   const savedRange = useRef<Range | null>(null);
@@ -104,19 +104,19 @@ export default function RichEditor({ value, onChange, placeholder = 'Soạn nộ
   return (
     <div className="adm-editor">
       <div className="adm-editor__bar">
-        {button('B', 'Đậm', () => exec('bold'))}
-        {button('I', 'Nghiêng', () => exec('italic'))}
-        {button('U', 'Gạch chân', () => exec('underline'))}
-        {button('S', 'Gạch ngang', () => exec('strikeThrough'))}
+        {button('B', 'Bold', () => exec('bold'))}
+        {button('I', 'Italic', () => exec('italic'))}
+        {button('U', 'Underline', () => exec('underline'))}
+        {button('S', 'Strikethrough', () => exec('strikeThrough'))}
         <span className="adm-editor__sep" />
         <select
-          aria-label="Định dạng"
+          aria-label="Format"
           value=""
           onChange={(event) => {
             if (event.target.value) exec('formatBlock', event.target.value);
           }}
         >
-          <option value="">Định dạng</option>
+          <option value="">Format</option>
           {FORMATS.map(([tag, label]) => (
             <option key={tag} value={tag}>
               {label}
@@ -124,28 +124,28 @@ export default function RichEditor({ value, onChange, placeholder = 'Soạn nộ
           ))}
         </select>
         <span className="adm-editor__sep" />
-        {button('• List', 'Danh sách chấm', () => exec('insertUnorderedList'))}
-        {button('1. List', 'Danh sách số', () => exec('insertOrderedList'))}
-        {button('⇤', 'Giảm thụt lề', () => exec('outdent'))}
-        {button('⇥', 'Tăng thụt lề', () => exec('indent'))}
+        {button('• List', 'Bulleted list', () => exec('insertUnorderedList'))}
+        {button('1. List', 'Numbered list', () => exec('insertOrderedList'))}
+        {button('⇤', 'Decrease indent', () => exec('outdent'))}
+        {button('⇥', 'Increase indent', () => exec('indent'))}
         <span className="adm-editor__sep" />
-        {button('⬅', 'Căn trái', () => exec('justifyLeft'))}
-        {button('⬌', 'Căn giữa', () => exec('justifyCenter'))}
-        {button('➡', 'Căn phải', () => exec('justifyRight'))}
+        {button('⬅', 'Align left', () => exec('justifyLeft'))}
+        {button('⬌', 'Align center', () => exec('justifyCenter'))}
+        {button('➡', 'Align right', () => exec('justifyRight'))}
         <span className="adm-editor__sep" />
-        {button('🔗', 'Chèn liên kết', () => {
+        {button('🔗', 'Insert link', () => {
           rememberSelection();
           setLinkOpen(true);
         })}
-        {button('Bỏ link', 'Bỏ liên kết', () => exec('unlink'))}
-        {button(uploading ? '⏳ Đang tải...' : '🖼 Ảnh', 'Chèn ảnh', () => {
+        {button('Unlink', 'Remove link', () => exec('unlink'))}
+        {button(uploading ? '⏳ Uploading...' : '🖼 Image', 'Insert image', () => {
           rememberSelection();
           file.current?.click();
         })}
         <span className="adm-editor__sep" />
-        {button('⌫ Format', 'Xóa định dạng', () => exec('removeFormat'))}
-        {button('🗑', 'Xóa toàn bộ nội dung', () => {
-          if (area.current && window.confirm('Xóa toàn bộ nội dung?')) {
+        {button('⌫ Format', 'Clear formatting', () => exec('removeFormat'))}
+        {button('🗑', 'Delete all content', () => {
+          if (area.current && window.confirm('Delete all content?')) {
             area.current.innerHTML = '';
             emit();
           }
@@ -157,7 +157,7 @@ export default function RichEditor({ value, onChange, placeholder = 'Soạn nộ
         <div className="adm-editor__link">
           <input
             className="adm-input adm-input--sm"
-            aria-label="Địa chỉ liên kết"
+            aria-label="Link URL"
             placeholder="https://..."
             value={linkUrl}
             autoFocus
@@ -170,10 +170,10 @@ export default function RichEditor({ value, onChange, placeholder = 'Soạn nộ
             }}
           />
           <button type="button" className="adm-btn adm-btn--primary adm-btn--sm" onClick={insertLink}>
-            Chèn
+            Insert
           </button>
           <button type="button" className="adm-btn adm-btn--ghost adm-btn--sm" onClick={() => setLinkOpen(false)}>
-            Hủy
+            Cancel
           </button>
         </div>
       )}

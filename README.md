@@ -34,7 +34,7 @@ npm run dev
 
 - Site: <http://localhost:3000>
 - Admin: <http://localhost:3000/admin/> — user `admin`; the generated password is written to
-  `storage/admin-password.txt`. Change it after the first login (**Đổi mật khẩu**) and delete that file.
+  `storage/admin-password.txt`. Change it after the first login (**Change password**) and delete that file.
 
 `npm run admin:user -- <username> --ask` creates another admin or resets a password with one you type.
 
@@ -108,9 +108,9 @@ URLs match the old WordPress site (`/product/<slug>/`, `/collection/<slug>/`, `/
 
 ## Admin
 
-Dashboard · Danh mục · Sản phẩm (thông tin, hình ảnh, mô tả, tính năng, ứng dụng, thông số, tài liệu) ·
-Bài viết (soạn thảo, hình đại diện, nháp / đăng, ngày đăng) · Video ứng dụng · Tài liệu tải về ·
-Tin nhắn (form Contact + đăng ký nhận tin) · Cài đặt (liên hệ, mạng xã hội, slide trang chủ) · Đổi mật khẩu.
+Overview · Collections · Products (details, images, description, features, applications, specifications, documents) ·
+Posts (editor, featured image, draft / published, publish date) · Application videos · Downloads ·
+Messages (Contact form + newsletter sign-ups) · Settings (contact details, social networks, home page slides) · Change password.
 
 Rich text is sanitised on the server when saved. Product photos on a white background get an
 automatically cropped copy (`public/uploads/_trim/`) that the product cards use.

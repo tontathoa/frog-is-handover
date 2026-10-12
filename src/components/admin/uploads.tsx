@@ -37,7 +37,7 @@ type ImageUploadProps = {
   dark?: boolean;
 };
 
-/** Single picture: dashed dropzone when empty, preview with "Đổi ảnh / Xóa" when filled. */
+/** Single picture: dashed dropzone when empty, preview with "Change image / Delete" when filled. */
 export function ImageUpload({ value, onChange, type = 'images', aspect = '16 / 9', contain = false, dark = false }: ImageUploadProps) {
   const input = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
@@ -68,10 +68,10 @@ export function ImageUpload({ value, onChange, type = 'images', aspect = '16 / 9
           </div>
           <div className="adm-image__bar">
             <button type="button" className="adm-link" disabled={busy} onClick={() => input.current?.click()}>
-              {busy ? 'Đang tải lên...' : '📁 Đổi ảnh'}
+              {busy ? 'Uploading...' : '📁 Change image'}
             </button>
             <button type="button" className="adm-link adm-link--muted" onClick={() => onChange('')}>
-              🗑 Xóa
+              🗑 Delete
             </button>
           </div>
         </>
@@ -86,8 +86,8 @@ export function ImageUpload({ value, onChange, type = 'images', aspect = '16 / 9
           {...drop.handlers}
         >
           <span aria-hidden="true">🖼</span>
-          <strong>{busy ? 'Đang tải lên...' : 'Bấm hoặc kéo thả ảnh'}</strong>
-          <small>PNG, JPG, WebP · tối đa 20MB</small>
+          <strong>{busy ? 'Uploading...' : 'Click or drag an image here'}</strong>
+          <small>PNG, JPG, WebP · max 20MB</small>
         </div>
       )}
       {error && <p className="adm-error" style={{ marginTop: 8 }}>{error}</p>}
@@ -139,8 +139,8 @@ export function MultiImageUpload({ value, onChange, type = 'products' }: { value
         {...drop.handlers}
       >
         <span aria-hidden="true">📁</span>
-        <strong>{busy > 0 ? `Đang tải lên... (còn ${busy})` : 'Bấm hoặc kéo thả nhiều ảnh vào đây'}</strong>
-        <small>PNG, JPG, WebP · tối đa 20MB mỗi ảnh · ảnh nền trắng sẽ được tự cắt viền</small>
+        <strong>{busy > 0 ? `Uploading... (${busy} left)` : 'Click or drag multiple images here'}</strong>
+        <small>PNG, JPG, WebP · max 20MB per image · white backgrounds are trimmed automatically</small>
       </div>
       {error && <p className="adm-error" style={{ marginTop: 12 }}>{error}</p>}
 
@@ -149,23 +149,23 @@ export function MultiImageUpload({ value, onChange, type = 'products' }: { value
           {value.map((path, index) => (
             <div key={path} className={`adm-gallery__item${index === 0 ? ' is-primary' : ''}`}>
               <img src={mediaSrc(path)} alt="" loading="lazy" />
-              {index === 0 && <span className="adm-gallery__chip">⭐ ẢNH CHÍNH</span>}
+              {index === 0 && <span className="adm-gallery__chip">⭐ MAIN IMAGE</span>}
               <div className="adm-gallery__tools">
                 {index > 0 && (
                   <button type="button" onClick={() => onChange([path, ...value.filter((item) => item !== path)])}>
-                    ⭐ Đặt làm chính
+                    ⭐ Set as main
                   </button>
                 )}
                 <div>
-                  <button type="button" aria-label="Chuyển sang trái" disabled={index === 0} onClick={() => move(index, index - 1)}>
+                  <button type="button" aria-label="Move left" disabled={index === 0} onClick={() => move(index, index - 1)}>
                     ←
                   </button>
-                  <button type="button" aria-label="Chuyển sang phải" disabled={index === value.length - 1} onClick={() => move(index, index + 1)}>
+                  <button type="button" aria-label="Move right" disabled={index === value.length - 1} onClick={() => move(index, index + 1)}>
                     →
                   </button>
                 </div>
                 <button type="button" onClick={() => onChange(value.filter((item) => item !== path))}>
-                  🗑 Xóa
+                  🗑 Delete
                 </button>
               </div>
               <div className="adm-gallery__foot">#{index + 1}</div>
@@ -184,8 +184,8 @@ type FileUploadProps = {
   onUploaded: (file: Uploaded) => void;
 };
 
-/** "📎 Chọn file để upload" button for documents and videos. */
-export function FileUpload({ type = 'documents', accept = '.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.rar,.txt', label = '📎 Chọn file để upload', onUploaded }: FileUploadProps) {
+/** "📎 Choose file to upload" button for documents and videos. */
+export function FileUpload({ type = 'documents', accept = '.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.rar,.txt', label = '📎 Choose file to upload', onUploaded }: FileUploadProps) {
   const input = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
@@ -208,7 +208,7 @@ export function FileUpload({ type = 'documents', accept = '.pdf,.doc,.docx,.xls,
     <div>
       <input ref={input} type="file" accept={accept} hidden onChange={(event) => upload(event.target.files?.[0])} />
       <button type="button" className="adm-btn adm-btn--dark adm-btn--sm" disabled={busy} onClick={() => input.current?.click()}>
-        {busy ? 'Đang tải lên...' : label}
+        {busy ? 'Uploading...' : label}
       </button>
       {error && <p className="adm-error" style={{ marginTop: 8 }}>{error}</p>}
     </div>

@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import PostEditor from '@/components/admin/PostEditor';
 
-export const metadata = { title: 'Bài viết' };
+export const metadata = { title: 'Posts' };
 
 /** /admin/posts/new/ creates a record, /admin/posts/<id>/ edits one. */
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {

@@ -26,15 +26,15 @@ export default function Dashboard() {
   if (!stats) return <Loading />;
 
   const cards = [
-    { label: 'Danh mục', value: stats.counts.collections, icon: '🗂', tint: '#eff6ff', href: '/admin/collections/' },
-    { label: 'Sản phẩm', value: stats.counts.products, icon: '🔊', tint: '#ecfdf5', href: '/admin/products/' },
-    { label: 'Bài viết', value: stats.counts.posts, icon: '📝', tint: '#fef9c3', href: '/admin/posts/' },
-    { label: `Tin nhắn (${stats.counts.unreadMessages} chưa đọc)`, value: stats.counts.messages, icon: '✉️', tint: '#fdf2f8', href: '/admin/messages/' },
+    { label: 'Collections', value: stats.counts.collections, icon: '🗂', tint: '#eff6ff', href: '/admin/collections/' },
+    { label: 'Products', value: stats.counts.products, icon: '🔊', tint: '#ecfdf5', href: '/admin/products/' },
+    { label: 'Posts', value: stats.counts.posts, icon: '📝', tint: '#fef9c3', href: '/admin/posts/' },
+    { label: `Messages (${stats.counts.unreadMessages} unread)`, value: stats.counts.messages, icon: '✉️', tint: '#fdf2f8', href: '/admin/messages/' },
   ];
 
   return (
     <>
-      <PageHead title="Tổng quan" sub="Nội dung đang có trên website Frog-is" />
+      <PageHead title="Overview" sub="Content currently on the Frog-is website" />
 
       <div className="adm-stats">
         {cards.map((card) => (
@@ -53,9 +53,9 @@ export default function Dashboard() {
       <div className="adm-cols">
         <div className="adm-card">
           <div className="adm-card__header">
-            <h2 className="adm-card__title">Sản phẩm cập nhật gần đây</h2>
+            <h2 className="adm-card__title">Recently updated products</h2>
             <Link className="adm-link" href="/admin/products/">
-              Xem tất cả →
+              View all →
             </Link>
           </div>
           <ul className="adm-list">
@@ -64,7 +64,7 @@ export default function Dashboard() {
                 <Link href={`/admin/products/${product.id}/`}>
                   <strong>{product.title}</strong> <span className="adm-muted">{product.subtitle}</span>
                 </Link>
-                <span className={`adm-badge ${product.isActive ? 'adm-badge--green' : 'adm-badge--gray'}`}>{product.isActive ? 'Hiện' : 'Ẩn'}</span>
+                <span className={`adm-badge ${product.isActive ? 'adm-badge--green' : 'adm-badge--gray'}`}>{product.isActive ? 'Visible' : 'Hidden'}</span>
               </li>
             ))}
           </ul>
@@ -72,9 +72,9 @@ export default function Dashboard() {
 
         <div className="adm-card">
           <div className="adm-card__header">
-            <h2 className="adm-card__title">Bài viết mới nhất</h2>
+            <h2 className="adm-card__title">Latest posts</h2>
             <Link className="adm-link" href="/admin/posts/">
-              Xem tất cả →
+              View all →
             </Link>
           </div>
           <ul className="adm-list">
@@ -82,31 +82,31 @@ export default function Dashboard() {
               <li key={post.id}>
                 <Link href={`/admin/posts/${post.id}/`}>{post.title}</Link>
                 <span className="adm-muted" style={{ whiteSpace: 'nowrap' }}>
-                  {post.isPublished ? dateVN(post.publishedAt) : 'Nháp'}
+                  {post.isPublished ? dateVN(post.publishedAt) : 'Draft'}
                 </span>
               </li>
             ))}
-            {stats.latestPosts.length === 0 && <li className="adm-muted">Chưa có bài viết nào.</li>}
+            {stats.latestPosts.length === 0 && <li className="adm-muted">No posts yet.</li>}
           </ul>
         </div>
       </div>
 
       <div className="adm-card" style={{ marginTop: 20 }}>
         <div className="adm-card__header">
-          <h2 className="adm-card__title">⚡ Thao tác nhanh</h2>
+          <h2 className="adm-card__title">⚡ Quick actions</h2>
         </div>
         <div className="adm-quick">
           <Link href="/admin/products/new/">
-            <span aria-hidden="true">➕</span> Thêm sản phẩm
+            <span aria-hidden="true">➕</span> Add product
           </Link>
           <Link href="/admin/posts/new/">
-            <span aria-hidden="true">✍️</span> Viết bài mới
+            <span aria-hidden="true">✍️</span> Write a new post
           </Link>
           <Link href="/admin/downloads/">
-            <span aria-hidden="true">📁</span> Tài liệu tải về
+            <span aria-hidden="true">📁</span> Downloads
           </Link>
           <Link href="/admin/settings/">
-            <span aria-hidden="true">⚙️</span> Cài đặt website
+            <span aria-hidden="true">⚙️</span> Site settings
           </Link>
         </div>
       </div>

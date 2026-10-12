@@ -26,29 +26,29 @@ const MENU: Section[] = [
     ],
   },
   {
-    title: 'Danh mục sản phẩm',
+    title: 'Catalog',
     items: [
-      { label: 'Danh mục', href: '/admin/collections/', icon: icon(<><path d="M8 6h13M8 12h13M8 18h13" /><path d="M3 6h.01M3 12h.01M3 18h.01" /></>) },
-      { label: 'Sản phẩm', href: '/admin/products/', icon: icon(<><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" /><path d="M3 6h18" /><path d="M16 10a4 4 0 0 1-8 0" /></>) },
+      { label: 'Collections', href: '/admin/collections/', icon: icon(<><path d="M8 6h13M8 12h13M8 18h13" /><path d="M3 6h.01M3 12h.01M3 18h.01" /></>) },
+      { label: 'Products', href: '/admin/products/', icon: icon(<><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" /><path d="M3 6h18" /><path d="M16 10a4 4 0 0 1-8 0" /></>) },
     ],
   },
   {
-    title: 'Nội dung',
+    title: 'Content',
     items: [
-      { label: 'Bài viết', href: '/admin/posts/', icon: icon(<><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" /></>) },
-      { label: 'Video ứng dụng', href: '/admin/videos/', icon: icon(<><path d="M23 7l-7 5 7 5V7z" /><rect x="1" y="5" width="15" height="14" rx="2" /></>) },
-      { label: 'Tài liệu tải về', href: '/admin/downloads/', icon: icon(<><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="M7 10l5 5 5-5M12 15V3" /></>) },
+      { label: 'Posts', href: '/admin/posts/', icon: icon(<><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" /></>) },
+      { label: 'Application videos', href: '/admin/videos/', icon: icon(<><path d="M23 7l-7 5 7 5V7z" /><rect x="1" y="5" width="15" height="14" rx="2" /></>) },
+      { label: 'Downloads', href: '/admin/downloads/', icon: icon(<><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="M7 10l5 5 5-5M12 15V3" /></>) },
     ],
   },
   {
-    title: 'Liên hệ',
-    items: [{ label: 'Tin nhắn', href: '/admin/messages/', countKey: 'unread', icon: icon(<path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z" />) }],
+    title: 'Contact',
+    items: [{ label: 'Messages', href: '/admin/messages/', countKey: 'unread', icon: icon(<path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z" />) }],
   },
   {
-    title: 'Hệ thống',
+    title: 'System',
     items: [
       {
-        label: 'Cài đặt',
+        label: 'Settings',
         href: '/admin/settings/',
         icon: icon(<><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8v.1a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z" /></>),
       },
@@ -56,7 +56,7 @@ const MENU: Section[] = [
   },
   {
     title: 'Website',
-    items: [{ label: 'Xem Website', href: '/', external: true, icon: icon(<><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><path d="M15 3h6v6M10 14L21 3" /></>) }],
+    items: [{ label: 'View site', href: '/', external: true, icon: icon(<><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><path d="M15 3h6v6M10 14L21 3" /></>) }],
   },
 ];
 
@@ -86,7 +86,7 @@ export default function AdminShell({ user, unread, children }: Props) {
           <div className="adm-sidebar__tag">Admin Panel</div>
         </div>
 
-        <nav className="adm-sidebar__nav" aria-label="Quản trị">
+        <nav className="adm-sidebar__nav" aria-label="Admin">
           {MENU.map((section, index) => (
             <div key={section.title ?? index} style={{ display: 'contents' }}>
               {section.title && <div className="adm-sidebar__section">{section.title}</div>}
@@ -125,9 +125,9 @@ export default function AdminShell({ user, unread, children }: Props) {
             </div>
           </div>
           <div className="adm-user__actions">
-            <Link href="/admin/account/">Đổi mật khẩu</Link>
+            <Link href="/admin/account/">Change password</Link>
             <button type="button" onClick={logout}>
-              Đăng xuất →
+              Sign out →
             </button>
           </div>
         </div>

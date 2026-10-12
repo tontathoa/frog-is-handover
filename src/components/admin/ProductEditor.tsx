@@ -48,8 +48,8 @@ const slugify = (text: string) =>
   text
     .toLowerCase()
     .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .replace(/đ/g, 'd')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\u0111/g, 'd')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
 
@@ -83,12 +83,12 @@ export default function ProductEditor({ id }: { id: number | null }) {
   }, [id]);
 
   /** Each tab saves only its own fields. */
-  const save = async (fields: (keyof Form)[], message = 'Đã lưu') => {
+  const save = async (fields: (keyof Form)[], message = 'Saved') => {
     setSaving(true);
     try {
       const body = Object.fromEntries(fields.map((field) => [field, form[field]]));
       if (isNew) {
-        if (!form.title.trim()) throw new Error('Vui lòng nhập tên sản phẩm');
+        if (!form.title.trim()) throw new Error('Please enter a product name');
         const created = await api.post<{ id: number }>('products', { ...form });
         router.replace(`/admin/products/${created.id}/`);
         return;
@@ -102,10 +102,10 @@ export default function ProductEditor({ id }: { id: number | null }) {
     }
   };
 
-  const saveBar = (fields: (keyof Form)[], label = '💾 Lưu thay đổi') => (
+  const saveBar = (fields: (keyof Form)[], label = '💾 Save changes') => (
     <div className="adm-savebar">
       <button type="button" className="adm-btn adm-btn--primary adm-btn--sm" disabled={saving} onClick={() => save(fields)}>
-        {saving ? 'Đang lưu...' : label}
+        {saving ? 'Saving...' : label}
       </button>
     </div>
   );
@@ -113,15 +113,15 @@ export default function ProductEditor({ id }: { id: number | null }) {
   if (loading) return <Loading />;
   if (loadError) return <div className="adm-error">{loadError}</div>;
 
-  const locked = isNew ? { disabled: true, title: 'Lưu thông tin cơ bản trước' } : {};
+  const locked = isNew ? { disabled: true, title: 'Save the basic info first' } : {};
   const tabs: TabDef[] = [
-    { id: 'basic', label: '📝 Thông tin' },
-    { id: 'images', label: `🖼 Hình ảnh${form.images.length ? ` (${form.images.length})` : ''}`, ...locked },
-    { id: 'description', label: '📄 Mô tả', ...locked },
-    { id: 'features', label: '✅ Tính năng', ...locked },
-    { id: 'applications', label: '🎯 Ứng dụng', ...locked },
-    { id: 'specs', label: '📊 Thông số', ...locked },
-    { id: 'files', label: `📁 Tài liệu${form.files.length ? ` (${form.files.length})` : ''}`, ...locked },
+    { id: 'basic', label: '📝 Basic info' },
+    { id: 'images', label: `🖼 Images${form.images.length ? ` (${form.images.length})` : ''}`, ...locked },
+    { id: 'description', label: '📄 Description', ...locked },
+    { id: 'features', label: '✅ Features', ...locked },
+    { id: 'applications', label: '🎯 Applications', ...locked },
+    { id: 'specs', label: '📊 Specifications', ...locked },
+    { id: 'files', label: `📁 Documents${form.files.length ? ` (${form.files.length})` : ''}`, ...locked },
   ];
 
   const lineList = (key: 'features' | 'applications', addLabel: string, placeholder: string) => (
@@ -137,12 +137,12 @@ export default function ProductEditor({ id }: { id: number | null }) {
               value={line}
               onChange={(event) => set(key, form[key].map((item, i) => (i === index ? event.target.value : item)))}
             />
-            <button type="button" className="adm-row__remove" aria-label="Xóa dòng" onClick={() => set(key, form[key].filter((_, i) => i !== index))}>
+            <button type="button" className="adm-row__remove" aria-label="Delete row" onClick={() => set(key, form[key].filter((_, i) => i !== index))}>
               ✕
             </button>
           </div>
         ))}
-        {form[key].length === 0 && <p className="adm-muted">Chưa có dòng nào.</p>}
+        {form[key].length === 0 && <p className="adm-muted">No rows yet.</p>}
       </div>
       <button type="button" className="adm-link" style={{ marginTop: 12 }} onClick={() => set(key, [...form[key], ''])}>
         + {addLabel}
@@ -156,14 +156,14 @@ export default function ProductEditor({ id }: { id: number | null }) {
   return (
     <>
       <div className="adm-head adm-head--editor">
-        <button type="button" className="adm-back" aria-label="Quay lại danh sách" onClick={() => router.push('/admin/products/')}>
+        <button type="button" className="adm-back" aria-label="Back to list" onClick={() => router.push('/admin/products/')}>
           ←
         </button>
-        <h1>{isNew ? 'Thêm sản phẩm mới' : form.title || 'Sản phẩm'}</h1>
+        <h1>{isNew ? 'Add new product' : form.title || 'Product'}</h1>
         <Saved message={saved} />
         {!isNew && form.isActive && (
           <a className="adm-btn adm-btn--outline adm-btn--sm" href={`/product/${encodeURIComponent(form.slug)}/`} target="_blank" rel="noopener">
-            👁 Xem trang
+            👁 View page
           </a>
         )}
       </div>
@@ -173,7 +173,7 @@ export default function ProductEditor({ id }: { id: number | null }) {
       {tab === 'basic' && (
         <div className="adm-card">
           <div className="adm-grid">
-            <Field label="Tên sản phẩm (mã) *" hint="Ví dụ: FI-SUB12IP">
+            <Field label="Product name (code) *" hint="Example: FI-SUB12IP">
               <input
                 className="adm-input"
                 value={form.title}
@@ -183,9 +183,9 @@ export default function ProductEditor({ id }: { id: number | null }) {
                 }}
               />
             </Field>
-            <Field label="Danh mục">
+            <Field label="Collection">
               <select className="adm-input" value={form.collectionId ?? ''} onChange={(event) => set('collectionId', event.target.value ? Number(event.target.value) : null)}>
-                <option value="">-- Chưa chọn --</option>
+                <option value="">-- None selected --</option>
                 {collections.map((item) => (
                   <option key={item.id} value={item.id}>
                     {item.name}
@@ -201,32 +201,32 @@ export default function ProductEditor({ id }: { id: number | null }) {
                 <span className="adm-prefix">/product/</span>
                 <input id="product-slug" className="adm-input a-mono" value={form.slug} onChange={(event) => set('slug', event.target.value)} />
                 <button type="button" className="adm-link" style={{ whiteSpace: 'nowrap' }} onClick={() => set('slug', slugify(form.title))}>
-                  ↻ Tạo
+                  ↻ Generate
                 </button>
               </div>
-              {!isNew && <span className="adm-hint">Đổi slug sẽ đổi địa chỉ trang sản phẩm — link cũ sẽ không còn dùng được.</span>}
+              {!isNew && <span className="adm-hint">Changing the slug changes the product page address — old links will stop working.</span>}
             </div>
-            <Field label="Thứ tự" hint="Số nhỏ hiện trước trong danh mục">
+            <Field label="Order" hint="Lower numbers appear first in the collection">
               <input className="adm-input" type="number" value={form.sortOrder} onChange={(event) => set('sortOrder', Number(event.target.value) || 0)} />
             </Field>
-            <Field label="Mô tả ngắn" full hint="Một dòng dưới tên sản phẩm, ví dụ: Outdoor IP55 Subwoofer with 12” Driver">
+            <Field label="Short description" full hint="One line under the product name, e.g. Outdoor IP55 Subwoofer with 12” Driver">
               <textarea className="adm-input" rows={2} maxLength={500} value={form.subtitle} onChange={(event) => set('subtitle', event.target.value)} />
             </Field>
             <div className="adm-group adm-full">
-              <span className="adm-label">Tùy chọn</span>
+              <span className="adm-label">Options</span>
               <div className="adm-checks">
                 <label className="adm-check">
                   <input type="checkbox" checked={form.isActive} onChange={(event) => set('isActive', event.target.checked)} />
-                  Hiển thị trên web
+                  Visible on website
                 </label>
                 <label className="adm-check">
                   <input type="checkbox" checked={form.isNew} onChange={(event) => set('isNew', event.target.checked)} />
-                  Sản phẩm mới ⭐ (hiện ở trang chủ)
+                  New product ⭐ (shown on the home page)
                 </label>
               </div>
             </div>
           </div>
-          {saveBar(['title', 'slug', 'subtitle', 'collectionId', 'sortOrder', 'isActive', 'isNew'], isNew ? '💾 Tạo sản phẩm' : '💾 Lưu thay đổi')}
+          {saveBar(['title', 'slug', 'subtitle', 'collectionId', 'sortOrder', 'isActive', 'isNew'], isNew ? '💾 Create product' : '💾 Save changes')}
         </div>
       )}
 
@@ -239,13 +239,13 @@ export default function ProductEditor({ id }: { id: number | null }) {
 
       {tab === 'description' && (
         <div className="adm-card">
-          <RichEditor value={form.description} onChange={(html) => set('description', html)} uploadType="products" minHeight={300} placeholder="Mô tả sản phẩm..." />
-          {saveBar(['description'], '💾 Lưu mô tả')}
+          <RichEditor value={form.description} onChange={(html) => set('description', html)} uploadType="products" minHeight={300} placeholder="Product description..." />
+          {saveBar(['description'], '💾 Save description')}
         </div>
       )}
 
-      {tab === 'features' && lineList('features', 'Thêm tính năng', 'Tính năng')}
-      {tab === 'applications' && lineList('applications', 'Thêm ứng dụng', 'Ứng dụng')}
+      {tab === 'features' && lineList('features', 'Add feature', 'Feature')}
+      {tab === 'applications' && lineList('applications', 'Add application', 'Application')}
 
       {tab === 'specs' && (
         <div className="adm-card">
@@ -254,28 +254,28 @@ export default function ProductEditor({ id }: { id: number | null }) {
               <div className="adm-spec__head">
                 <input
                   className="adm-input adm-input--sm"
-                  aria-label="Tên nhóm thông số"
-                  placeholder="Tên nhóm, ví dụ: Specifications"
+                  aria-label="Specification group name"
+                  placeholder="Group name, e.g. Specifications"
                   value={group.title}
                   onChange={(event) => updateGroup(index, { ...group, title: event.target.value })}
                 />
                 <button type="button" className="adm-link" style={{ whiteSpace: 'nowrap' }} onClick={() => updateGroup(index, { ...group, rows: [...group.rows, ['', '']] })}>
-                  + Thêm dòng
+                  + Add row
                 </button>
                 <button
                   type="button"
                   className="adm-link adm-link--muted"
                   style={{ whiteSpace: 'nowrap' }}
-                  onClick={() => window.confirm('Xóa cả nhóm thông số này?') && set('specs', form.specs.filter((_, i) => i !== index))}
+                  onClick={() => window.confirm('Delete this entire specification group?') && set('specs', form.specs.filter((_, i) => i !== index))}
                 >
-                  Xóa nhóm
+                  Delete group
                 </button>
               </div>
               <table className="adm-table">
                 <thead>
                   <tr>
-                    <th style={{ width: '36%' }}>Thông số</th>
-                    <th>Giá trị</th>
+                    <th style={{ width: '36%' }}>Specification</th>
+                    <th>Value</th>
                     <th style={{ width: 40 }} />
                   </tr>
                 </thead>
@@ -286,12 +286,12 @@ export default function ProductEditor({ id }: { id: number | null }) {
                     return (
                       <tr key={r}>
                         <td>
-                          <input className="adm-input adm-input--sm" aria-label="Thông số" value={row[0] ?? ''} onChange={(event) => setCell(0, event.target.value)} />
+                          <input className="adm-input adm-input--sm" aria-label="Specification" value={row[0] ?? ''} onChange={(event) => setCell(0, event.target.value)} />
                         </td>
                         <td>
                           <textarea
                             className="adm-input adm-input--sm"
-                            aria-label="Giá trị"
+                            aria-label="Value"
                             rows={Math.max(1, (row[1] ?? '').split('\n').length)}
                             value={row[1] ?? ''}
                             onChange={(event) => setCell(1, event.target.value)}
@@ -301,7 +301,7 @@ export default function ProductEditor({ id }: { id: number | null }) {
                           <button
                             type="button"
                             className="adm-row__remove"
-                            aria-label="Xóa dòng"
+                            aria-label="Delete row"
                             onClick={() => updateGroup(index, { ...group, rows: group.rows.filter((_, i) => i !== r) })}
                           >
                             ✕
@@ -314,9 +314,9 @@ export default function ProductEditor({ id }: { id: number | null }) {
               </table>
             </div>
           ))}
-          {form.specs.length === 0 && <p className="adm-muted" style={{ marginBottom: 12 }}>Chưa có nhóm thông số nào.</p>}
-          <button type="button" className="adm-link" onClick={() => set('specs', [...form.specs, { title: form.specs.length ? 'Nhóm mới' : 'Specifications', rows: [['', '']] }])}>
-            + Thêm nhóm
+          {form.specs.length === 0 && <p className="adm-muted" style={{ marginBottom: 12 }}>No specification groups yet.</p>}
+          <button type="button" className="adm-link" onClick={() => set('specs', [...form.specs, { title: form.specs.length ? 'New group' : 'Specifications', rows: [['', '']] }])}>
+            + Add group
           </button>
           {saveBar(['specs'])}
         </div>
@@ -326,7 +326,7 @@ export default function ProductEditor({ id }: { id: number | null }) {
         <div className="adm-card">
           <FileUpload onUploaded={(file) => set('files', [...form.files, { label: form.files.length ? 'Manual' : 'Data sheet', file: file.path }])} />
           <p className="adm-hint" style={{ margin: '8px 0 16px' }}>
-            Hỗ trợ: PDF, DOC, DOCX, XLS, XLSX, PPT, ZIP, RAR — tối đa 100MB.
+            Supported: PDF, DOC, DOCX, XLS, XLSX, PPT, ZIP, RAR — max 100MB.
           </p>
           <div className="adm-rows">
             {form.files.map((file, index) => (
@@ -335,7 +335,7 @@ export default function ProductEditor({ id }: { id: number | null }) {
                 <select
                   className="adm-input adm-input--sm"
                   style={{ width: 150 }}
-                  aria-label="Loại tài liệu"
+                  aria-label="Document type"
                   value={file.label}
                   onChange={(event) => set('files', form.files.map((item, i) => (i === index ? { ...item, label: event.target.value } : item)))}
                 >
@@ -348,12 +348,12 @@ export default function ProductEditor({ id }: { id: number | null }) {
                 <a href={`/${file.file}`} target="_blank" rel="noopener">
                   {file.file.split('/').pop()}
                 </a>
-                <button type="button" className="adm-row__remove" aria-label="Gỡ tài liệu" onClick={() => set('files', form.files.filter((_, i) => i !== index))}>
+                <button type="button" className="adm-row__remove" aria-label="Remove document" onClick={() => set('files', form.files.filter((_, i) => i !== index))}>
                   ✕
                 </button>
               </div>
             ))}
-            {form.files.length === 0 && <p className="adm-muted">Chưa có tài liệu nào.</p>}
+            {form.files.length === 0 && <p className="adm-muted">No documents yet.</p>}
           </div>
           {saveBar(['files'])}
         </div>

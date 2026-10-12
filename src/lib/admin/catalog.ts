@@ -8,14 +8,14 @@ type Body = Record<string, unknown>;
 
 /** Runs a partial UPDATE from the columns collected by `assign`. */
 async function applyUpdate(table: string, id: number, set: string[], values: SqlValue[], missing: string) {
-  if (set.length === 0) throw badRequest('Không có thay đổi nào');
+  if (set.length === 0) throw badRequest('No changes to save');
   const result = await execute(`UPDATE ${table} SET ${set.join(', ')} WHERE id = ?`, [...values, id]);
   if (result.affectedRows === 0 && !(await queryOne(`SELECT id FROM ${table} WHERE id = ?`, [id]))) throw notFoundError(missing);
 }
 
 async function freeSlug(table: string, slug: string, ignoreId: number, label: string) {
-  if (!slug) throw badRequest('Slug không được trống');
-  if (await queryOne(`SELECT id FROM ${table} WHERE slug = ? AND id <> ?`, [slug, ignoreId])) throw badRequest(`Slug "${slug}" đã được dùng cho ${label} khác`);
+  if (!slug) throw badRequest('Slug cannot be empty');
+  if (await queryOne(`SELECT id FROM ${table} WHERE slug = ? AND id <> ?`, [slug, ignoreId])) throw badRequest(`Slug "${slug}" is already used by another ${label}`);
   return slug;
 }
 
@@ -32,8 +32,8 @@ export const collections = {
 
   async create(body: Body) {
     const name = str(body.name, 200);
-    if (!name) throw badRequest('Vui lòng nhập tên danh mục');
-    const slug = await freeSlug('collections', slugify(str(body.slug, 160) || name), 0, 'danh mục');
+    if (!name) throw badRequest('Please enter a collection name');
+    const slug = await freeSlug('collections', slugify(str(body.slug, 160) || name), 0, 'collection');
     const result = await execute(
       'INSERT INTO collections (slug, name, short_name, icon, icon_hover, sort_order, is_active) VALUES (?, ?, ?, ?, ?, ?, ?)',
       [slug, name, str(body.short, 100) || name, mediaPath(body.icon), mediaPath(body.iconHover), int(body.sortOrder), body.isActive === undefined ? 1 : flag(body.isActive)],
@@ -50,23 +50,23 @@ export const collections = {
     };
     if ('name' in body) {
       const name = str(body.name, 200);
-      if (!name) throw badRequest('Vui lòng nhập tên danh mục');
+      if (!name) throw badRequest('Please enter a collection name');
       assign('name', name);
     }
-    if ('slug' in body) assign('slug', await freeSlug('collections', slugify(str(body.slug, 160)), id, 'danh mục'));
+    if ('slug' in body) assign('slug', await freeSlug('collections', slugify(str(body.slug, 160)), id, 'collection'));
     if ('short' in body) assign('short_name', str(body.short, 100));
     if ('icon' in body) assign('icon', mediaPath(body.icon));
     if ('iconHover' in body) assign('icon_hover', mediaPath(body.iconHover));
     if ('sortOrder' in body) assign('sort_order', int(body.sortOrder));
     if ('isActive' in body) assign('is_active', flag(body.isActive));
-    await applyUpdate('collections', id, set, values, 'Không tìm thấy danh mục');
+    await applyUpdate('collections', id, set, values, 'Collection not found');
   },
 
   async remove(id: number) {
     const [{ total }] = await query<{ total: number }>('SELECT COUNT(*) AS total FROM products WHERE collection_id = ?', [id]);
-    if (Number(total) > 0) throw badRequest(`Danh mục còn ${total} sản phẩm — hãy chuyển hoặc xóa sản phẩm trước`);
+    if (Number(total) > 0) throw badRequest(`This collection still has ${total} product(s) — move or delete them first`);
     const result = await execute('DELETE FROM collections WHERE id = ?', [id]);
-    if (result.affectedRows === 0) throw notFoundError('Không tìm thấy danh mục');
+    if (result.affectedRows === 0) throw notFoundError('Collection not found');
   },
 };
 
@@ -79,7 +79,7 @@ export const videos = {
 
   async create(body: Body) {
     const title = str(body.title, 300);
-    if (!title) throw badRequest('Vui lòng nhập tiêu đề video');
+    if (!title) throw badRequest('Please enter a video title');
     const slug = await freeSlug('videos', slugify(str(body.slug, 200) || title), 0, 'video');
     const result = await execute(
       'INSERT INTO videos (slug, title, thumb, video_url, embed_url, duration, description, sort_order, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
@@ -107,7 +107,7 @@ export const videos = {
     };
     if ('title' in body) {
       const title = str(body.title, 300);
-      if (!title) throw badRequest('Vui lòng nhập tiêu đề video');
+      if (!title) throw badRequest('Please enter a video title');
       assign('title', title);
     }
     if ('slug' in body) assign('slug', await freeSlug('videos', slugify(str(body.slug, 200)), id, 'video'));
@@ -118,12 +118,12 @@ export const videos = {
     if ('description' in body) assign('description', cleanRichText(body.description));
     if ('sortOrder' in body) assign('sort_order', int(body.sortOrder));
     if ('isActive' in body) assign('is_active', flag(body.isActive));
-    await applyUpdate('videos', id, set, values, 'Không tìm thấy video');
+    await applyUpdate('videos', id, set, values, 'Video not found');
   },
 
   async remove(id: number) {
     const result = await execute('DELETE FROM videos WHERE id = ?', [id]);
-    if (result.affectedRows === 0) throw notFoundError('Không tìm thấy video');
+    if (result.affectedRows === 0) throw notFoundError('Video not found');
   },
 };
 
@@ -136,10 +136,10 @@ export const downloads = {
 
   async create(body: Body) {
     const title = str(body.title, 300);
-    if (!title) throw badRequest('Vui lòng nhập tên tài liệu');
+    if (!title) throw badRequest('Please enter a document name');
     const file = mediaPath(body.file);
     const remote = httpUrl(body.remote);
-    if (!file && !remote) throw badRequest('Hãy upload file hoặc nhập đường dẫn tải về');
+    if (!file && !remote) throw badRequest('Upload a file or enter a download link');
     const result = await execute('INSERT INTO downloads (title, file_url, remote_url, image, sort_order, is_active) VALUES (?, ?, ?, ?, ?, ?)', [
       title,
       file,
@@ -160,7 +160,7 @@ export const downloads = {
     };
     if ('title' in body) {
       const title = str(body.title, 300);
-      if (!title) throw badRequest('Vui lòng nhập tên tài liệu');
+      if (!title) throw badRequest('Please enter a document name');
       assign('title', title);
     }
     if ('file' in body) assign('file_url', mediaPath(body.file));
@@ -168,12 +168,12 @@ export const downloads = {
     if ('image' in body) assign('image', mediaPath(body.image));
     if ('sortOrder' in body) assign('sort_order', int(body.sortOrder));
     if ('isActive' in body) assign('is_active', flag(body.isActive));
-    await applyUpdate('downloads', id, set, values, 'Không tìm thấy tài liệu');
+    await applyUpdate('downloads', id, set, values, 'Document not found');
   },
 
   async remove(id: number) {
     const result = await execute('DELETE FROM downloads WHERE id = ?', [id]);
-    if (result.affectedRows === 0) throw notFoundError('Không tìm thấy tài liệu');
+    if (result.affectedRows === 0) throw notFoundError('Document not found');
   },
 };
 
@@ -201,13 +201,13 @@ export const messages = {
   },
 
   async update(id: number, body: Body) {
-    if (!('isRead' in body)) throw badRequest('Không có thay đổi nào');
-    await applyUpdate('messages', id, ['is_read = ?'], [flag(body.isRead)], 'Không tìm thấy tin nhắn');
+    if (!('isRead' in body)) throw badRequest('No changes to save');
+    await applyUpdate('messages', id, ['is_read = ?'], [flag(body.isRead)], 'Message not found');
   },
 
   async remove(id: number) {
     const result = await execute('DELETE FROM messages WHERE id = ?', [id]);
-    if (result.affectedRows === 0) throw notFoundError('Không tìm thấy tin nhắn');
+    if (result.affectedRows === 0) throw notFoundError('Message not found');
   },
 };
 
@@ -219,6 +219,6 @@ export const subscribers = {
 
   async remove(id: number) {
     const result = await execute('DELETE FROM subscribers WHERE id = ?', [id]);
-    if (result.affectedRows === 0) throw notFoundError('Không tìm thấy email');
+    if (result.affectedRows === 0) throw notFoundError('Email not found');
   },
 };

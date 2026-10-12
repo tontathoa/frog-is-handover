@@ -9,8 +9,8 @@ type Message = { id: number; name: string; email: string; company: string; phone
 type Subscriber = { id: number; email: string; createdAt: string };
 
 const TABS = [
-  { id: 'messages', label: '✉️ Tin nhắn liên hệ' },
-  { id: 'subscribers', label: '📬 Đăng ký nhận tin' },
+  { id: 'messages', label: '✉️ Contact messages' },
+  { id: 'subscribers', label: '📬 Newsletter sign-ups' },
 ];
 
 export default function MessageManager() {
@@ -63,7 +63,7 @@ export default function MessageManager() {
   };
 
   const removeMessage = async (message: Message) => {
-    if (!window.confirm(`Xóa tin nhắn của "${message.name}"?`)) return;
+    if (!window.confirm(`Delete the message from "${message.name}"?`)) return;
     try {
       await api.del(`messages/${message.id}`);
       setOpen(null);
@@ -75,7 +75,7 @@ export default function MessageManager() {
   };
 
   const removeSubscriber = async (subscriber: Subscriber) => {
-    if (!window.confirm(`Xóa ${subscriber.email} khỏi danh sách nhận tin?`)) return;
+    if (!window.confirm(`Delete ${subscriber.email} from the newsletter list?`)) return;
     try {
       await api.del(`subscribers/${subscriber.id}`);
       loadSubscribers();
@@ -87,29 +87,29 @@ export default function MessageManager() {
   const copyEmails = async () => {
     if (!subscribers?.length) return;
     await navigator.clipboard.writeText(subscribers.map((item) => item.email).join('\n'));
-    window.alert(`Đã chép ${subscribers.length} email vào bộ nhớ tạm.`);
+    window.alert(`Copied ${subscribers.length} ${subscribers.length === 1 ? 'email' : 'emails'} to the clipboard.`);
   };
 
   return (
     <>
-      <PageHead title="Tin nhắn" sub="Tin nhắn từ form Contact và email đăng ký nhận tin ở chân trang" />
+      <PageHead title="Messages" sub="Messages from the Contact form and newsletter sign-ups from the footer" />
       <Tabs tabs={TABS} active={tab} onChange={setTab} />
       {error && <div className="adm-error">{error}</div>}
 
       {tab === 'messages' && (
         <div className="adm-card adm-card--flush">
           {!messages && !error && <Loading />}
-          {messages && messages.length === 0 && <Empty icon="✉️" text="Chưa có tin nhắn nào." />}
+          {messages && messages.length === 0 && <Empty icon="✉️" text="No messages yet." />}
           {messages && messages.length > 0 && (
             <div className="adm-table-wrap">
               <table className="adm-table">
                 <thead>
                   <tr>
-                    <th>Ngày gửi</th>
-                    <th>Người gửi</th>
-                    <th>Nội dung</th>
-                    <th>Trạng thái</th>
-                    <th>Thao tác</th>
+                    <th>Date sent</th>
+                    <th>Sender</th>
+                    <th>Message</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -132,19 +132,19 @@ export default function MessageManager() {
                         <button
                           type="button"
                           className={`adm-badge ${message.isRead ? 'adm-badge--gray' : 'adm-badge--primary'}`}
-                          title="Bấm để đổi trạng thái"
+                          title="Click to change status"
                           onClick={() => markRead(message, !message.isRead)}
                         >
-                          {message.isRead ? 'Đã đọc' : 'Mới'}
+                          {message.isRead ? 'Read' : 'New'}
                         </button>
                       </td>
                       <td>
                         <div className="adm-acts">
                           <button type="button" className="adm-act adm-act--edit" onClick={() => show(message)}>
-                            Xem
+                            View
                           </button>
                           <button type="button" className="adm-act adm-act--del" onClick={() => removeMessage(message)}>
-                            Xóa
+                            Delete
                           </button>
                         </div>
                       </td>
@@ -154,7 +154,7 @@ export default function MessageManager() {
               </table>
             </div>
           )}
-          {messages && messages.length > 0 && <div className="adm-table-foot">{total} tin nhắn</div>}
+          {messages && messages.length > 0 && <div className="adm-table-foot">{total} {total === 1 ? 'message' : 'messages'}</div>}
           <Pagination page={page} pages={pages} onChange={setPage} />
         </div>
       )}
@@ -163,20 +163,20 @@ export default function MessageManager() {
         <div className="adm-card adm-card--flush">
           <div className="adm-filters">
             <button type="button" className="adm-btn adm-btn--outline adm-btn--sm" disabled={!subscribers?.length} onClick={copyEmails}>
-              📋 Chép tất cả email
+              📋 Copy all emails
             </button>
-            <span className="adm-filters__count">{subscribers?.length ?? 0} email</span>
+            <span className="adm-filters__count">{subscribers?.length ?? 0} {subscribers?.length === 1 ? 'email' : 'emails'}</span>
           </div>
           {!subscribers && !error && <Loading />}
-          {subscribers && subscribers.length === 0 && <Empty icon="📬" text="Chưa có ai đăng ký nhận tin." />}
+          {subscribers && subscribers.length === 0 && <Empty icon="📬" text="No newsletter sign-ups yet." />}
           {subscribers && subscribers.length > 0 && (
             <div className="adm-table-wrap">
               <table className="adm-table">
                 <thead>
                   <tr>
                     <th>Email</th>
-                    <th>Ngày đăng ký</th>
-                    <th>Thao tác</th>
+                    <th>Sign-up date</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -186,7 +186,7 @@ export default function MessageManager() {
                       <td className="adm-muted">{dateVN(subscriber.createdAt, true)}</td>
                       <td>
                         <button type="button" className="adm-act adm-act--del" onClick={() => removeSubscriber(subscriber)}>
-                          Xóa
+                          Delete
                         </button>
                       </td>
                     </tr>
@@ -199,7 +199,7 @@ export default function MessageManager() {
       )}
 
       {open && (
-        <Modal title={`Tin nhắn từ ${open.name}`} onClose={() => setOpen(null)} wide>
+        <Modal title={`Message from ${open.name}`} onClose={() => setOpen(null)} wide>
           <div className="adm-grid" style={{ marginBottom: 16 }}>
             <div>
               <div className="adm-muted">Email</div>
@@ -208,18 +208,18 @@ export default function MessageManager() {
               </a>
             </div>
             <div>
-              <div className="adm-muted">Ngày gửi</div>
+              <div className="adm-muted">Date sent</div>
               {dateVN(open.createdAt, true)}
             </div>
             {open.company && (
               <div>
-                <div className="adm-muted">Công ty</div>
+                <div className="adm-muted">Company</div>
                 {open.company}
               </div>
             )}
             {open.phone && (
               <div>
-                <div className="adm-muted">Điện thoại</div>
+                <div className="adm-muted">Phone</div>
                 {open.phone}
               </div>
             )}

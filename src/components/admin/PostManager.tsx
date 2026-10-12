@@ -58,7 +58,7 @@ export default function PostManager() {
   };
 
   const remove = async (row: Row) => {
-    if (!window.confirm(`Xóa bài viết "${row.title}"?\n\nThao tác không thể hoàn tác.`)) return;
+    if (!window.confirm(`Delete post "${row.title}"?\n\nThis action cannot be undone.`)) return;
     try {
       await api.del(`posts/${row.id}`);
       setLoading(true);
@@ -80,9 +80,9 @@ export default function PostManager() {
 
   return (
     <>
-      <PageHead title="Quản lý bài viết">
+      <PageHead title="Manage posts">
         <Link className="adm-btn adm-btn--primary adm-btn--sm" href="/admin/posts/new/">
-          + Thêm bài viết
+          + Add post
         </Link>
       </PageHead>
 
@@ -91,7 +91,7 @@ export default function PostManager() {
           <SearchInput
             key={filterKey}
             value={q}
-            placeholder="Tìm theo tiêu đề..."
+            placeholder="Search by title..."
             onChange={(value) => {
               setLoading(true);
               setQ(value);
@@ -100,7 +100,7 @@ export default function PostManager() {
           />
           <select
             className="adm-input adm-input--sm"
-            aria-label="Trạng thái"
+            aria-label="Status"
             value={status}
             onChange={(event) => {
               setLoading(true);
@@ -108,16 +108,18 @@ export default function PostManager() {
               setPage(1);
             }}
           >
-            <option value="">Tất cả trạng thái</option>
-            <option value="published">Đã đăng</option>
-            <option value="draft">Bản nháp</option>
+            <option value="">All statuses</option>
+            <option value="published">Published</option>
+            <option value="draft">Draft</option>
           </select>
           {filtered && (
             <button type="button" className="adm-link" onClick={clearFilters}>
-              ✕ Xóa lọc
+              ✕ Clear filters
             </button>
           )}
-          <span className="adm-filters__count">{total} bài viết</span>
+          <span className="adm-filters__count">
+            {total} {total === 1 ? 'post' : 'posts'}
+          </span>
         </div>
 
         {error && <div className="adm-error" style={{ margin: 16 }}>{error}</div>}
@@ -128,11 +130,11 @@ export default function PostManager() {
             <table className="adm-table">
               <thead>
                 <tr>
-                  <th>Hình</th>
-                  <th>Tiêu đề</th>
-                  <th>Ngày đăng</th>
-                  <th>Trạng thái</th>
-                  <th>Thao tác</th>
+                  <th>Image</th>
+                  <th>Title</th>
+                  <th>Publish date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -160,24 +162,24 @@ export default function PostManager() {
                       <button
                         type="button"
                         className={`adm-badge ${row.isPublished ? 'adm-badge--green' : 'adm-badge--gray'}`}
-                        title={row.isPublished ? 'Bấm để chuyển về nháp' : 'Bấm để đăng bài'}
+                        title={row.isPublished ? 'Click to revert to draft' : 'Click to publish'}
                         onClick={() => togglePublished(row)}
                       >
-                        {row.isPublished ? '🟢 Đã đăng' : '⚪ Nháp'}
+                        {row.isPublished ? '🟢 Published' : '⚪ Draft'}
                       </button>
                     </td>
                     <td>
                       <div className="adm-acts">
                         <Link className="adm-act adm-act--edit" href={`/admin/posts/${row.id}/`}>
-                          Sửa
+                          Edit
                         </Link>
                         {row.isPublished && (
-                          <a className="adm-act adm-act--view" href={`/${encodeURIComponent(row.slug)}/`} target="_blank" rel="noopener" title="Xem trên website">
+                          <a className="adm-act adm-act--view" href={`/${encodeURIComponent(row.slug)}/`} target="_blank" rel="noopener" title="View on website">
                             👁
                           </a>
                         )}
                         <button type="button" className="adm-act adm-act--del" onClick={() => remove(row)}>
-                          Xóa
+                          Delete
                         </button>
                       </div>
                     </td>
@@ -189,13 +191,13 @@ export default function PostManager() {
         )}
 
         {!loading && rows.length === 0 && !error && (
-          <Empty icon="📝" text={filtered ? 'Không có bài viết nào khớp bộ lọc.' : 'Chưa có bài viết nào.'}>
+          <Empty icon="📝" text={filtered ? 'No posts match the filters.' : 'No posts yet.'}>
             {filtered ? (
               <button type="button" onClick={clearFilters}>
-                Xóa lọc
+                Clear filters
               </button>
             ) : (
-              <Link href="/admin/posts/new/">Tạo bài đầu tiên →</Link>
+              <Link href="/admin/posts/new/">Create your first post →</Link>
             )}
           </Empty>
         )}

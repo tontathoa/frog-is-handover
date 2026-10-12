@@ -18,9 +18,9 @@ function dateTime(value: unknown): string {
 
 async function uniqueSlug(value: unknown, title: string, ignoreId = 0): Promise<string> {
   const slug = slugify(str(value, 200) || title);
-  if (!slug) throw badRequest('Slug không được trống');
+  if (!slug) throw badRequest('Slug cannot be empty');
   if (await queryOne('SELECT id FROM posts WHERE slug = ? AND id <> ?', [slug, ignoreId])) {
-    throw badRequest(`Slug "${slug}" đã được dùng cho bài viết khác`);
+    throw badRequest(`Slug "${slug}" is already used by another post`);
   }
   return slug;
 }
@@ -68,13 +68,13 @@ export const posts = {
 
   async get(id: number) {
     const row = await queryOne('SELECT * FROM posts WHERE id = ?', [id]);
-    if (!row) throw notFoundError('Không tìm thấy bài viết');
+    if (!row) throw notFoundError('Post not found');
     return toPost(row);
   },
 
   async create(body: Body, userId: number) {
     const title = str(body.title, 300);
-    if (!title) throw badRequest('Vui lòng nhập tiêu đề');
+    if (!title) throw badRequest('Please enter a title');
     const content = cleanRichText(body.content);
     const result = await execute(
       `INSERT INTO posts (slug, title, excerpt, content, featured_image, is_published, published_at, author_id)
@@ -96,7 +96,7 @@ export const posts = {
   /** Partial update: a missing field is left untouched (so toggling "published" never wipes the body). */
   async update(id: number, body: Body) {
     const current = await queryOne<{ title: string }>('SELECT title FROM posts WHERE id = ?', [id]);
-    if (!current) throw notFoundError('Không tìm thấy bài viết');
+    if (!current) throw notFoundError('Post not found');
 
     const set: string[] = [];
     const values: SqlValue[] = [];
@@ -107,7 +107,7 @@ export const posts = {
 
     if ('title' in body) {
       const title = str(body.title, 300);
-      if (!title) throw badRequest('Vui lòng nhập tiêu đề');
+      if (!title) throw badRequest('Please enter a title');
       assign('title', title);
     }
     if ('slug' in body) assign('slug', await uniqueSlug(body.slug, str(body.title, 300) || current.title, id));
@@ -117,12 +117,12 @@ export const posts = {
     if ('isPublished' in body) assign('is_published', flag(body.isPublished));
     if ('publishedAt' in body) assign('published_at', dateTime(body.publishedAt));
 
-    if (set.length === 0) throw badRequest('Không có thay đổi nào');
+    if (set.length === 0) throw badRequest('No changes to save');
     await execute(`UPDATE posts SET ${set.join(', ')} WHERE id = ?`, [...values, id]);
   },
 
   async remove(id: number) {
     const result = await execute('DELETE FROM posts WHERE id = ?', [id]);
-    if (result.affectedRows === 0) throw notFoundError('Không tìm thấy bài viết');
+    if (result.affectedRows === 0) throw notFoundError('Post not found');
   },
 };

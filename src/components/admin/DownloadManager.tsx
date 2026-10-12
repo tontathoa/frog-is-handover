@@ -52,7 +52,7 @@ export default function DownloadManager() {
   };
 
   const remove = async (row: Download) => {
-    if (!window.confirm(`Xóa tài liệu "${row.title}"?`)) return;
+    if (!window.confirm(`Delete document "${row.title}"?`)) return;
     try {
       await api.del(`downloads/${row.id}`);
       load();
@@ -63,7 +63,7 @@ export default function DownloadManager() {
 
   return (
     <>
-      <PageHead title="Tài liệu tải về" sub="Catalog, chứng chỉ, phần mềm — hiện ở trang Download. Datasheet của từng sản phẩm nằm trong tab Tài liệu của sản phẩm.">
+      <PageHead title="Downloads" sub="Catalogs, certificates, software — shown on the Download page. Each product's datasheets are in the Documents tab of that product.">
         <button
           type="button"
           className="adm-btn adm-btn--primary adm-btn--sm"
@@ -72,7 +72,7 @@ export default function DownloadManager() {
             setForm({ id: null, title: '', file: '', remote: '', image: '', sortOrder: (rows?.length ?? 0) + 1, isActive: true });
           }}
         >
-          + Thêm tài liệu
+          + Add document
         </button>
       </PageHead>
 
@@ -80,17 +80,17 @@ export default function DownloadManager() {
 
       <div className="adm-card adm-card--flush">
         {!rows && !error && <Loading />}
-        {rows && rows.length === 0 && <Empty icon="📁" text="Chưa có tài liệu nào." />}
+        {rows && rows.length === 0 && <Empty icon="📁" text="No documents yet." />}
         {rows && rows.length > 0 && (
           <div className="adm-table-wrap">
             <table className="adm-table">
               <thead>
                 <tr>
-                  <th>Ảnh bìa</th>
-                  <th>Tên tài liệu</th>
-                  <th>Thứ tự</th>
-                  <th>Trạng thái</th>
-                  <th>Thao tác</th>
+                  <th>Cover image</th>
+                  <th>Document name</th>
+                  <th>Order</th>
+                  <th>Status</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -103,8 +103,8 @@ export default function DownloadManager() {
                     </td>
                     <td>{row.sortOrder}</td>
                     <td>
-                      <button type="button" className={`adm-badge ${row.isActive ? 'adm-badge--green' : 'adm-badge--gray'}`} title="Bấm để đổi trạng thái" onClick={() => toggle(row)}>
-                        {row.isActive ? 'Hiện' : 'Ẩn'}
+                      <button type="button" className={`adm-badge ${row.isActive ? 'adm-badge--green' : 'adm-badge--gray'}`} title="Click to change status" onClick={() => toggle(row)}>
+                        {row.isActive ? 'Visible' : 'Hidden'}
                       </button>
                     </td>
                     <td>
@@ -117,10 +117,10 @@ export default function DownloadManager() {
                             setForm({ id: row.id, title: row.title, file: row.file ?? '', remote: row.remote ?? '', image: row.image ?? '', sortOrder: row.sortOrder, isActive: row.isActive });
                           }}
                         >
-                          Sửa
+                          Edit
                         </button>
                         <button type="button" className="adm-act adm-act--del" onClick={() => remove(row)}>
-                          Xóa
+                          Delete
                         </button>
                       </div>
                     </td>
@@ -133,10 +133,10 @@ export default function DownloadManager() {
       </div>
 
       {form && (
-        <Modal title={form.id === null ? 'Thêm tài liệu' : 'Sửa tài liệu'} onClose={() => setForm(null)} onSave={save} saving={saving} wide>
+        <Modal title={form.id === null ? 'Add document' : 'Edit document'} onClose={() => setForm(null)} onSave={save} saving={saving} wide>
           {formError && <div className="adm-error">{formError}</div>}
           <div className="adm-grid">
-            <Field label="Tên tài liệu *" full>
+            <Field label="Document name *" full>
               <input className="adm-input" value={form.title} autoFocus onChange={(event) => set('title', event.target.value)} />
             </Field>
             <div className="adm-group">
@@ -147,31 +147,31 @@ export default function DownloadManager() {
                   <a href={`/${form.file}`} target="_blank" rel="noopener">
                     {form.file.split('/').pop()}
                   </a>
-                  <button type="button" className="adm-row__remove" aria-label="Gỡ file" onClick={() => set('file', '')}>
+                  <button type="button" className="adm-row__remove" aria-label="Remove file" onClick={() => set('file', '')}>
                     ✕
                   </button>
                 </div>
               ) : (
                 <FileUpload onUploaded={(file) => set('file', file.path)} />
               )}
-              <span className="adm-hint">PDF, ZIP, RAR, DOC, XLS, PPT — tối đa 100MB.</span>
+              <span className="adm-hint">PDF, ZIP, RAR, DOC, XLS, PPT — max 100MB.</span>
               <span className="adm-label" style={{ marginTop: 12 }}>
-                Hoặc đường dẫn bên ngoài
+                Or external link
               </span>
               <input className="adm-input" placeholder="https://..." value={form.remote} onChange={(event) => set('remote', event.target.value)} />
             </div>
             <div className="adm-group">
-              <span className="adm-label">Ảnh bìa</span>
+              <span className="adm-label">Cover image</span>
               <ImageUpload value={form.image} onChange={(path) => set('image', path)} aspect="3 / 4" contain />
             </div>
-            <Field label="Thứ tự">
+            <Field label="Order">
               <input className="adm-input" type="number" value={form.sortOrder} onChange={(event) => set('sortOrder', Number(event.target.value) || 0)} />
             </Field>
             <div className="adm-group">
-              <span className="adm-label">Trạng thái</span>
+              <span className="adm-label">Status</span>
               <label className="adm-check" style={{ paddingTop: 8 }}>
                 <input type="checkbox" checked={form.isActive} onChange={(event) => set('isActive', event.target.checked)} />
-                Hiển thị trên web
+                Visible on the website
               </label>
             </div>
           </div>

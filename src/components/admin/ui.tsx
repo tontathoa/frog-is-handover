@@ -16,7 +16,7 @@ export function PageHead({ title, sub, children }: { title: string; sub?: string
   );
 }
 
-/** Green "✓ Đã lưu" pill that disappears by itself. */
+/** Green "✓ Saved" pill that disappears by itself. */
 export function useFlash(duration = 2200): [string, (message: string) => void] {
   const [message, setMessage] = useState('');
   const timer = useRef<number | undefined>(undefined);
@@ -64,7 +64,7 @@ export function Tabs({ tabs, active, onChange }: { tabs: TabDef[]; active: strin
 }
 
 /** Search box that reports its value 400 ms after the last keystroke. */
-export function SearchInput({ value, onChange, placeholder = 'Tìm kiếm...' }: { value: string; onChange: (value: string) => void; placeholder?: string }) {
+export function SearchInput({ value, onChange, placeholder = 'Search...' }: { value: string; onChange: (value: string) => void; placeholder?: string }) {
   const [text, setText] = useState(value);
   const timer = useRef<number | undefined>(undefined);
 
@@ -84,7 +84,7 @@ export function SearchInput({ value, onChange, placeholder = 'Tìm kiếm...' }:
       </svg>
       <input className="adm-input adm-input--sm" type="search" aria-label={placeholder} placeholder={placeholder} value={text} onChange={(event) => update(event.target.value)} />
       {text && (
-        <button type="button" className="adm-search__clear" aria-label="Xóa tìm kiếm" onClick={() => update('', true)}>
+        <button type="button" className="adm-search__clear" aria-label="Clear search" onClick={() => update('', true)}>
           ✕
         </button>
       )}
@@ -115,18 +115,18 @@ export function Modal({ title, onClose, onSave, saving = false, wide = false, ch
       <div className={`adm-modal${wide ? ' adm-modal--wide' : ''}`} role="dialog" aria-modal="true" aria-label={title}>
         <div className="adm-modal__head">
           <h2>{title}</h2>
-          <button type="button" className="adm-modal__close" aria-label="Đóng" onClick={onClose}>
+          <button type="button" className="adm-modal__close" aria-label="Close" onClick={onClose}>
             ✕
           </button>
         </div>
         {children}
         <div className="adm-modal__foot">
           <button type="button" className="adm-btn adm-btn--outline adm-btn--sm" onClick={onClose}>
-            {onSave ? 'Hủy' : 'Đóng'}
+            {onSave ? 'Cancel' : 'Close'}
           </button>
           {onSave && (
             <button type="button" className="adm-btn adm-btn--primary adm-btn--sm" disabled={saving} onClick={onSave}>
-              {saving ? 'Đang lưu...' : 'Lưu'}
+              {saving ? 'Saving...' : 'Save'}
             </button>
           )}
         </div>
@@ -144,8 +144,8 @@ export function Pagination({ page, pages, onChange }: { page: number; pages: num
     else if (numbers[numbers.length - 1] !== 'gap') numbers.push('gap');
   }
   return (
-    <nav className="adm-pagination" aria-label="Phân trang">
-      <button type="button" className="adm-page-btn" disabled={page <= 1} aria-label="Trang trước" onClick={() => onChange(page - 1)}>
+    <nav className="adm-pagination" aria-label="Pagination">
+      <button type="button" className="adm-page-btn" disabled={page <= 1} aria-label="Previous page" onClick={() => onChange(page - 1)}>
         ‹
       </button>
       {numbers.map((n, i) =>
@@ -159,7 +159,7 @@ export function Pagination({ page, pages, onChange }: { page: number; pages: num
           </button>
         ),
       )}
-      <button type="button" className="adm-page-btn" disabled={page >= pages} aria-label="Trang sau" onClick={() => onChange(page + 1)}>
+      <button type="button" className="adm-page-btn" disabled={page >= pages} aria-label="Next page" onClick={() => onChange(page + 1)}>
         ›
       </button>
     </nav>
@@ -168,7 +168,7 @@ export function Pagination({ page, pages, onChange }: { page: number; pages: num
 
 export function Loading() {
   return (
-    <div className="adm-loading" role="status" aria-label="Đang tải">
+    <div className="adm-loading" role="status" aria-label="Loading">
       <div className="adm-spinner" />
     </div>
   );

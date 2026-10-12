@@ -22,7 +22,7 @@ async function parse<T>(response: Response, path: string): Promise<T> {
     window.location.href = '/admin/login/';
   }
   const data = (await response.json().catch(() => ({}))) as { error?: string };
-  if (!response.ok) throw new ApiFailure(data.error ?? `Có lỗi xảy ra (${response.status})`, response.status);
+  if (!response.ok) throw new ApiFailure(data.error ?? `Something went wrong (${response.status})`, response.status);
   return data as T;
 }
 
@@ -51,6 +51,6 @@ export const api = {
   },
 };
 
-export const errorText = (error: unknown): string => (error instanceof Error ? error.message : 'Có lỗi xảy ra');
+export const errorText = (error: unknown): string => (error instanceof Error ? error.message : 'Something went wrong');
 
 export type Paginated<T> = { data: T[]; pagination: { total: number; page: number; limit: number; pages: number } };

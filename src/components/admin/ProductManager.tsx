@@ -98,7 +98,7 @@ export default function ProductManager() {
   };
 
   const remove = async (row: Row) => {
-    if (!window.confirm(`Xóa sản phẩm "${row.title}"?\n\nThao tác không thể hoàn tác. Nếu chỉ muốn tạm ẩn, hãy bỏ chọn "Hiện".`)) return;
+    if (!window.confirm(`Delete product "${row.title}"?\n\nThis cannot be undone. If you only want to hide it for now, untick "Visible" instead.`)) return;
     try {
       await api.del(`products/${row.id}`);
       setRows((current) => current.filter((item) => item.id !== row.id));
@@ -124,35 +124,37 @@ export default function ProductManager() {
 
   return (
     <>
-      <PageHead title="Quản lý sản phẩm">
+      <PageHead title="Manage products">
         <Link className="adm-btn adm-btn--primary adm-btn--sm" href="/admin/products/new/">
-          + Thêm sản phẩm
+          + Add product
         </Link>
       </PageHead>
 
       <div className="adm-card adm-card--flush">
         <div className="adm-filters">
-          <SearchInput key={filterKey} value={q} onChange={(value) => filter(() => setQ(value))} placeholder="Tìm theo tên, mã sản phẩm..." />
-          <select className="adm-input adm-input--sm" aria-label="Danh mục" value={collection} onChange={(event) => filter(() => setCollection(event.target.value))}>
-            <option value="">Tất cả danh mục</option>
+          <SearchInput key={filterKey} value={q} onChange={(value) => filter(() => setQ(value))} placeholder="Search by name or product code..." />
+          <select className="adm-input adm-input--sm" aria-label="Collection" value={collection} onChange={(event) => filter(() => setCollection(event.target.value))}>
+            <option value="">All collections</option>
             {collections.map((item) => (
               <option key={item.id} value={item.id}>
                 {item.name}
               </option>
             ))}
-            <option value="none">— Chưa có danh mục —</option>
+            <option value="none">— No collection —</option>
           </select>
-          <select className="adm-input adm-input--sm" aria-label="Hiển thị" value={visibility} onChange={(event) => filter(() => setVisibility(event.target.value))}>
-            <option value="all">Hiện &amp; ẩn</option>
-            <option value="visible">Đang hiển thị</option>
-            <option value="hidden">Đang ẩn</option>
+          <select className="adm-input adm-input--sm" aria-label="Visibility" value={visibility} onChange={(event) => filter(() => setVisibility(event.target.value))}>
+            <option value="all">Visible &amp; hidden</option>
+            <option value="visible">Visible</option>
+            <option value="hidden">Hidden</option>
           </select>
           {filtered && (
             <button type="button" className="adm-link" onClick={clearFilters}>
-              ✕ Xóa lọc
+              ✕ Clear filters
             </button>
           )}
-          <span className="adm-filters__count">{total} sản phẩm</span>
+          <span className="adm-filters__count">
+            {total} {total === 1 ? 'product' : 'products'}
+          </span>
         </div>
 
         {error && <div className="adm-error" style={{ margin: 16 }}>{error}</div>}
@@ -162,12 +164,12 @@ export default function ProductManager() {
             <table className="adm-table">
               <thead>
                 <tr>
-                  <th>Hình</th>
-                  <th>Sản phẩm</th>
-                  <th>Danh mục</th>
-                  <th>Hiển thị</th>
-                  <th>Sản phẩm mới</th>
-                  <th>Thao tác</th>
+                  <th>Image</th>
+                  <th>Product</th>
+                  <th>Collection</th>
+                  <th>Visible</th>
+                  <th>New product</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -185,27 +187,27 @@ export default function ProductManager() {
                     <td>
                       <label className="adm-check">
                         <input type="checkbox" checked={row.isActive} onChange={() => toggle(row, 'isActive')} />
-                        <span style={row.isActive ? undefined : { color: '#dc2626' }}>{row.isActive ? 'Hiện' : 'Ẩn'}</span>
+                        <span style={row.isActive ? undefined : { color: '#dc2626' }}>{row.isActive ? 'Visible' : 'Hidden'}</span>
                       </label>
                     </td>
                     <td>
                       <label className="adm-check">
                         <input type="checkbox" checked={row.isNew} onChange={() => toggle(row, 'isNew')} />
-                        {row.isNew ? <span className="adm-badge adm-badge--green">Mới</span> : <span className="adm-muted">Thường</span>}
+                        {row.isNew ? <span className="adm-badge adm-badge--green">New</span> : <span className="adm-muted">Regular</span>}
                       </label>
                     </td>
                     <td>
                       <div className="adm-acts">
                         <Link className="adm-act adm-act--edit" href={`/admin/products/${row.id}/`}>
-                          Sửa
+                          Edit
                         </Link>
                         {row.isActive && (
-                          <a className="adm-act adm-act--view" href={`/product/${encodeURIComponent(row.slug)}/`} target="_blank" rel="noopener" title="Xem trên website">
+                          <a className="adm-act adm-act--view" href={`/product/${encodeURIComponent(row.slug)}/`} target="_blank" rel="noopener" title="View on site">
                             👁
                           </a>
                         )}
                         <button type="button" className="adm-act adm-act--del" onClick={() => remove(row)}>
-                          Xóa
+                          Delete
                         </button>
                       </div>
                     </td>
@@ -218,13 +220,13 @@ export default function ProductManager() {
 
         {loading && rows.length === 0 && <Loading />}
         {!loading && rows.length === 0 && !error && (
-          <Empty icon="🔊" text={filtered ? 'Không có sản phẩm nào khớp bộ lọc.' : 'Chưa có sản phẩm nào.'}>
+          <Empty icon="🔊" text={filtered ? 'No products match your filters.' : 'No products yet.'}>
             {filtered ? (
               <button type="button" onClick={clearFilters}>
-                Xóa lọc
+                Clear filters
               </button>
             ) : (
-              <Link href="/admin/products/new/">Thêm sản phẩm đầu tiên →</Link>
+              <Link href="/admin/products/new/">Add your first product →</Link>
             )}
           </Empty>
         )}
@@ -232,7 +234,7 @@ export default function ProductManager() {
         <div ref={sentinel} />
         {rows.length > 0 && (
           <div className="adm-table-foot">
-            {loading ? 'Đang tải thêm…' : hasMore ? `Đã tải ${rows.length}/${total} — cuộn tiếp để xem thêm` : `Đã hiện hết ${total} sản phẩm.`}
+            {loading ? 'Loading more…' : hasMore ? `Loaded ${rows.length}/${total} — scroll down to see more` : `Showing all ${total} ${total === 1 ? 'product' : 'products'}.`}
           </div>
         )}
       </div>

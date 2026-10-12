@@ -14,7 +14,7 @@ export class ApiError extends Error {
 }
 
 export const badRequest = (message: string) => new ApiError(400, message);
-export const notFoundError = (message = 'Không tìm thấy dữ liệu') => new ApiError(404, message);
+export const notFoundError = (message = 'Not found') => new ApiError(404, message);
 
 /**
  * Signed-in admin for this request, or a 401.
@@ -25,10 +25,10 @@ export async function guard(request: Request): Promise<SessionUser> {
   if (!['GET', 'HEAD'].includes(request.method)) {
     const origin = request.headers.get('origin');
     const host = request.headers.get('x-forwarded-host') ?? request.headers.get('host');
-    if (origin && host && new URL(origin).host !== host) throw new ApiError(403, 'Yêu cầu không hợp lệ');
+    if (origin && host && new URL(origin).host !== host) throw new ApiError(403, 'Invalid request');
   }
   const user = await getSessionUser();
-  if (!user) throw new ApiError(401, 'Phiên đăng nhập đã hết hạn');
+  if (!user) throw new ApiError(401, 'Your session has expired. Please sign in again.');
   return user;
 }
 
@@ -45,10 +45,10 @@ export function route<C>(handler: Handler<C>): Handler<C> {
       }
       const code = (error as { code?: string }).code;
       if (code === 'ER_DUP_ENTRY') {
-        return NextResponse.json({ error: 'Giá trị đã tồn tại (slug hoặc tên bị trùng)' }, { status: 409 });
+        return NextResponse.json({ error: 'This value already exists (duplicate slug or name)' }, { status: 409 });
       }
       console.error(`${request.method} ${new URL(request.url).pathname} failed`, error);
-      return NextResponse.json({ error: 'Lỗi máy chủ, vui lòng thử lại' }, { status: 500 });
+      return NextResponse.json({ error: 'Server error. Please try again.' }, { status: 500 });
     }
   };
 }
@@ -60,7 +60,7 @@ export async function readBody(request: Request): Promise<Record<string, unknown
   } catch {
     // fall through
   }
-  throw badRequest('Dữ liệu gửi lên không hợp lệ');
+  throw badRequest('Invalid data submitted');
 }
 
 export function parseId(value: string): number {
@@ -87,13 +87,13 @@ export const int = (value: unknown, fallback = 0): number => {
 export function mediaPath(value: unknown): string | null {
   const path = str(value, 500).replace(/^\/+/, '');
   if (!path) return null;
-  if (!/^uploads\/[A-Za-z0-9._\-/]+$/.test(path) || path.includes('..')) throw badRequest('Đường dẫn file không hợp lệ');
+  if (!/^uploads\/[A-Za-z0-9._\-/]+$/.test(path) || path.includes('..')) throw badRequest('Invalid file path');
   return path;
 }
 
 export function httpUrl(value: unknown): string | null {
   const url = str(value, 500);
   if (!url) return null;
-  if (!/^https?:\/\/[^\s<>"']+$/i.test(url)) throw badRequest('URL phải bắt đầu bằng http:// hoặc https://');
+  if (!/^https?:\/\/[^\s<>"']+$/i.test(url)) throw badRequest('URL must start with http:// or https://');
   return url;
 }

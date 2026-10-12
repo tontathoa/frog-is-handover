@@ -16,13 +16,13 @@ export const POST = route(async (request: Request) => {
   const body = await readBody(request);
   const username = str(body.username, 190).toLowerCase();
   const password = typeof body.password === 'string' ? body.password : '';
-  if (!username || !password) throw new ApiError(400, 'Vui lòng nhập tên đăng nhập và mật khẩu');
+  if (!username || !password) throw new ApiError(400, 'Please enter your username and password');
 
   const ip = (request.headers.get('x-forwarded-for')?.split(',')[0] ?? '').trim();
   const key = `${ip}|${username}`;
   const now = Date.now();
   const recent = (failures.get(key) ?? []).filter((time) => now - time < WINDOW_MS);
-  if (recent.length >= MAX_FAILURES) throw new ApiError(429, 'Đăng nhập sai quá nhiều lần. Vui lòng thử lại sau 10 phút.');
+  if (recent.length >= MAX_FAILURES) throw new ApiError(429, 'Too many failed sign-in attempts. Please try again in 10 minutes.');
 
   const user = await queryOne<{ id: number; username: string; full_name: string; role: string; password_hash: string }>(
     'SELECT id, username, full_name, role, password_hash FROM users WHERE (username = ? OR email = ?) AND is_active = 1',
@@ -33,7 +33,7 @@ export const POST = route(async (request: Request) => {
     recent.push(now);
     failures.set(key, recent);
     if (failures.size > 5000) failures.clear();
-    throw new ApiError(401, 'Tên đăng nhập hoặc mật khẩu không đúng');
+    throw new ApiError(401, 'Username or password is incorrect');
   }
 
   failures.delete(key);

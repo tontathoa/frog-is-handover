@@ -14,7 +14,7 @@ export const GET = route(async (request: Request, { params }: Context) => {
 export const POST = route(async (request: Request, { params }: Context) => {
   const user = await guard(request);
   const resource = getResource((await params).resource);
-  if (!resource?.create) throw new ApiError(405, 'Không hỗ trợ thao tác này');
+  if (!resource?.create) throw new ApiError(405, 'This action is not supported');
   const created = await resource.create(await readBody(request), user.id);
   publish();
   return NextResponse.json(created, { status: 201 });

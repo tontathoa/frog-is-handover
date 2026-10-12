@@ -56,15 +56,15 @@ function specs(value: unknown): { title: string; rows: string[][] }[] {
 async function collectionId(value: unknown): Promise<number | null> {
   if (value === null || value === undefined || value === '') return null;
   const id = int(value, 0);
-  if (!(await queryOne('SELECT id FROM collections WHERE id = ?', [id]))) throw badRequest('Danh mục không tồn tại');
+  if (!(await queryOne('SELECT id FROM collections WHERE id = ?', [id]))) throw badRequest('Collection does not exist');
   return id;
 }
 
 async function uniqueSlug(value: unknown, title: string, ignoreId = 0): Promise<string> {
   const slug = slugify(str(value, 160) || title);
-  if (!slug) throw badRequest('Slug không được trống');
+  if (!slug) throw badRequest('Slug cannot be empty');
   if (await queryOne('SELECT id FROM products WHERE slug = ? AND id <> ?', [slug, ignoreId])) {
-    throw badRequest(`Slug "${slug}" đã được dùng cho sản phẩm khác`);
+    throw badRequest(`Slug "${slug}" is already used by another product`);
   }
   return slug;
 }
@@ -135,13 +135,13 @@ export const products = {
       'SELECT p.*, c.slug AS collection_slug FROM products p LEFT JOIN collections c ON c.id = p.collection_id WHERE p.id = ?',
       [id],
     );
-    if (!row) throw notFoundError('Không tìm thấy sản phẩm');
+    if (!row) throw notFoundError('Product not found');
     return forEditor(toProduct(row), row.collection_id === null ? null : Number(row.collection_id));
   },
 
   async create(body: Body) {
     const title = str(body.title);
-    if (!title) throw badRequest('Vui lòng nhập tên sản phẩm');
+    if (!title) throw badRequest('Please enter a product name');
     const slug = await uniqueSlug(body.slug, title);
     const result = await execute(
       `INSERT INTO products (collection_id, slug, title, subtitle, description, images, files, features, applications, specs, is_active, is_new, sort_order)
@@ -168,7 +168,7 @@ export const products = {
   /** Partial update: only the fields present in the body change (each editor tab saves its own part). */
   async update(id: number, body: Body) {
     const current = await queryOne<{ title: string }>('SELECT title FROM products WHERE id = ?', [id]);
-    if (!current) throw notFoundError('Không tìm thấy sản phẩm');
+    if (!current) throw notFoundError('Product not found');
 
     const set: string[] = [];
     const values: SqlValue[] = [];
@@ -179,7 +179,7 @@ export const products = {
 
     if ('title' in body) {
       const title = str(body.title);
-      if (!title) throw badRequest('Vui lòng nhập tên sản phẩm');
+      if (!title) throw badRequest('Please enter a product name');
       assign('title', title);
     }
     if ('slug' in body) assign('slug', await uniqueSlug(body.slug, str(body.title) || current.title, id));
@@ -195,12 +195,12 @@ export const products = {
     if ('isNew' in body) assign('is_new', flag(body.isNew));
     if ('sortOrder' in body) assign('sort_order', int(body.sortOrder));
 
-    if (set.length === 0) throw badRequest('Không có thay đổi nào');
+    if (set.length === 0) throw badRequest('No changes to save');
     await execute(`UPDATE products SET ${set.join(', ')} WHERE id = ?`, [...values, id]);
   },
 
   async remove(id: number) {
     const result = await execute('DELETE FROM products WHERE id = ?', [id]);
-    if (result.affectedRows === 0) throw notFoundError('Không tìm thấy sản phẩm');
+    if (result.affectedRows === 0) throw notFoundError('Product not found');
   },
 };

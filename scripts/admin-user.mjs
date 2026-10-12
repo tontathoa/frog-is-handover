@@ -59,6 +59,6 @@ if (ask) {
 } else {
   const file = path.join(ROOT, 'storage', 'admin-password.txt');
   fs.mkdirSync(path.dirname(file), { recursive: true });
-  fs.writeFileSync(file, `username: ${username}\npassword: ${password}\n\nChange it after the first login (Đổi mật khẩu), then delete this file.\n`, { mode: 0o600 });
+  fs.writeFileSync(file, `username: ${username}\npassword: ${password}\n\nChange it after the first login (Change password), then delete this file.\n`, { mode: 0o600 });
   console.log(`${existing ? 'Password reset for' : 'Created admin'} "${username}". The password is in storage/admin-password.txt — change it after the first login.`);
 }

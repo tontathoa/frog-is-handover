@@ -9,12 +9,12 @@ export const PUT = route(async (request: Request) => {
   const current = typeof body.currentPassword === 'string' ? body.currentPassword : '';
   const next = typeof body.newPassword === 'string' ? body.newPassword : '';
 
-  if (next.length < 8) throw badRequest('Mật khẩu mới phải có ít nhất 8 ký tự');
-  if (next.length > 200) throw badRequest('Mật khẩu mới quá dài');
-  if (next === current) throw badRequest('Mật khẩu mới phải khác mật khẩu hiện tại');
+  if (next.length < 8) throw badRequest('The new password must be at least 8 characters');
+  if (next.length > 200) throw badRequest('The new password is too long');
+  if (next === current) throw badRequest('The new password must be different from the current password');
 
   const row = await queryOne<{ password_hash: string }>('SELECT password_hash FROM users WHERE id = ?', [user.id]);
-  if (!row || !(await bcrypt.compare(current, row.password_hash))) throw badRequest('Mật khẩu hiện tại không đúng');
+  if (!row || !(await bcrypt.compare(current, row.password_hash))) throw badRequest('Current password is incorrect');
 
   await execute('UPDATE users SET password_hash = ? WHERE id = ?', [await bcrypt.hash(next, 10), user.id]);
   return NextResponse.json({ success: true });

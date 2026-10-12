@@ -51,21 +51,21 @@ export const POST = route(async (request: Request, { params }: { params: Promise
   await guard(request);
   const { type } = await params;
   const rule = Object.hasOwn(RULES, type) ? RULES[type] : undefined;
-  if (!rule) throw notFoundError('Loại upload không hợp lệ');
+  if (!rule) throw notFoundError('Invalid upload type');
 
   let form: FormData;
   try {
     form = await request.formData();
   } catch {
-    throw badRequest('Không đọc được file gửi lên');
+    throw badRequest('The uploaded file could not be read');
   }
   const file = form.get('file');
-  if (!(file instanceof File) || file.size === 0) throw badRequest('Chưa chọn file');
-  if (file.size > rule.maxBytes) throw badRequest(`File quá lớn (tối đa ${Math.round(rule.maxBytes / MB)}MB)`);
+  if (!(file instanceof File) || file.size === 0) throw badRequest('No file selected');
+  if (file.size > rule.maxBytes) throw badRequest(`File is too large (maximum ${Math.round(rule.maxBytes / MB)}MB)`);
 
   const extension = path.extname(file.name).slice(1).toLowerCase();
   if (!rule.extensions.includes(extension)) {
-    throw badRequest(`Không hỗ trợ định dạng .${extension || '?'} — chỉ nhận: ${rule.extensions.join(', ')}`);
+    throw badRequest(`Unsupported format .${extension || '?'} — accepted: ${rule.extensions.join(', ')}`);
   }
 
   const buffer = Buffer.from(await file.arrayBuffer());
@@ -76,7 +76,7 @@ export const POST = route(async (request: Request, { params }: { params: Promise
       const meta = await sharp(buffer).metadata();
       if (!meta.width || !meta.height) throw new Error('empty image');
     } catch {
-      throw badRequest('File ảnh bị lỗi hoặc không đúng định dạng');
+      throw badRequest('The image file is corrupted or not a valid image');
     }
   }
 

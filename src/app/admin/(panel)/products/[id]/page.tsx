@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import ProductEditor from '@/components/admin/ProductEditor';
 
-export const metadata = { title: 'Sản phẩm' };
+export const metadata = { title: 'Products' };
 
 /** /admin/products/new/ creates a record, /admin/products/<id>/ edits one. */
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {

@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import './admin.css';
 
 export const metadata: Metadata = {
-  title: { default: 'Quản trị', template: '%s — Frog-is Admin' },
+  title: { default: 'Admin', template: '%s — Frog-is Admin' },
   robots: { index: false, follow: false },
 };
 
