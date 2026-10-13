@@ -1,0 +1,307 @@
+{
+ "fi-ct8": {
+  "line": "performance"
+ },
+ "fi-ct8x2": {
+  "line": "performance"
+ },
+ "fp8": {
+  "line": "installation"
+ },
+ "fp12": {
+  "line": "installation"
+ },
+ "fp15": {
+  "line": "installation"
+ },
+ "fp8p": {
+  "line": "installation"
+ },
+ "fp12p": {
+  "line": "installation"
+ },
+ "fp15p": {
+  "line": "installation"
+ },
+ "fi-sms4-b-w": {
+  "line": "installation"
+ },
+ "fi-sms6-b-w": {
+  "line": "installation"
+ },
+ "fi-sms6pro": {
+  "line": "installation"
+ },
+ "fi-sms6eco": {
+  "line": "installation"
+ },
+ "fi-m50": {
+  "line": "installation"
+ },
+ "fi-ct4ip": {
+  "line": "installation"
+ },
+ "fi-ct6ip": {
+  "line": "installation"
+ },
+ "fi-ct5": {
+  "line": "installation"
+ },
+ "fi-ct15p": {
+  "line": "performance"
+ },
+ "fs12": {
+  "line": "performance"
+ },
+ "fs15": {
+  "line": "performance"
+ },
+ "fs2x3": {
+  "line": "performance"
+ },
+ "fs4x3": {
+  "line": "performance"
+ },
+ "fs12-array": {
+  "line": "performance"
+ },
+ "fs15-array": {
+  "line": "performance"
+ },
+ "fs4d": {
+  "line": "performance"
+ },
+ "fs4ip": {
+  "line": "performance"
+ },
+ "fa-x4t": {
+  "line": "performance"
+ },
+ "fa-2x6t": {
+  "line": "performance"
+ },
+ "fa-2x10s": {
+  "line": "performance"
+ },
+ "fa-2x8a": {
+  "line": "performance"
+ },
+ "fa-2x8tp": {
+  "line": "performance"
+ },
+ "fa-3x10t": {
+  "line": "performance"
+ },
+ "fa-sub18x2p": {
+  "collection": "subwoofers",
+  "line": "performance"
+ },
+ "fi-sub21p": {
+  "collection": "subwoofers",
+  "line": "performance"
+ },
+ "fi-cs2w": {
+  "line": "installation"
+ },
+ "fi-cs3": {
+  "line": "installation"
+ },
+ "fi-cs4w": {
+  "line": "installation"
+ },
+ "fi-cs5w": {
+  "line": "installation"
+ },
+ "fi-cs6w": {
+  "line": "installation"
+ },
+ "fi-cs8w": {
+  "line": "installation"
+ },
+ "fi-cs6d": {
+  "line": "installation"
+ },
+ "fi-cs8d": {
+  "line": "installation"
+ },
+ "fi-cs6bt": {
+  "line": "installation"
+ },
+ "csub6p": {
+  "collection": "subwoofers",
+  "line": "installation"
+ },
+ "fi-hps5w-b": {
+  "line": "installation"
+ },
+ "fi-hps6w-b": {
+  "line": "installation"
+ },
+ "sub6p": {
+  "line": "installation"
+ },
+ "fi-sub6a": {
+  "line": "installation"
+ },
+ "fi-sub12ip": {
+  "line": "installation"
+ },
+ "fi-sub10p": {
+  "line": "performance"
+ },
+ "fi-sub10a": {
+  "line": "performance"
+ },
+ "fi-sub12p": {
+  "line": "performance"
+ },
+ "fi-sub12a": {
+  "line": "performance"
+ },
+ "fs-sub12": {
+  "line": "performance"
+ },
+ "fs-sub12p": {
+  "line": "performance"
+ },
+ "fs-sub15": {
+  "line": "performance"
+ },
+ "fs-sub15p": {
+  "line": "performance"
+ },
+ "fi-sub18a": {
+  "line": "performance"
+ },
+ "fi-amp500x2": {
+  "line": "performance"
+ },
+ "fi-amp850x2": {
+  "line": "performance"
+ },
+ "fi-amp300dp": {
+  "line": "performance"
+ },
+ "fi-amp600dsp": {
+  "line": "performance"
+ },
+ "fi-amp850dsp": {
+  "line": "performance"
+ },
+ "fi-amp1200dsp": {
+  "line": "performance"
+ },
+ "fi-amp2": {
+  "line": "performance"
+ },
+ "fi-amp4": {
+  "line": "performance"
+ },
+ "fi-amp8": {
+  "line": "performance"
+ },
+ "fi-amp4d": {
+  "line": "installation"
+ },
+ "ttm-series": {
+  "line": "performance"
+ },
+ "fi-amp4k": {
+  "line": "performance"
+ },
+ "fi-amp300x2v": {
+  "line": "installation"
+ },
+ "fi-amp500x2v": {
+  "line": "installation"
+ },
+ "fi-amp350ktv": {
+  "line": "performance"
+ },
+ "fi-p4x6k": {
+  "line": "performance"
+ },
+ "fi-p4x8-2": {
+  "line": "performance"
+ },
+ "fi-dsp1616": {
+  "line": "performance"
+ },
+ "fi-mix6": {
+  "line": "performance"
+ },
+ "fi-mix8": {
+  "line": "performance"
+ },
+ "fi-mix8a": {
+  "line": "performance"
+ },
+ "fi-mix16": {
+  "line": "performance"
+ },
+ "fi-mix24": {
+  "line": "performance"
+ },
+ "fi-mc100": {
+  "line": "performance"
+ },
+ "fi-urm500": {
+  "line": "performance"
+ },
+ "fi-vox2": {
+  "line": "performance"
+ },
+ "fi-vox3": {
+  "line": "performance"
+ },
+ "fi-ins1": {
+  "line": "performance"
+ },
+ "fi-eh300": {
+  "line": "performance"
+ },
+ "fi-wp2hl": {
+  "line": "performance"
+ },
+ "fi-wp2v": {
+  "line": "performance"
+ },
+ "fi-wp2v100": {
+  "line": "performance"
+ },
+ "fi-ak": {
+  "line": "performance"
+ },
+ "fi-sp": {
+  "collection": "amplifier-mixer",
+  "line": "performance"
+ },
+ "fp-bracket1": {
+  "line": null
+ },
+ "22827": {
+  "line": null
+ },
+ "fs-bracket2": {
+  "line": null
+ },
+ "fs-bracket3": {
+  "line": null
+ },
+ "fi-ang3": {
+  "line": null
+ },
+ "fi-ang": {
+  "line": null
+ },
+ "fi-pow8": {
+  "collection": "amplifier-mixer",
+  "line": "performance"
+ },
+ "fi-tms": {
+  "line": null
+ },
+ "fi-xlrf10": {
+  "line": null
+ }
+}

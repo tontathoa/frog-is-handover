@@ -20,6 +20,10 @@ git pull --ff-only origin main
 echo "[Deploy] Installing dependencies..."
 npm ci
 
+# Apply schema changes (idempotent) before the build reads the database.
+echo "[Deploy] Updating the database schema..."
+npm run -s db:setup
+
 # Public pages are pre-rendered from the database, so it must be reachable here.
 echo "[Deploy] Building..."
 npm run build

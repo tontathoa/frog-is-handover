@@ -2,6 +2,7 @@ import { badRequest, flag, int, mediaPath, notFoundError, str } from '../api';
 import { toProduct } from '../content';
 import { execute, query, queryOne, type SqlValue } from '../db';
 import { slugify } from '../format';
+import { isProductLine } from '../lines';
 import { cleanRichText } from '../sanitize';
 import type { Product } from '../types';
 import { inlineToText, textToInline } from './text';
@@ -60,6 +61,13 @@ async function collectionId(value: unknown): Promise<number | null> {
   return id;
 }
 
+/** '' / null = shared by both lines. */
+function productLine(value: unknown): string | null {
+  if (value === null || value === undefined || value === '') return null;
+  if (!isProductLine(value)) throw badRequest('Invalid product line');
+  return value;
+}
+
 async function uniqueSlug(value: unknown, title: string, ignoreId = 0): Promise<string> {
   const slug = slugify(str(value, 160) || title);
   if (!slug) throw badRequest('Slug cannot be empty');
@@ -70,7 +78,7 @@ async function uniqueSlug(value: unknown, title: string, ignoreId = 0): Promise<
 }
 
 export const products = {
-  /** ?q=&collection=<id>&visibility=all|visible|hidden&page=&limit= */
+  /** ?q=&collection=<id>&line=installation|performance|shared&visibility=all|visible|hidden&page=&limit= */
   async list(params: URLSearchParams) {
     const limit = Math.min(Math.max(int(params.get('limit'), 30), 1), 100);
     const page = Math.max(int(params.get('page'), 1), 1);
@@ -89,6 +97,12 @@ export const products = {
       where.push('p.collection_id = ?');
       values.push(int(collection));
     }
+    const line = params.get('line');
+    if (line === 'shared') where.push('p.product_line IS NULL');
+    else if (isProductLine(line)) {
+      where.push('p.product_line = ?');
+      values.push(line);
+    }
     const visibility = params.get('visibility');
     if (visibility === 'visible') where.push('p.is_active = 1');
     if (visibility === 'hidden') where.push('p.is_active = 0');
@@ -96,7 +110,7 @@ export const products = {
     const clause = where.length ? `WHERE ${where.join(' AND ')}` : '';
     const [{ total }] = await query<{ total: number }>(`SELECT COUNT(*) AS total FROM products p ${clause}`, values);
     const rows = await query(
-      `SELECT p.id, p.slug, p.title, p.subtitle, p.images, p.is_active, p.is_new, p.sort_order, p.updated_at,
+      `SELECT p.id, p.slug, p.title, p.subtitle, p.images, p.is_active, p.is_new, p.product_line, p.sort_order, p.updated_at,
               c.id AS collection_id, c.name AS collection_name
        FROM products p LEFT JOIN collections c ON c.id = p.collection_id
        ${clause}
@@ -122,6 +136,7 @@ export const products = {
           collectionName: (row.collection_name as string | null) ?? null,
           isActive: Boolean(row.is_active),
           isNew: Boolean(row.is_new),
+          line: isProductLine(row.product_line) ? row.product_line : null,
           sortOrder: Number(row.sort_order),
           updatedAt: String(row.updated_at),
         };
@@ -144,8 +159,8 @@ export const products = {
     if (!title) throw badRequest('Please enter a product name');
     const slug = await uniqueSlug(body.slug, title);
     const result = await execute(
-      `INSERT INTO products (collection_id, slug, title, subtitle, description, images, files, features, applications, specs, is_active, is_new, sort_order)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO products (collection_id, slug, title, subtitle, description, images, files, features, applications, specs, is_active, is_new, product_line, sort_order)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         await collectionId(body.collectionId),
         slug,
@@ -159,6 +174,7 @@ export const products = {
         JSON.stringify(specs(body.specs)),
         body.isActive === undefined ? 1 : flag(body.isActive),
         flag(body.isNew),
+        productLine(body.line),
         int(body.sortOrder),
       ],
     );
@@ -193,6 +209,7 @@ export const products = {
     if ('specs' in body) assign('specs', JSON.stringify(specs(body.specs)));
     if ('isActive' in body) assign('is_active', flag(body.isActive));
     if ('isNew' in body) assign('is_new', flag(body.isNew));
+    if ('line' in body) assign('product_line', productLine(body.line));
     if ('sortOrder' in body) assign('sort_order', int(body.sortOrder));
 
     if (set.length === 0) throw badRequest('No changes to save');

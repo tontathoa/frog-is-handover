@@ -1,4 +1,7 @@
 export type ProductFile = { label: string; file: string };
+
+/** The two product lines; a product without a line is shared by both. */
+export type ProductLine = 'installation' | 'performance';
 export type SpecSection = { title: string; rows: string[][] };
 
 export type Product = {
@@ -17,6 +20,8 @@ export type Product = {
   /** Slug of the collection the product belongs to. */
   collection: string | null;
   isNew: boolean;
+  /** Installation or Performance; null = shared by both lines. */
+  line: ProductLine | null;
   isActive: boolean;
   sortOrder: number;
   createdAt: string;

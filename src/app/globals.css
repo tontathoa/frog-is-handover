@@ -415,6 +415,19 @@ a.banner:hover > img { transform: scale(1.03); }
 .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
 .toolbar__count { font-size: 13px; text-transform: uppercase; color: var(--text-2); padding-left: 4px; }
 .toolbar__filter { width: min(336px, 100%); }
+.linefilter { display: flex; flex-wrap: wrap; gap: 6px; margin-right: auto; }
+.linefilter__btn {
+  display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px;
+  border: 1px solid var(--line); border-radius: 100px; background: var(--white);
+  font-size: 13px; color: var(--text-2); cursor: pointer; transition: border-color .15s, background-color .15s, color .15s;
+}
+.linefilter__btn span { font-size: 11px; color: var(--mute); }
+.linefilter__btn:hover { border-color: var(--black); color: var(--black); }
+.linefilter__btn.is-active { border-color: var(--black); background: var(--black); color: var(--white); }
+.linefilter__btn.is-active span { color: rgba(255, 255, 255, .7); }
+.pcard__line { color: var(--text-2); }
+.pdp__line { margin-left: 10px; padding: 2px 9px; border-radius: 100px; background: var(--black); color: var(--white); font-size: 11px; letter-spacing: .04em; vertical-align: 1px; }
+.pdp__line--installation { background: var(--green-ink, #2f8a2b); }
 .empty, .note { padding: 40px 8px; text-align: center; color: var(--text-2); }
 .note { padding: 28px 8px 0; font-size: 15px; }
 .empty a, .note a, .prose a { text-decoration: underline; text-underline-offset: 3px; }

@@ -44,6 +44,7 @@ const videos = readJson('videos.json');
 const downloads = readJson('downloads.json');
 const pages = readJson('pages.json');
 const site = readJson('site.json');
+const groups = readJson('product-groups.json'); // product line + re-homed collections
 
 await db.beginTransaction();
 try {
@@ -77,10 +78,10 @@ try {
       .map((s) => ({ title: s.title, rows: s.rows.map((row) => [row[0] ?? '', row.slice(1).join('<br>')]) }));
     await db.query(
       `INSERT INTO products (collection_id, slug, title, subtitle, description, images, files, features, applications, specs,
-                             is_active, is_new, sort_order, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?, ?)`,
+                             is_active, is_new, product_line, sort_order, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?, ?, ?)`,
       [
-        collectionId.get(collectionSlug) ?? null,
+        collectionId.get(groups[p.slug]?.collection ?? collectionSlug) ?? null,
         p.slug,
         p.title,
         p.subtitle ?? '',
@@ -91,6 +92,7 @@ try {
         json(tab('applications').items),
         json(specs),
         fresh.has(p.slug) ? 1 : 0,
+        groups[p.slug]?.line ?? null,
         order,
         toDateTime(p.date),
         toDateTime(p.modified || p.date),

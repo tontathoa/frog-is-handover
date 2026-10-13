@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { excerpt } from '@/lib/format';
+import { lineLabel } from '@/lib/lines';
 import { productShot } from '@/lib/media';
 import type { Product } from '@/lib/types';
 
@@ -28,7 +29,10 @@ export default function ProductCard({ product, label = 'Product', heading: Headi
       </div>
       <div className="pcard__body">
         <div className="pcard__top">
-          <span className="label">{label}</span>
+          <span className="label">
+            {label}
+            {product.line && <span className="pcard__line"> · {lineLabel(product.line)}</span>}
+          </span>
           <span className="pcard__brand" aria-hidden="true">
             FROG-IS
           </span>

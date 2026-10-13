@@ -38,6 +38,7 @@ export function toProduct(row: Row): Product {
     specs: parseJson<SpecSection[]>(row.specs, []),
     collection: (row.collection_slug as string | null) ?? null,
     isNew: Boolean(row.is_new),
+    line: row.product_line === 'installation' || row.product_line === 'performance' ? row.product_line : null,
     isActive: Boolean(row.is_active),
     sortOrder: Number(row.sort_order),
     createdAt: String(row.created_at),

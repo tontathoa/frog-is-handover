@@ -15,6 +15,13 @@ await server.end();
 
 const db = await connect();
 await db.query(fs.readFileSync(path.join(ROOT, 'database', 'schema.sql'), 'utf8'));
+const [hasLine] = await db.query(
+  "SELECT 1 FROM information_schema.columns WHERE table_schema = DATABASE() AND table_name = 'products' AND column_name = 'product_line'",
+);
+if (hasLine.length === 0) {
+  await db.query('ALTER TABLE products ADD COLUMN product_line VARCHAR(20) NULL AFTER is_new');
+  console.log('Added products.product_line.');
+}
 const [tables] = await db.query('SHOW TABLES');
 await db.end();
 

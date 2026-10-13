@@ -6,6 +6,8 @@ import RichEditor from './RichEditor';
 import { api, errorText } from './api';
 import { Field, Loading, Saved, Tabs, useFlash, type TabDef } from './ui';
 import { FileUpload, MultiImageUpload } from './uploads';
+import { PRODUCT_LINES } from '@/lib/lines';
+import type { ProductLine } from '@/lib/types';
 
 type SpecGroup = { title: string; rows: string[][] };
 type ProductFile = { label: string; file: string };
@@ -17,6 +19,7 @@ type Form = {
   sortOrder: number;
   isActive: boolean;
   isNew: boolean;
+  line: ProductLine | null;
   description: string;
   images: string[];
   features: string[];
@@ -34,6 +37,7 @@ const EMPTY: Form = {
   sortOrder: 0,
   isActive: true,
   isNew: false,
+  line: null,
   description: '',
   images: [],
   features: [],
@@ -193,6 +197,16 @@ export default function ProductEditor({ id }: { id: number | null }) {
                 ))}
               </select>
             </Field>
+            <Field label="Product line" hint="Installation or Performance. Leave on Shared for products that belong to both lines (microphones, accessories...).">
+              <select className="adm-input" value={form.line ?? ''} onChange={(event) => set('line', (event.target.value || null) as ProductLine | null)}>
+                <option value="">Shared (both lines)</option>
+                {PRODUCT_LINES.map((item) => (
+                  <option key={item.value} value={item.value}>
+                    {item.label}
+                  </option>
+                ))}
+              </select>
+            </Field>
             <div className="adm-group">
               <label className="adm-label" htmlFor="product-slug">
                 Slug (URL)
@@ -226,7 +240,7 @@ export default function ProductEditor({ id }: { id: number | null }) {
               </div>
             </div>
           </div>
-          {saveBar(['title', 'slug', 'subtitle', 'collectionId', 'sortOrder', 'isActive', 'isNew'], isNew ? '💾 Create product' : '💾 Save changes')}
+          {saveBar(['title', 'slug', 'subtitle', 'collectionId', 'line', 'sortOrder', 'isActive', 'isNew'], isNew ? '💾 Create product' : '💾 Save changes')}
         </div>
       )}
 

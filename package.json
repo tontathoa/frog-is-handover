@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "db:setup": "node scripts/db-setup.mjs",
     "db:import": "node scripts/db-import.mjs",
+    "db:groups": "node scripts/apply-product-groups.mjs",
     "admin:user": "node scripts/admin-user.mjs"
   },
   "engines": {

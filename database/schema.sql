@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS products (
   specs LONGTEXT NULL,         -- [{"title":"...","rows":[["Label","Value"], ...]}]
   is_active TINYINT(1) NOT NULL DEFAULT 1,
   is_new TINYINT(1) NOT NULL DEFAULT 0,
+  product_line VARCHAR(20) NULL,   -- 'installation' | 'performance' | NULL (shared by both lines)
   sort_order INT NOT NULL DEFAULT 0,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

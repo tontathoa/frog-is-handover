@@ -8,6 +8,7 @@ import Rail from '@/components/Rail';
 import { site } from '@/config/site';
 import { getCollection, getProduct, getProducts } from '@/lib/content';
 import { excerpt, fileSizeLabel, mediaUrl, rich } from '@/lib/format';
+import { lineLabel } from '@/lib/lines';
 import { fileSize, productShot } from '@/lib/media';
 import { pageMeta } from '@/lib/meta';
 
@@ -82,7 +83,10 @@ export default async function ProductPage({ params }: Props) {
         <Gallery images={product.images.map((image) => productShot(image))} title={product.title} />
 
         <div className="pdp__info">
-          <p className="label">{collection?.name ?? 'Product'}</p>
+          <p className="label">
+            {collection?.name ?? 'Product'}
+            {product.line && <span className={`pdp__line pdp__line--${product.line}`}>{lineLabel(product.line)}</span>}
+          </p>
           <h1 className="pdp__title">{product.title}</h1>
           {product.subtitle && <p className="pdp__sub">{product.subtitle}</p>}
           {product.description && <div className="prose" dangerouslySetInnerHTML={{ __html: rich(product.description) }} />}

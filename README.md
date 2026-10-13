@@ -96,7 +96,7 @@ ssh deploy-host "bash /var/www/frogis/deploy.sh"
 | `src/config/site.ts` | Site name, tagline, main navigation |
 | `src/app/globals.css`, `src/app/admin/admin.css` | Site design / admin design |
 | `database/schema.sql` | Tables (applied by `npm run db:setup`, safe to re-run) |
-| `scripts/` | `db-setup`, `db-import`, `admin-user` |
+| `scripts/` | `db-setup`, `db-import`, `db:groups` (apply product lines), `admin-user` |
 | `data/*.json` | Scraped content = seed for `db:import` |
 | `public/uploads/` | Mirrored and uploaded images, data sheets, software, videos |
 | `public/fonts/` | Archivo (SIL OFL), self-hosted |
@@ -111,6 +111,11 @@ URLs match the old WordPress site (`/product/<slug>/`, `/collection/<slug>/`, `/
 Overview · Collections · Products (details, images, description, features, applications, specifications, documents) ·
 Posts (editor, featured image, draft / published, publish date) · Application videos · Downloads ·
 Messages (Contact form + newsletter sign-ups) · Settings (contact details, social networks, home page slides) · Change password.
+
+Every product has a **line**: Installation, Performance, or Shared (both). It is set in the product's *Basic info* tab
+and filtered on the website (All / Installation / Performance, shown where a list contains both lines). The starting
+assignment, and the few products that moved to another collection, live in `data/product-groups.json`;
+`npm run db:groups` re-applies it (it overwrites lines edited in the admin).
 
 Rich text is sanitised on the server when saved. Product photos on a white background get an
 automatically cropped copy (`public/uploads/_trim/`) that the product cards use.

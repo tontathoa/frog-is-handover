@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { api, errorText, type Paginated } from './api';
 import { Empty, Loading, PageHead, SearchInput, mediaSrc } from './ui';
+import { PRODUCT_LINES, lineLabel } from '@/lib/lines';
+import type { ProductLine } from '@/lib/types';
 
 type Row = {
   id: number;
@@ -12,6 +14,7 @@ type Row = {
   subtitle: string;
   image: string | null;
   collectionName: string | null;
+  line: ProductLine | null;
   isActive: boolean;
   isNew: boolean;
 };
@@ -29,6 +32,7 @@ export default function ProductManager() {
   const [q, setQ] = useState('');
   const [collection, setCollection] = useState('');
   const [visibility, setVisibility] = useState('all');
+  const [line, setLine] = useState('');
   const [filterKey, setFilterKey] = useState(0);
   const request = useRef(0);
   const sentinel = useRef<HTMLDivElement>(null);
@@ -46,6 +50,7 @@ export default function ProductManager() {
       const params = new URLSearchParams({ page: String(nextPage), limit: String(PER_FETCH), visibility });
       if (q) params.set('q', q);
       if (collection) params.set('collection', collection);
+      if (line) params.set('line', line);
       api
         .get<Paginated<Row>>(`products?${params}`)
         .then((response) => {
@@ -62,7 +67,7 @@ export default function ProductManager() {
           if (id === request.current) setLoading(false);
         });
     },
-    [q, collection, visibility],
+    [q, collection, visibility, line],
   );
 
   useEffect(() => {
@@ -113,11 +118,12 @@ export default function ProductManager() {
     setLoading(true);
     apply();
   };
-  const filtered = Boolean(q || collection || visibility !== 'all');
+  const filtered = Boolean(q || collection || line || visibility !== 'all');
   const clearFilters = () => {
     setLoading(true);
     setQ('');
     setCollection('');
+    setLine('');
     setVisibility('all');
     setFilterKey((key) => key + 1);
   };
@@ -141,6 +147,15 @@ export default function ProductManager() {
               </option>
             ))}
             <option value="none">— No collection —</option>
+          </select>
+          <select className="adm-input adm-input--sm" aria-label="Product line" value={line} onChange={(event) => filter(() => setLine(event.target.value))}>
+            <option value="">All lines</option>
+            {PRODUCT_LINES.map((item) => (
+              <option key={item.value} value={item.value}>
+                {item.label}
+              </option>
+            ))}
+            <option value="shared">Shared (both lines)</option>
           </select>
           <select className="adm-input adm-input--sm" aria-label="Visibility" value={visibility} onChange={(event) => filter(() => setVisibility(event.target.value))}>
             <option value="all">Visible &amp; hidden</option>
@@ -167,6 +182,7 @@ export default function ProductManager() {
                   <th>Image</th>
                   <th>Product</th>
                   <th>Collection</th>
+                  <th>Line</th>
                   <th>Visible</th>
                   <th>New product</th>
                   <th>Actions</th>
@@ -184,6 +200,13 @@ export default function ProductManager() {
                       </small>
                     </td>
                     <td className="adm-muted">{row.collectionName ?? '—'}</td>
+                    <td>
+                      {row.line ? (
+                        <span className={`adm-badge ${row.line === 'installation' ? 'adm-badge--blue' : 'adm-badge--primary'}`}>{lineLabel(row.line)}</span>
+                      ) : (
+                        <span className="adm-muted">Shared</span>
+                      )}
+                    </td>
                     <td>
                       <label className="adm-check">
                         <input type="checkbox" checked={row.isActive} onChange={() => toggle(row, 'isActive')} />

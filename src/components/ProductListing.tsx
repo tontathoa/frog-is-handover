@@ -18,6 +18,7 @@ export default function ProductListing({ current, collections, products }: Props
     return {
       key: product.slug,
       text: `${product.title} ${product.subtitle} ${collection?.name ?? ''}`.toLowerCase(),
+      line: product.line,
       node: <ProductCard product={product} label={collection?.short} heading="h2" />,
     };
   });
