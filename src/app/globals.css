@@ -192,6 +192,18 @@ a:hover .tile__content .btn, a:hover .banner__content .btn, a:hover .dcard__body
   .site-nav__group:hover .mega { opacity: 1; visibility: visible; transform: none; transition: opacity .18s, transform .18s; }
 }
 .site-nav__group.is-suppressed .mega { opacity: 0 !important; visibility: hidden !important; }
+/* the two product lines, above the collections */
+.mega__lines { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); max-width: 1500px; margin: 0 auto 10px; }
+.mega__line {
+  display: flex; align-items: center; gap: 16px; padding: 10px 18px 10px 10px;
+  border: 1px solid #222; border-radius: var(--radius); transition: background-color .15s, border-color .15s;
+}
+.mega__line:hover { background: #151515; border-color: #3a3a3a; }
+.mega__line img { flex: none; width: 84px; height: 63px; border-radius: 4px; object-fit: cover; }
+.mega__linetext { display: flex; flex-direction: column; gap: 2px; min-width: 0; margin-right: auto; }
+.mega__linetext .mega__name { font-size: 15px; font-weight: 750; font-stretch: var(--wide); }
+.mega__arrow { color: var(--soft); transition: color .15s, transform .15s; }
+.mega__line:hover .mega__arrow { color: var(--green); transform: translateX(3px); }
 .mega__inner { display: grid; grid-template-columns: repeat(8, 1fr); gap: var(--gap); max-width: 1500px; margin: 0 auto; }
 .mega__item {
   display: flex; flex-direction: column; align-items: center; gap: 4px;
@@ -234,6 +246,11 @@ a:hover .tile__content .btn, a:hover .banner__content .btn, a:hover .dcard__body
   display: block; padding: 14px 0; border-bottom: 1px solid #222;
   font-size: 24px; font-weight: 750; font-stretch: var(--wide); line-height: 1.15;
 }
+.drawer__lines { display: grid; gap: 8px; padding: 12px 0 2px; }
+.drawer__lines a { display: flex; align-items: center; gap: 14px; padding: 8px; border: 1px solid #222; border-radius: var(--radius); }
+.drawer__lines img { flex: none; width: 72px; height: 54px; border-radius: 4px; object-fit: cover; }
+.drawer__lines span { display: flex; flex-direction: column; gap: 1px; font-size: 16px; font-weight: 750; font-stretch: var(--wide); line-height: 1.2; }
+.drawer__lines small { font-size: 12px; font-weight: 300; font-stretch: 100%; color: var(--soft); }
 .drawer__sub { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 16px; padding: 10px 0 14px; border-bottom: 1px solid #222; }
 .drawer__sub a { display: flex; align-items: center; gap: 12px; padding: 7px 0; font-size: 14px; line-height: 1.25; color: var(--soft); }
 .drawer__sub img { flex: none; width: 42px; height: 40px; object-fit: contain; }

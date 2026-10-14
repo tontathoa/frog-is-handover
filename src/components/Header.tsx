@@ -1,9 +1,11 @@
 'use client';
 
 import Form from 'next/form';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
+import { lineHref, PRODUCT_LINES } from '@/lib/lines';
 
 type NavItem = { label: string; path: string; mega?: boolean };
 type NavCollection = { slug: string; name: string; icon: string; iconHover: string; count: number };
@@ -37,6 +39,11 @@ export default function Header({ name, tagline, nav, collections }: Props) {
     setMegaOpen(false);
     setSearchOpen(false);
     setDrawerOpen(false);
+  };
+  // a link inside the panel was used: close it and keep it shut until the pointer leaves
+  const leaveMega = () => {
+    closeAll();
+    setMegaSuppressed(true);
   };
 
   useEffect(() => {
@@ -120,17 +127,23 @@ export default function Header({ name, tagline, nav, collections }: Props) {
                   </svg>
                 </Link>
                 <div className="mega" ref={megaPanel}>
+                  <div className="mega__lines">
+                    {PRODUCT_LINES.map((line) => (
+                      <Link key={line.value} className="mega__line" href={lineHref(line.value)} onClick={leaveMega}>
+                        <Image src={line.photo} alt="" width={168} height={126} />
+                        <span className="mega__linetext">
+                          <span className="mega__name">{line.label}</span>
+                          <span className="mega__count">{line.tagline}</span>
+                        </span>
+                        <span className="mega__arrow" aria-hidden="true">
+                          →
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
                   <div className="mega__inner">
                     {collections.map((c) => (
-                      <Link
-                        key={c.slug}
-                        className="mega__item"
-                        href={`/collection/${c.slug}/`}
-                        onClick={() => {
-                          closeAll();
-                          setMegaSuppressed(true);
-                        }}
-                      >
+                      <Link key={c.slug} className="mega__item" href={`/collection/${c.slug}/`} onClick={leaveMega}>
                         <span className="mega__icon">
                           {c.icon && <img src={c.icon} alt="" loading="lazy" width={95} height={90} />}
                           {c.iconHover && <img className="is-hover" src={c.iconHover} alt="" loading="lazy" width={95} height={90} />}
@@ -140,14 +153,7 @@ export default function Header({ name, tagline, nav, collections }: Props) {
                       </Link>
                     ))}
                   </div>
-                  <Link
-                    className="mega__all"
-                    href="/products/"
-                    onClick={() => {
-                      closeAll();
-                      setMegaSuppressed(true);
-                    }}
-                  >
+                  <Link className="mega__all" href="/products/" onClick={leaveMega}>
                     All products <span aria-hidden="true">→</span>
                   </Link>
                 </div>
@@ -220,6 +226,19 @@ export default function Header({ name, tagline, nav, collections }: Props) {
                 <Link className="drawer__link" href={`/${item.path}`} onClick={closeAll}>
                   {item.label}
                 </Link>
+                {item.mega && (
+                  <div className="drawer__lines">
+                    {PRODUCT_LINES.map((line) => (
+                      <Link key={line.value} href={lineHref(line.value)} onClick={closeAll}>
+                        <Image src={line.photo} alt="" width={144} height={108} />
+                        <span>
+                          {line.label}
+                          <small>{line.tagline}</small>
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                )}
                 {item.mega && (
                   <div className="drawer__sub">
                     {collections.map((c) => (
