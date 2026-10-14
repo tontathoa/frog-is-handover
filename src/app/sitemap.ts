@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { site } from '@/config/site';
 import { getCollections, getPosts, getProducts, getVideos } from '@/lib/content';
+import { lineHref, PRODUCT_LINES } from '@/lib/lines';
 
 const asDate = (value: string) => new Date(value.replace(' ', 'T') + 'Z');
 
@@ -9,7 +10,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const url = (path: string) => `${site.origin}${path}`;
 
   return [
-    ...['/', '/products/', '/applications/', '/news/', '/brochure/', '/about-us/', '/contact/'].map((path) => ({ url: url(path) })),
+    ...['/', '/products/', ...PRODUCT_LINES.map((item) => lineHref(item.value)), '/applications/', '/news/', '/brochure/', '/about-us/', '/contact/'].map(
+      (path) => ({ url: url(path) }),
+    ),
     ...collections.map((c) => ({ url: url(`/collection/${c.slug}/`) })),
     ...products.map((p) => ({ url: url(`/product/${encodeURIComponent(p.slug)}/`), lastModified: asDate(p.updatedAt) })),
     ...posts.map((p) => ({ url: url(`/${encodeURIComponent(p.slug)}/`), lastModified: asDate(p.updatedAt) })),

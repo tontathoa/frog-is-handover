@@ -6,15 +6,16 @@ import ProductCard from '@/components/ProductCard';
 import Rail from '@/components/Rail';
 import VideoCard from '@/components/VideoCard';
 import { site } from '@/config/site';
-import { getAbout, getCollections, getContactInfo, getNewProducts, getPosts, getSlides, getVideos } from '@/lib/content';
+import { getAbout, getCollections, getContactInfo, getNewProducts, getPosts, getProducts, getSlides, getVideos } from '@/lib/content';
 import { mediaUrl, plain } from '@/lib/format';
+import { inLine, lineHref, PRODUCT_LINES } from '@/lib/lines';
 import { productShot } from '@/lib/media';
 import { pageMeta } from '@/lib/meta';
 
 export const metadata = pageMeta({ title: `${site.name} — ${site.tagline}`, absoluteTitle: true, path: '/' });
 
 export default async function HomePage() {
-  const [slides, fresh, collections, about, videos, posts, info] = await Promise.all([
+  const [slides, fresh, collections, about, videos, posts, info, products] = await Promise.all([
     getSlides(),
     getNewProducts(),
     getCollections(),
@@ -22,9 +23,15 @@ export default async function HomePage() {
     getVideos(),
     getPosts(),
     getContactInfo(),
+    getProducts(),
   ]);
 
   const shortName = new Map(collections.map((c) => [c.slug, c.short]));
+  // both lines show the shared products (accessories), so the counts match what the line page lists
+  const lines = PRODUCT_LINES.map((item) => {
+    const items = products.filter((p) => inLine(p.line, item.value));
+    return { ...item, count: items.length, collections: collections.filter((c) => items.some((p) => p.collection === c.slug)).map((c) => c.short) };
+  });
   const featured = fresh.slice(0, 4);
   const more = fresh.slice(4);
   const intro = about.sections.find((s) => s.layout === 'full' && s.html)?.html ?? '';
@@ -42,6 +49,31 @@ export default async function HomePage() {
           href: slide.href,
         }))}
       />
+
+      <section className="band">
+        <h2 className="band__title">Two product lines, one consistent sound</h2>
+      </section>
+
+      <section className="section section--flush" aria-label="Product lines">
+        <div className="lines">
+          {lines.map((item, i) => (
+            <Link key={item.value} className="line" href={lineHref(item.value)}>
+              <Image src={item.photo} alt="" fill sizes="(max-width: 640px) 100vw, 50vw" priority={i === 0} />
+              <span className="line__credit">Photo: {item.credit} / Unsplash</span>
+              <span className="line__content">
+                <span className="line__eyebrow">Product line {String(i + 1).padStart(2, '0')}</span>
+                <h3 className="line__title">{item.label}</h3>
+                <p className="line__tagline">{item.tagline}</p>
+                <p className="line__text">{item.text}</p>
+                <p className="line__meta">
+                  {item.count} products · {item.collections.join(' · ')}
+                </p>
+                <span className="btn btn--light btn--wide">Explore {item.label}</span>
+              </span>
+            </Link>
+          ))}
+        </div>
+      </section>
 
       {featured.length > 0 && (
         <>

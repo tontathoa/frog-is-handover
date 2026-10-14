@@ -2,16 +2,18 @@ import Link from 'next/link';
 import ProductCard from './ProductCard';
 import ProductFilter from './ProductFilter';
 import { mediaUrl } from '@/lib/format';
-import type { Collection, Product } from '@/lib/types';
+import type { Collection, Product, ProductLine } from '@/lib/types';
 
 type Props = {
   current: Collection | null;
   collections: Collection[];
   products: Product[];
+  /** Line that is switched on when the page opens (/products/<line>/). */
+  line?: ProductLine;
 };
 
-/** /products/ and /collection/<slug>/: title, collection strip, filterable grid. */
-export default function ProductListing({ current, collections, products }: Props) {
+/** /products/, /products/<line>/ and /collection/<slug>/: title, collection strip, filterable grid. */
+export default function ProductListing({ current, collections, products, line }: Props) {
   const bySlug = new Map(collections.map((c) => [c.slug, c]));
   const entries = products.map((product) => {
     const collection = bySlug.get(product.collection ?? '');
@@ -66,7 +68,7 @@ export default function ProductListing({ current, collections, products }: Props
       </nav>
 
       <section className="section section--narrow">
-        <ProductFilter entries={entries} />
+        <ProductFilter key={line ?? 'all'} entries={entries} initialLine={line} syncUrl={!current} />
       </section>
     </>
   );

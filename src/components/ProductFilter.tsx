@@ -1,22 +1,34 @@
 'use client';
 
 import { useState, type ReactNode } from 'react';
-import { PRODUCT_LINES } from '@/lib/lines';
+import { inLine, lineHref, PRODUCT_LINES } from '@/lib/lines';
 import type { ProductLine } from '@/lib/types';
 
 export type FilterEntry = { key: string; text: string; line: ProductLine | null; node: ReactNode };
 
+type Props = {
+  entries: FilterEntry[];
+  /** Line switched on when the page opens (/products/installation/ and /products/performance/). */
+  initialLine?: ProductLine;
+  /** When set, switching line also rewrites the address bar to /products/ or /products/<line>/. */
+  syncUrl?: boolean;
+};
+
 /** Product grid with an instant client-side text filter; the cards themselves are server-rendered. */
-export default function ProductFilter({ entries }: { entries: FilterEntry[] }) {
+export default function ProductFilter({ entries, initialLine, syncUrl = false }: Props) {
   const [query, setQuery] = useState('');
-  const [line, setLine] = useState<ProductLine | 'all'>('all');
+  const [line, setLine] = useState<ProductLine | 'all'>(initialLine ?? 'all');
   const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
-  // a product without a line is shared: it shows under both lines
-  const inLine = (entry: FilterEntry, value: ProductLine | 'all') => value === 'all' || entry.line === null || entry.line === value;
-  const matches = (entry: FilterEntry) => inLine(entry, line) && terms.every((term) => entry.text.includes(term));
+  const matches = (entry: FilterEntry) => inLine(entry.line, line) && terms.every((term) => entry.text.includes(term));
   // the line switch only makes sense when this list actually has both lines
   const hasBothLines = PRODUCT_LINES.every((item) => entries.some((entry) => entry.line === item.value));
   const visible = entries.filter(matches).length;
+
+  const chooseLine = (value: ProductLine | 'all') => {
+    setLine(value);
+    // keep the address in step with what is shown, without a navigation (reloading gives the same list)
+    if (syncUrl) window.history.replaceState(null, '', lineHref(value));
+  };
 
   return (
     <>
@@ -32,10 +44,10 @@ export default function ProductFilter({ entries }: { entries: FilterEntry[] }) {
                 type="button"
                 className={`linefilter__btn${line === item.value ? ' is-active' : ''}`}
                 aria-pressed={line === item.value}
-                onClick={() => setLine(item.value)}
+                onClick={() => chooseLine(item.value)}
               >
                 {item.label}
-                <span>{entries.filter((entry) => inLine(entry, item.value)).length}</span>
+                <span>{entries.filter((entry) => inLine(entry.line, item.value)).length}</span>
               </button>
             ))}
           </div>

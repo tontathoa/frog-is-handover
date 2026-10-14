@@ -113,7 +113,10 @@ Posts (editor, featured image, draft / published, publish date) · Application v
 Messages (Contact form + newsletter sign-ups) · Settings (contact details, social networks, home page slides) · Change password.
 
 Every product has a **line**: Installation, Performance, or Shared (both). It is set in the product's *Basic info* tab
-and filtered on the website (All / Installation / Performance, shown where a list contains both lines). The starting
+and filtered on the website (All / Installation / Performance, shown where a list contains both lines). The home page
+has one photo tile per line; they open `/products/installation/` and `/products/performance/`, the product list with
+that line already switched on (the address follows the pill). Tile text and photos live in `src/lib/lines.ts` /
+`public/img/lines/` (the same photos as the catalog openers). The starting
 assignment, and the few products that moved to another collection, live in `data/product-groups.json`;
 `npm run db:groups` re-applies it (it overwrites lines edited in the admin).
 
