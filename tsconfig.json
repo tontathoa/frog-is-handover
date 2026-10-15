@@ -40,8 +40,6 @@
   ],
   "exclude": [
     "node_modules",
-    "_legacy-php",
-    "tools",
     "public"
   ]
 }

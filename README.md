@@ -8,7 +8,7 @@ was pulled from the old WordPress site, loaded into the database, and is edited 
 
 ## Run it locally
 
-Needs Node 20.9+ and a running MySQL/MariaDB (XAMPP's MySQL is fine — Apache is not used).
+Needs Node 20.9+ and a running MySQL/MariaDB (MySQL 8 or MariaDB 10.4+).
 
 ```bash
 npm install
@@ -94,8 +94,6 @@ Later updates: `git pull`, then `bash deploy.sh` again. Files uploaded through t
 | `data/*.json` | Scraped content = seed for `db:import` |
 | `public/uploads/` | Mirrored and uploaded images, data sheets, software, videos |
 | `public/fonts/` | Archivo (SIL OFL), self-hosted |
-| `tools/` | `scrape.py`, `build_images.py` (Python: `requests`, `beautifulsoup4`, `lxml`, `Pillow`) |
-| `_legacy-php/` | The earlier plain-PHP version of this rebuild; no longer used, safe to delete |
 
 URLs match the old WordPress site (`/product/<slug>/`, `/collection/<slug>/`, `/<post-slug>/`,
 `/brochure/`, `/about-us/`, `/contact/`); old `/wp-content/uploads/...` links and `/?s=` searches redirect.
@@ -136,15 +134,7 @@ npm run admin:user
 Loads on MySQL 8.0 and MariaDB 10.4. It replaces the tables it contains. The database only holds the paths of images,
 PDFs and videos; the files themselves are in `public/uploads/` (in git).
 
-## Re-importing from frog-is.com
-
-```bash
-python tools/scrape.py --assets
-```
-
-```bash
-python tools/build_images.py
-```
+## Reloading the seed content
 
 ```bash
 npm run db:import -- --force

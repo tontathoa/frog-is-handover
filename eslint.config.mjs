@@ -11,5 +11,5 @@ export default defineConfig([
       '@next/next/no-img-element': 'off',
     },
   },
-  globalIgnores(['.next/**', 'out/**', 'next-env.d.ts', '_legacy-php/**', 'public/**', 'tools/**']),
+  globalIgnores(['.next/**', 'out/**', 'next-env.d.ts', 'public/**']),
 ]);
