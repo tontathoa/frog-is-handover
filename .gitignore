@@ -10,10 +10,9 @@ __pycache__/
 storage/*
 !storage/.htaccess
 
-# Uploads: ~680 MB of mirrored and admin-uploaded media — kept on disk, never in git.
-# Copy the folder to the server separately (see README).
-public/uploads/*
-!public/uploads/.gitkeep
+# Uploads (public/uploads, ~730 MB of mirrored and admin-uploaded media) ARE in git, so a clone is a complete site.
+# Only the throw-away folder used to hand a file to an importer is left out.
+public/uploads/_catalog/
 
 # Claude memory / local tooling
 .claude/

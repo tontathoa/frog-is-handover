@@ -3,3 +3,5 @@
 *.ico binary
 *.png binary
 *.jpg binary
+# Media: never touch line endings or diff it
+public/uploads/** -text -diff
