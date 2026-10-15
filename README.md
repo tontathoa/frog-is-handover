@@ -53,7 +53,7 @@ npm run start
 - It needs a Node server (PM2, Docker, a VPS…). Files uploaded in the admin are written to
   `public/uploads/`, so that folder must be writable and must survive deployments.
 - Set a fresh `AUTH_SECRET` per environment and serve the site over HTTPS.
-- Set `SITE_URL` to the address the copy is served from. `SITE_NOINDEX=1` keeps a demo copy out of
+- Set `SITE_URL` to the address the copy is served from. `SITE_NOINDEX=1` keeps a staging copy out of
   search engines (both are read at build time).
 
 ### Deploy files
@@ -61,27 +61,21 @@ npm run start
 | File | What |
 | --- | --- |
 | `ecosystem.config.js` | PM2 process `frogis-web`: `next start` on `127.0.0.1:3040` |
-| `deploy/nginx-frogis.conf` | nginx site for `example.com` → that port; serves `/uploads/` from disk |
+| `deploy/nginx-frogis.conf` | nginx site template (set `server_name`) → that port; serves `/uploads/` from disk |
 | `deploy.sh` | Runs on the server: `git pull`, `npm ci`, `npm run build`, PM2 reload |
 
-Not in git, so copied to the server by hand: `.env.local`, `public/uploads/` and the database content.
+Not in git: `.env.local` (copy `.env.example`). The content database is `database/frogis-content.sql` and the media
+is `public/uploads/`, both in git.
 
-### Demo: example.com
+### Deploying a copy
 
-Runs on the demo machine (a shared demo machine) in `/var/www/frogis`, with its own
-MySQL database and user (`frogis`). `SITE_NOINDEX=1` is set there, so search engines skip it.
+1. Clone the repository on the server (Node 20.9+, MySQL 8 / MariaDB, PM2, nginx). `public/uploads/` comes with it.
+2. Copy `.env.example` to `.env.local` and fill in the database login, a fresh `AUTH_SECRET` and `SITE_URL`.
+3. Create the database and load the content: see *Handover: content database* below, then `npm run admin:user`.
+4. Run `bash deploy.sh` from the app folder: it installs, builds and (re)starts the PM2 process.
+5. Point nginx at it with `deploy/nginx-frogis.conf` (set `server_name`, add HTTPS with certbot).
 
-After pushing to `main`, update the demo with:
-
-```bash
-ssh deploy-host "bash /var/www/frogis/deploy.sh"
-```
-
-- `ssh deploy-host` is an alias in `~/.ssh/config` (key `~/.ssh/deploy_key`).
-- The server pulls from GitHub with its own read-only deploy key (`github-deploy` in its `~/.ssh/config`).
-- The live nginx file is `/etc/nginx/sites-available/frogis`; certbot added the HTTPS block to it, so it is
-  no longer identical to `deploy/nginx-frogis.conf`.
-- Content edited in the demo's admin stays on the demo: deploys do not touch its database or uploads.
+Later updates: `git pull`, then `bash deploy.sh` again. Files uploaded through the admin are not tracked and survive it.
 
 ## Layout
 
@@ -139,8 +133,8 @@ mysql -u <user> -p <database> < database/frogis-content.sql
 npm run admin:user
 ```
 
-Loads on MySQL 8.0 and MariaDB 10.4. It replaces the tables it contains. Images, PDFs and videos are not in the dump or
-in git: the database only holds their paths, and the files live in `public/uploads/`.
+Loads on MySQL 8.0 and MariaDB 10.4. It replaces the tables it contains. The database only holds the paths of images,
+PDFs and videos; the files themselves are in `public/uploads/` (in git).
 
 ## Re-importing from frog-is.com
 

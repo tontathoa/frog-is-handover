@@ -1,8 +1,7 @@
 #!/bin/bash
-# Production deploy — runs ON THE SERVER, from the app folder:
-#   ssh deploy-host "bash /var/www/frogis/deploy.sh"
+# Production deploy — runs ON THE SERVER, from the app folder:  bash deploy.sh
 # Pulls main, installs dependencies, rebuilds and reloads the PM2 process.
-# Not touched: .env.local, public/uploads/ and the database (all outside git).
+# Not touched: .env.local, the database, and files uploaded through the admin (untracked in public/uploads/).
 set -e
 
 # Make the nvm-installed node toolchain (node/npm/pm2) available in
