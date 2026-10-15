@@ -125,6 +125,23 @@ automatically cropped copy (`public/uploads/_trim/`) that the product cards use.
 
 The About page text is stored in the `settings` table (`about`) and has no editing screen yet.
 
+## Handover: content database
+
+`database/frogis-content.sql` is a dump of the current content: collections, products, posts, videos, downloads and
+settings. `users`, `messages` and `subscribers` are in it without rows (no accounts, no personal data). Load it into an
+empty database instead of running `db:import`, then create the first admin:
+
+```bash
+mysql -u <user> -p <database> < database/frogis-content.sql
+```
+
+```bash
+npm run admin:user
+```
+
+Loads on MySQL 8.0 and MariaDB 10.4. It replaces the tables it contains. Images, PDFs and videos are not in the dump or
+in git: the database only holds their paths, and the files live in `public/uploads/`.
+
 ## Re-importing from frog-is.com
 
 ```bash
