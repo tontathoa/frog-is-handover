@@ -78,7 +78,7 @@ async function uniqueSlug(value: unknown, title: string, ignoreId = 0): Promise<
 }
 
 export const products = {
-  /** ?q=&collection=<id>&line=installation|performance|shared&visibility=all|visible|hidden&page=&limit= */
+  /** ?q=&collection=<id>&line=installation|performance|portable|shared&visibility=all|visible|hidden&page=&limit= */
   async list(params: URLSearchParams) {
     const limit = Math.min(Math.max(int(params.get('limit'), 30), 1), 100);
     const page = Math.max(int(params.get('page'), 1), 1);

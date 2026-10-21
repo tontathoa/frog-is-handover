@@ -205,6 +205,7 @@ select.adm-input { appearance: auto; }
 .adm-badge--gray { background: var(--a-surface-section); color: var(--a-ink-light); }
 .adm-badge--red { background: #fee2e2; color: #dc2626; }
 .adm-badge--blue { background: #dbeafe; color: #1d4ed8; }
+.adm-badge--amber { background: #fef3c7; color: #b45309; }
 .adm-badge--primary { background: var(--a-primary-soft); color: var(--a-primary-dark); }
 button.adm-badge:hover { filter: brightness(0.95); }
 

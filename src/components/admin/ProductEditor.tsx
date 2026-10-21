@@ -197,9 +197,9 @@ export default function ProductEditor({ id }: { id: number | null }) {
                 ))}
               </select>
             </Field>
-            <Field label="Product line" hint="Installation or Performance. Leave on Shared for products that belong to both lines (microphones, accessories...).">
+            <Field label="Product line" hint="Installation, Performance or Portable. Leave on Shared for products that belong to every line (accessories...).">
               <select className="adm-input" value={form.line ?? ''} onChange={(event) => set('line', (event.target.value || null) as ProductLine | null)}>
-                <option value="">Shared (both lines)</option>
+                <option value="">Shared (all lines)</option>
                 {PRODUCT_LINES.map((item) => (
                   <option key={item.value} value={item.value}>
                     {item.label}

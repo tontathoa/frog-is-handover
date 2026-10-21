@@ -1,6 +1,7 @@
 import { cache } from 'react';
 import { parseJson, query, queryOne, type Row, type SqlValue } from './db';
 import { plain } from './format';
+import { isProductLine } from './lines';
 import type { AboutSection, Collection, ContactInfo, Download, Post, Product, ProductFile, Slide, Social, SpecSection, Video } from './types';
 
 /**
@@ -38,7 +39,7 @@ export function toProduct(row: Row): Product {
     specs: parseJson<SpecSection[]>(row.specs, []),
     collection: (row.collection_slug as string | null) ?? null,
     isNew: Boolean(row.is_new),
-    line: row.product_line === 'installation' || row.product_line === 'performance' ? row.product_line : null,
+    line: isProductLine(row.product_line) ? row.product_line : null,
     isActive: Boolean(row.is_active),
     sortOrder: Number(row.sort_order),
     createdAt: String(row.created_at),

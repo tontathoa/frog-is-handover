@@ -11,7 +11,7 @@ export type LineInfo = {
   credit: string;
 };
 
-/** The two product lines, in display order. A product without a line is shared by both. */
+/** The product lines, in display order. A product without a line is shared by all of them. */
 export const PRODUCT_LINES: LineInfo[] = [
   {
     value: 'installation',
@@ -29,6 +29,14 @@ export const PRODUCT_LINES: LineInfo[] = [
     photo: '/img/lines/performance.jpg',
     credit: 'ActionVance',
   },
+  {
+    value: 'portable',
+    label: 'Portable',
+    tagline: 'Plug in and play anywhere.',
+    text: 'Self-contained portable column PA systems with built-in DSP and Bluetooth: set up in minutes for musicians, events, classes and pop-up venues.',
+    photo: '/img/lines/portable.jpg',
+    credit: 'XS Xue',
+  },
 ];
 
 export function lineLabel(line: ProductLine | null | undefined): string {
@@ -36,7 +44,7 @@ export function lineLabel(line: ProductLine | null | undefined): string {
 }
 
 export function isProductLine(value: unknown): value is ProductLine {
-  return value === 'installation' || value === 'performance';
+  return PRODUCT_LINES.some((item) => item.value === value);
 }
 
 /** /products/ for everything, /products/<line>/ for one line. */
@@ -44,7 +52,7 @@ export function lineHref(line: ProductLine | 'all'): string {
   return line === 'all' ? '/products/' : `/products/${line}/`;
 }
 
-/** A product without a line is shared: it counts under, and shows in, both lines. */
+/** A product without a line is shared: it counts under, and shows in, every line. */
 export function inLine(productLine: ProductLine | null, line: ProductLine | 'all'): boolean {
   return line === 'all' || productLine === null || productLine === line;
 }

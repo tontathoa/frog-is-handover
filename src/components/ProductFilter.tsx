@@ -8,7 +8,7 @@ export type FilterEntry = { key: string; text: string; line: ProductLine | null;
 
 type Props = {
   entries: FilterEntry[];
-  /** Line switched on when the page opens (/products/installation/ and /products/performance/). */
+  /** Line switched on when the page opens (/products/<line>/). */
   initialLine?: ProductLine;
   /** When set, switching line also rewrites the address bar to /products/ or /products/<line>/. */
   syncUrl?: boolean;
@@ -20,8 +20,8 @@ export default function ProductFilter({ entries, initialLine, syncUrl = false }:
   const [line, setLine] = useState<ProductLine | 'all'>(initialLine ?? 'all');
   const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
   const matches = (entry: FilterEntry) => inLine(entry.line, line) && terms.every((term) => entry.text.includes(term));
-  // the line switch only makes sense when this list actually has both lines
-  const hasBothLines = PRODUCT_LINES.every((item) => entries.some((entry) => entry.line === item.value));
+  // the line switch only offers the lines this list really has, and only when there is more than one
+  const lines = PRODUCT_LINES.filter((item) => entries.some((entry) => entry.line === item.value));
   const visible = entries.filter(matches).length;
 
   const chooseLine = (value: ProductLine | 'all') => {
@@ -36,9 +36,9 @@ export default function ProductFilter({ entries, initialLine, syncUrl = false }:
         <p className="toolbar__count">
           {visible} {visible === 1 ? 'product' : 'products'}
         </p>
-        {hasBothLines && (
+        {lines.length > 1 && (
           <div className="linefilter" role="group" aria-label="Product line">
-            {[{ value: 'all' as const, label: 'All' }, ...PRODUCT_LINES].map((item) => (
+            {[{ value: 'all' as const, label: 'All' }, ...lines].map((item) => (
               <button
                 key={item.value}
                 type="button"

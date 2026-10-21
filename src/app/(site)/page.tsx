@@ -8,7 +8,7 @@ import VideoCard from '@/components/VideoCard';
 import { site } from '@/config/site';
 import { getAbout, getCollections, getContactInfo, getNewProducts, getPosts, getProducts, getSlides, getVideos } from '@/lib/content';
 import { mediaUrl, plain } from '@/lib/format';
-import { inLine, lineHref, PRODUCT_LINES } from '@/lib/lines';
+import { lineHref, PRODUCT_LINES } from '@/lib/lines';
 import { productShot } from '@/lib/media';
 import { pageMeta } from '@/lib/meta';
 
@@ -27,9 +27,9 @@ export default async function HomePage() {
   ]);
 
   const shortName = new Map(collections.map((c) => [c.slug, c.short]));
-  // both lines show the shared products (accessories), so the counts match what the line page lists
+  // models of each line (the shared accessories are on every line page but are not counted as models)
   const lines = PRODUCT_LINES.map((item) => {
-    const items = products.filter((p) => inLine(p.line, item.value));
+    const items = products.filter((p) => p.line === item.value);
     return { ...item, count: items.length, collections: collections.filter((c) => items.some((p) => p.collection === c.slug)).map((c) => c.short) };
   });
   const featured = fresh.slice(0, 4);
@@ -51,7 +51,7 @@ export default async function HomePage() {
       />
 
       <section className="band">
-        <h2 className="band__title">Two product lines, one consistent sound</h2>
+        <h2 className="band__title">Three product lines, one consistent sound</h2>
       </section>
 
       <section className="section section--flush" aria-label="Product lines">
@@ -66,7 +66,7 @@ export default async function HomePage() {
                 <p className="line__tagline">{item.tagline}</p>
                 <p className="line__text">{item.text}</p>
                 <p className="line__meta">
-                  {item.count} products · {item.collections.join(' · ')}
+                  {item.count} models · {item.collections.join(' · ')}
                 </p>
                 <span className="btn btn--light btn--wide">Explore {item.label}</span>
               </span>

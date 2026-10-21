@@ -21,6 +21,7 @@ type Row = {
 type CollectionOption = { id: number; name: string };
 
 const PER_FETCH = 30;
+const LINE_BADGE: Record<ProductLine, string> = { installation: 'adm-badge--blue', performance: 'adm-badge--primary', portable: 'adm-badge--amber' };
 
 export default function ProductManager() {
   const [rows, setRows] = useState<Row[]>([]);
@@ -202,7 +203,7 @@ export default function ProductManager() {
                     <td className="adm-muted">{row.collectionName ?? '—'}</td>
                     <td>
                       {row.line ? (
-                        <span className={`adm-badge ${row.line === 'installation' ? 'adm-badge--blue' : 'adm-badge--primary'}`}>{lineLabel(row.line)}</span>
+                        <span className={`adm-badge ${LINE_BADGE[row.line]}`}>{lineLabel(row.line)}</span>
                       ) : (
                         <span className="adm-muted">Shared</span>
                       )}

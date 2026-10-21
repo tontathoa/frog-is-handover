@@ -6,22 +6,22 @@
   "line": "performance"
  },
  "fp8": {
-  "line": "installation"
+  "line": "performance"
  },
  "fp12": {
-  "line": "installation"
+  "line": "performance"
  },
  "fp15": {
-  "line": "installation"
+  "line": "performance"
  },
  "fp8p": {
-  "line": "installation"
+  "line": "performance"
  },
  "fp12p": {
-  "line": "installation"
+  "line": "performance"
  },
  "fp15p": {
-  "line": "installation"
+  "line": "performance"
  },
  "fi-sms4-b-w": {
   "line": "installation"
@@ -45,16 +45,16 @@
   "line": "installation"
  },
  "fi-ct5": {
-  "line": "installation"
+  "line": "performance"
  },
  "fi-ct15p": {
   "line": "performance"
  },
  "fs12": {
-  "line": "performance"
+  "line": "portable"
  },
  "fs15": {
-  "line": "performance"
+  "line": "portable"
  },
  "fs2x3": {
   "line": "performance"
@@ -303,5 +303,23 @@
  },
  "fi-xlrf10": {
   "line": null
+ },
+ "fi-cc4": {
+  "line": "performance"
+ },
+ "fi-cc8": {
+  "line": "performance"
+ },
+ "fi-cc10": {
+  "line": "performance"
+ },
+ "fi-cc12": {
+  "line": "performance"
+ },
+ "fi-sub210": {
+  "line": "performance"
+ },
+ "fi-sub215": {
+  "line": "performance"
  }
 }
