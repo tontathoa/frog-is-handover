@@ -61,7 +61,7 @@ async function collectionId(value: unknown): Promise<number | null> {
   return id;
 }
 
-/** '' / null = shared by both lines. */
+/** '' / null = shared (listed under Installation and Performance). */
 function productLine(value: unknown): string | null {
   if (value === null || value === undefined || value === '') return null;
   if (!isProductLine(value)) throw badRequest('Invalid product line');

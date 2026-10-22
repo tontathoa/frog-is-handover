@@ -1,6 +1,6 @@
 export type ProductFile = { label: string; file: string };
 
-/** The product lines; a product without a line is shared by all of them. */
+/** The product lines; a product without a line is shared (listed under Installation and Performance). */
 export type ProductLine = 'installation' | 'performance' | 'portable';
 export type SpecSection = { title: string; rows: string[][] };
 
@@ -20,7 +20,7 @@ export type Product = {
   /** Slug of the collection the product belongs to. */
   collection: string | null;
   isNew: boolean;
-  /** Installation, Performance or Portable; null = shared by all lines. */
+  /** Installation, Performance or Portable; null = shared (accessories). */
   line: ProductLine | null;
   isActive: boolean;
   sortOrder: number;

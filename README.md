@@ -104,12 +104,13 @@ Overview · Collections · Products (details, images, description, features, app
 Posts (editor, featured image, draft / published, publish date) · Application videos · Downloads ·
 Messages (Contact form + newsletter sign-ups) · Settings (contact details, social networks, home page slides) · Change password.
 
-Every product has a **line**: Installation, Performance, Portable, or Shared (all lines). It is set in the product's
-*Basic info* tab and filtered on the website (All / Installation / Performance / Portable, shown where a list contains
-more than one line). The home page has one photo tile per line; they open `/products/installation/`,
-`/products/performance/` and `/products/portable/`, the product list with that line already switched on (the address
-follows the pill). Lines are defined in `src/lib/lines.ts`. Tile text and photos live in `src/lib/lines.ts` /
-`public/img/lines/` (the same photos as the catalog openers). The starting
+Every product has a **line**: Installation, Performance, Portable, or Shared (the accessories: listed under Installation
+and Performance, not under Portable). It is set in the product's *Basic info* tab and filtered on the website
+(All / Installation / Performance / Portable, shown where a list contains more than one line). The home page has one
+photo tile per line; they open `/products/installation/`, `/products/performance/` and `/products/portable/`, the
+product list with that line already switched on (the address follows the pill). Line names, tile text and the
+shared-accessories rule live in `src/lib/lines.ts`, the photos in `public/img/lines/` (the same ones as the catalog
+openers). The starting
 assignment, and the few products that moved to another collection, live in `data/product-groups.json`;
 `npm run db:groups` re-applies it (it overwrites lines edited in the admin).
 

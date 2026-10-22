@@ -27,7 +27,7 @@ export default async function HomePage() {
   ]);
 
   const shortName = new Map(collections.map((c) => [c.slug, c.short]));
-  // models of each line (the shared accessories are on every line page but are not counted as models)
+  // models of each line (the shared accessories are listed under Installation and Performance but are not counted as models)
   const lines = PRODUCT_LINES.map((item) => {
     const items = products.filter((p) => p.line === item.value);
     return { ...item, count: items.length, collections: collections.filter((c) => items.some((p) => p.collection === c.slug)).map((c) => c.short) };
