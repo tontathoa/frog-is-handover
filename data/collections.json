@@ -6,6 +6,7 @@
   "icon_hover": "uploads/2018/02/collections-ppss_hover.png",
   "picto": "uploads/2018/02/collections-ppss.png",
   "products": [
+   "fi-ct5",
    "fi-ct8",
    "fi-ct8x2",
    "fp8",
@@ -21,7 +22,6 @@
    "fi-m50",
    "fi-ct4ip",
    "fi-ct6ip",
-   "fi-ct5",
    "fi-ct15p"
   ]
  },
