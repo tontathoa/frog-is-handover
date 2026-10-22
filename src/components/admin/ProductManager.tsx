@@ -156,7 +156,7 @@ export default function ProductManager() {
                 {item.label}
               </option>
             ))}
-            <option value="shared">Shared (both lines)</option>
+            <option value="shared">Shared (accessories)</option>
           </select>
           <select className="adm-input adm-input--sm" aria-label="Visibility" value={visibility} onChange={(event) => filter(() => setVisibility(event.target.value))}>
             <option value="all">Visible &amp; hidden</option>

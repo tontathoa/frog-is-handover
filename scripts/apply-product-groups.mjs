@@ -1,6 +1,6 @@
 // Applies data/product-groups.json to the database.   npm run db:groups
 //
-// For every product: its line (installation / performance / portable / null = shared by every line) and, for the few
+// For every product: its line (installation / performance / portable / null = shared: the accessories) and, for the few
 // products that were re-homed, the collection they belong to. Safe to run again; it only touches those two columns.
 import { connect, readJson } from './lib.mjs';
 
