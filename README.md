@@ -63,6 +63,7 @@ npm run start
 | `ecosystem.config.js` | PM2 process `frogis-web`: `next start` on `127.0.0.1:3040` |
 | `deploy/nginx-frogis.conf` | nginx site template (set `server_name`) → that port; serves `/uploads/` from disk |
 | `deploy.sh` | Runs on the server: `git pull`, `npm ci`, `npm run build`, PM2 reload |
+| `.github/workflows/deploy.yml` | Runs `deploy.sh` over SSH on every push to `main` (see *Automatic deploy*) |
 
 Not in git: `.env.local` (copy `.env.example`). The content database is `database/frogis-content.sql` and the media
 is `public/uploads/`, both in git.
@@ -76,6 +77,26 @@ is `public/uploads/`, both in git.
 5. Point nginx at it with `deploy/nginx-frogis.conf` (set `server_name`, add HTTPS with certbot).
 
 Later updates: `git pull`, then `bash deploy.sh` again. Files uploaded through the admin are not tracked and survive it.
+
+### Automatic deploy
+
+Every push to `main` runs `deploy.sh` on the server through GitHub Actions. It needs four repository secrets; without
+them the job is skipped.
+
+| Secret | What |
+| --- | --- |
+| `DEPLOY_HOST` | Server address |
+| `DEPLOY_USER` | Linux user that owns the app folder and its PM2 process |
+| `DEPLOY_SSH_KEY` | Private key of a key pair made only for this |
+| `DEPLOY_KNOWN_HOSTS` | The server's line for `known_hosts`, so the job can verify it is talking to the right machine |
+
+On the server, lock the public key to the deploy in that user's `~/.ssh/authorized_keys`:
+
+```
+restrict,command="bash /var/www/frogis/deploy.sh" ssh-ed25519 AAAA... frogis-deploy
+```
+
+Deploy logs are visible to anyone who can read the repository, so keep secrets out of what `deploy.sh` prints.
 
 ## Layout
 
