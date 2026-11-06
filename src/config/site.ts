@@ -17,6 +17,9 @@ export const site = {
   /** Google Tag Manager container on the public pages; not loaded on noindex copies. Empty = off. */
   gtmId: 'GTM-TQLGKC59',
 
+  /** Meta (Facebook) Pixel "Frog-is" in the HAT Solution Consulting business portfolio; same rules as gtmId. */
+  metaPixelId: '1480157103626441',
+
   nav: [
     { label: 'Products', path: 'products/', mega: true },
     { label: 'Applications', path: 'applications/' },
