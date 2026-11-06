@@ -14,6 +14,9 @@ export const site = {
   /** SITE_NOINDEX=1 keeps a demo / staging copy out of search engines. */
   noindex: process.env.SITE_NOINDEX === '1',
 
+  /** Google Tag Manager container on the public pages; not loaded on noindex copies. Empty = off. */
+  gtmId: 'GTM-TQLGKC59',
+
   nav: [
     { label: 'Products', path: 'products/', mega: true },
     { label: 'Applications', path: 'applications/' },
