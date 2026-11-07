@@ -36,7 +36,7 @@ export default async function VideoPage({ params }: Props) {
           ) : video.embed ? (
             <iframe src={video.embed} title={video.title} allowFullScreen loading="lazy" />
           ) : (
-            video.thumb && <img src={mediaUrl(video.thumb)} alt="" />
+            video.thumb && <img src={mediaUrl(video.thumb)} alt={video.title} />
           )}
         </div>
         <header className="player__head">

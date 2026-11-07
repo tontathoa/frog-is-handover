@@ -29,7 +29,7 @@ export default async function DownloadsPage() {
             const size = fileSizeLabel(bytes);
             return (
               <a key={d.id} className="dcard" href={href || '#'} target="_blank" rel="noopener">
-                <div className="dcard__media">{d.image && <img src={mediaUrl(d.image)} alt="" loading="lazy" />}</div>
+                <div className="dcard__media">{d.image && <img src={mediaUrl(d.image)} alt={d.title} loading="lazy" />}</div>
                 <div className="dcard__body">
                   <span className="label">
                     {kind}

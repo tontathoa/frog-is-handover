@@ -10,7 +10,7 @@ export default function Footer({ collections, info, socials }: { collections: Co
     <footer className="site-footer">
       <div className="site-footer__inner">
         <div className="site-footer__brand">
-          <img src="/img/logo.png" alt={site.name} width={452} height={300} loading="lazy" />
+          <img src="/img/logo.webp" alt={site.name} width={280} height={186} loading="lazy" />
           <p>{site.tagline}</p>
         </div>
 

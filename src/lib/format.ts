@@ -47,7 +47,17 @@ export function rich(html: string | null | undefined): string {
   return (html ?? '')
     .replaceAll('{{site}}', '/')
     .replace(/(src|href)="uploads\//g, '$1="/uploads/')
-    .replace(/<img (?![^>]*\bloading=)/g, '<img loading="lazy" ');
+    .replace(/<img (?![^>]*\bloading=)/g, '<img loading="lazy" ')
+    .replace(/<img ([^>]*?)src="(\/uploads\/[^"]+\.(?:jpe?g|png|webp))"/gi, (_, attrs: string, src: string) => {
+      // Through the image optimizer like next/image: a copy sized for the screen, as AVIF/WebP, not the upload as is.
+      let path = src;
+      try {
+        path = decodeURI(src);
+      } catch {}
+      const url = (width: number) => `/_next/image/?url=${encodeURIComponent(path)}&amp;w=${width}&amp;q=75`;
+      const srcset = [640, 1080, 1920].map((width) => `${url(width)} ${width}w`).join(', ');
+      return `<img ${attrs}src="${url(1080)}" srcset="${srcset}" sizes="(max-width: 1000px) 100vw, 1000px" decoding="async"`;
+    });
 }
 
 export function slugify(text: string): string {

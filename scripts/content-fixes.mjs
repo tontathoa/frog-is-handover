@@ -266,6 +266,12 @@ FIXES.push({
   ],
 });
 
+// WordPress left the FS-Bracket1 with its post id as slug (/product/22827/); next.config.ts redirects the old address.
+FIXES.push({
+  id: '2026-11-07-fs-bracket1-slug',
+  products: [{ slug: '22827', newSlug: 'fs-bracket1', set: {} }],
+});
+
 const JSON_COLUMNS = new Set(['images', 'files', 'features', 'applications', 'specs']);
 const TEXT_COLUMNS = ['subtitle', 'description', 'features', 'applications', 'specs'];
 const COLUMNS = new Set(['title', 'subtitle', 'description', 'sort_order', ...JSON_COLUMNS]);

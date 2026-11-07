@@ -7,7 +7,7 @@ export default function PostCard({ post, heading: Heading = 'h3' }: { post: Post
   return (
     <Link className="ncard" href={`/${encodeURIComponent(post.slug)}/`}>
       <div className="ncard__media">
-        {post.image && <Image src={mediaUrl(post.image)} alt="" fill sizes="(max-width: 640px) 85vw, (max-width: 1100px) 50vw, 33vw" />}
+        {post.image && <Image src={mediaUrl(post.image)} alt={post.title} fill sizes="(max-width: 640px) 85vw, (max-width: 1100px) 50vw, 33vw" />}
       </div>
       <div className="ncard__body">
         <div className="ncard__meta">

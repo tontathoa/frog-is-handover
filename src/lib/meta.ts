@@ -14,10 +14,22 @@ type PageMeta = {
   absoluteTitle?: boolean;
 };
 
+/** Longest title Google shows in full; a longer one is cut in the results. */
+const TITLE_MAX = 65;
+
+/** The <title>: with " | Frog-is" when it fits, without when it does not, shortened at a word as a last resort. */
+function fitTitle(title: string, absolute?: boolean): string {
+  const branded = absolute ? title : `${title} | ${site.name}`;
+  if (branded.length <= TITLE_MAX) return branded;
+  if (title.length <= TITLE_MAX) return title;
+  const cut = title.slice(0, TITLE_MAX - 1);
+  return `${cut.slice(0, cut.lastIndexOf(' ') > 30 ? cut.lastIndexOf(' ') : cut.length).replace(/[\s,—–-]+$/, '')}…`;
+}
+
 export function pageMeta({ title, description = site.description, path, image, type = 'website', noindex, absoluteTitle }: PageMeta): Metadata {
   const fullTitle = absoluteTitle ? title : `${title} | ${site.name}`;
   return {
-    title: absoluteTitle ? { absolute: title } : title,
+    title: { absolute: fitTitle(title, absoluteTitle) },
     description,
     alternates: { canonical: path },
     // Spread, not `robots: undefined`: an undefined key would still override the layout's value.

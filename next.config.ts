@@ -6,6 +6,14 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   // Keep the dev-mode badge away from the admin sidebar (bottom-left).
   devIndicators: { position: 'bottom-right' },
+  images: {
+    // AVIF where the browser takes it (about a third smaller than WebP), WebP otherwise.
+    formats: ['image/avif', 'image/webp'],
+    // Default list without 3840: a 4K-wide copy weighs 500-750 KB and no layout needs it.
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
+    // Uploads get a new file name when replaced, so optimized copies can be kept for a month.
+    minimumCacheTTL: 2678400,
+  },
   async redirects() {
     return [
       // WordPress search URL (/?s=query)
@@ -22,6 +30,8 @@ const nextConfig: NextConfig = {
       { source: '/product/fi-cc10', destination: '/product/fi-cb10/', permanent: true },
       { source: '/product/fi-sub210', destination: '/product/fi-sub10u/', permanent: true },
       { source: '/product/fi-sub215', destination: '/product/fi-sub15u/', permanent: true },
+      // WordPress left this bracket with its post id as slug
+      { source: '/product/22827', destination: '/product/fs-bracket1/', permanent: true },
     ];
   },
 };

@@ -39,7 +39,7 @@ export default async function AboutPage() {
           <div className="story">
             {rows.map((row, i) => (
               <div key={i} className={`story__row story__row--${row.layout}`}>
-                <div className="story__media">{row.image && <img src={mediaUrl(row.image)} alt="" loading="lazy" />}</div>
+                <div className="story__media">{row.image && <img src={mediaUrl(row.image)} alt={row.title} loading="lazy" />}</div>
                 <div className="story__text">
                   {row.title && <h2 className="story__title">{row.title}</h2>}
                   <div className="prose" dangerouslySetInnerHTML={{ __html: rich(row.html) }} />

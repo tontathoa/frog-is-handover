@@ -83,7 +83,7 @@ export default function Header({ name, tagline, nav, collections }: Props) {
     <header className="site-header">
       <div className="site-header__bar">
         <Link className="site-header__logo" href="/" aria-label={`${name} — home`} onClick={closeAll}>
-          <img src="/img/logo.png" alt={name} width={452} height={300} />
+          <img src="/img/logo.webp" alt={name} width={280} height={186} />
         </Link>
 
         <nav className="site-nav" aria-label="Main">

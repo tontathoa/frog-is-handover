@@ -49,7 +49,7 @@ export default function HeroSlider({ slides, autoplay = 6500 }: { slides: HeroSl
           <div key={slide.image} className={`hero__slide${active ? ' is-active' : ''}`} aria-hidden={!active}>
             <Image
               src={slide.image}
-              alt=""
+              alt={slide.title ?? ''}
               fill
               sizes="100vw"
               loading={i === 0 ? 'eager' : 'lazy'}

@@ -31,7 +31,7 @@ export default function VideoCard({ video, heading: Heading = 'h3' }: { video: V
       >
         {/* The posters are soft video stills, so they sit blurred and darkened behind the text. */}
         <div className="vcard__media">
-          {video.thumb && <Image src={video.thumb} alt="" fill sizes="(max-width: 640px) 100vw, (max-width: 960px) 50vw, 25vw" />}
+          {video.thumb && <Image src={video.thumb} alt={video.title} fill sizes="(max-width: 640px) 100vw, (max-width: 960px) 50vw, 25vw" />}
         </div>
         <div className="vcard__top">
           <span className="vcard__tag">Video</span>

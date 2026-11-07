@@ -6,7 +6,7 @@ import ProductCard from '@/components/ProductCard';
 import Rail from '@/components/Rail';
 import VideoCard from '@/components/VideoCard';
 import { site } from '@/config/site';
-import { getAbout, getCollections, getContactInfo, getNewProducts, getPosts, getProducts, getSlides, getVideos } from '@/lib/content';
+import { getAbout, getCollections, getContactInfo, getNewProducts, getPosts, getProducts, getSlides, getSocials, getVideos } from '@/lib/content';
 import { mediaUrl, plain } from '@/lib/format';
 import { lineHref, PRODUCT_LINES } from '@/lib/lines';
 import { productShot } from '@/lib/media';
@@ -15,7 +15,7 @@ import { pageMeta } from '@/lib/meta';
 export const metadata = pageMeta({ title: `${site.name} — ${site.tagline}`, absoluteTitle: true, path: '/' });
 
 export default async function HomePage() {
-  const [slides, fresh, collections, about, videos, posts, info, products] = await Promise.all([
+  const [slides, fresh, collections, about, videos, posts, info, products, socials] = await Promise.all([
     getSlides(),
     getNewProducts(),
     getCollections(),
@@ -24,7 +24,24 @@ export default async function HomePage() {
     getPosts(),
     getContactInfo(),
     getProducts(),
+    getSocials(),
   ]);
+
+  // Who is behind the site, for Google and AI search: name, logo, address and contacts from the admin settings.
+  const organization = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: site.name,
+    url: site.origin + '/',
+    logo: site.origin + '/img/logo.png',
+    description: site.description,
+    ...(info.address.length ? { address: { '@type': 'PostalAddress', streetAddress: info.address.join(', ') } } : {}),
+    contactPoint: [
+      ...info.phones.map((phone) => ({ '@type': 'ContactPoint', contactType: phone.label, telephone: phone.number })),
+      ...info.emails.map((email) => ({ '@type': 'ContactPoint', contactType: email.label, email: email.email })),
+    ],
+    ...(socials.length ? { sameAs: socials.map((social) => social.href) } : {}),
+  };
 
   const shortName = new Map(collections.map((c) => [c.slug, c.short]));
   // models of each line (the shared accessories are listed under Installation and Performance but are not counted as models)
@@ -58,7 +75,7 @@ export default async function HomePage() {
         <div className="lines">
           {lines.map((item, i) => (
             <Link key={item.value} className="line" href={lineHref(item.value)}>
-              <Image src={item.photo} alt="" fill sizes="(max-width: 640px) 100vw, 50vw" priority={i === 0} />
+              <Image src={item.photo} alt="" fill sizes="(max-width: 640px) 100vw, 50vw" />
               <span className="line__credit">Photo: {item.credit} / Unsplash</span>
               <span className="line__content">
                 <span className="line__eyebrow">Product line {String(i + 1).padStart(2, '0')}</span>
@@ -193,6 +210,8 @@ export default async function HomePage() {
           </Link>
         </div>
       </section>
+
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organization).replace(/</g, '\\u003c') }} />
     </>
   );
 }
