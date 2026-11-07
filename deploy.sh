@@ -13,8 +13,13 @@ APP_PATH="${APP_PATH:-/var/www/frogis}"
 PM2_NAME="${PM2_NAME:-frogis-web}"
 cd "$APP_PATH"
 
-echo "[Deploy] Pulling latest code..."
-git pull --ff-only origin main
+# Bash keeps reading the copy of this file it opened before the pull, so after pulling, start over with
+# the version just pulled: a change to this script then applies to the same deploy, not the next one.
+if [ -z "$DEPLOY_PULLED" ]; then
+  echo "[Deploy] Pulling latest code..."
+  git pull --ff-only origin main
+  DEPLOY_PULLED=1 exec bash "$APP_PATH/deploy.sh"
+fi
 
 echo "[Deploy] Installing dependencies..."
 npm ci
