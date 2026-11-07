@@ -5,7 +5,6 @@ import Crumbs from '@/components/Crumbs';
 import Gallery from '@/components/Gallery';
 import ProductCard from '@/components/ProductCard';
 import Rail from '@/components/Rail';
-import { site } from '@/config/site';
 import { getCollection, getProduct, getProducts } from '@/lib/content';
 import { excerpt, fileSizeLabel, mediaUrl, rich } from '@/lib/format';
 import { lineLabel } from '@/lib/lines';
@@ -46,17 +45,7 @@ export default async function ProductPage({ params }: Props) {
   const related = siblings.filter((p) => p.slug !== product.slug);
   const specs = product.specs.filter((section) => section.rows.length > 0);
   const enquiry = `/contact/?product=${encodeURIComponent(product.title)}`;
-
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
-    name: product.title,
-    description: excerpt(product.description || product.subtitle, 300),
-    sku: product.title,
-    brand: { '@type': 'Brand', name: site.name },
-    ...(collection ? { category: collection.name } : {}),
-    image: product.images.map((image) => site.origin + mediaUrl(image)),
-  };
+  // No Product structured data: Google rejects it without a price (offers) or reviews, and products have neither.
 
   return (
     <>
@@ -188,7 +177,6 @@ export default async function ProductPage({ params }: Props) {
         </section>
       )}
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
     </>
   );
 }

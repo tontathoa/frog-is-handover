@@ -12,6 +12,8 @@ const nextConfig: NextConfig = {
       { source: '/', has: [{ type: 'query', key: 's' }], destination: '/search/', permanent: false },
       // retired WooCommerce / old pages
       ...['shop', 'cart', 'order', 'account'].map((page) => ({ source: `/${page}`, destination: '/products/', permanent: true })),
+      // WordPress paged collection lists (/collection/<slug>/page/<n>/): the new list is one page
+      { source: '/collection/:slug/page/:n', destination: '/collection/:slug/', permanent: true },
       { source: '/download', destination: '/brochure/', permanent: true },
       { source: '/downloads', destination: '/brochure/', permanent: true },
       { source: '/order-form', destination: '/contact/', permanent: true },
