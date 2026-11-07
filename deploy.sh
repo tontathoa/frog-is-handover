@@ -23,6 +23,10 @@ npm ci
 echo "[Deploy] Updating the database schema..."
 npm run -s db:setup
 
+# One-off content corrections (each runs once per database, see scripts/content-fixes.mjs).
+echo "[Deploy] Applying content fixes..."
+npm run -s db:fixes
+
 # Public pages are pre-rendered from the database, so it must be reachable here.
 echo "[Deploy] Building..."
 npm run build

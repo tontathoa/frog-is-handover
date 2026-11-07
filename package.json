@@ -10,6 +10,7 @@
     "db:setup": "node scripts/db-setup.mjs",
     "db:import": "node scripts/db-import.mjs",
     "db:groups": "node scripts/apply-product-groups.mjs",
+    "db:fixes": "node scripts/content-fixes.mjs",
     "admin:user": "node scripts/admin-user.mjs"
   },
   "engines": {

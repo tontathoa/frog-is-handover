@@ -15,6 +15,11 @@ const nextConfig: NextConfig = {
       { source: '/download', destination: '/brochure/', permanent: true },
       { source: '/downloads', destination: '/brochure/', permanent: true },
       { source: '/order-form', destination: '/contact/', permanent: true },
+      // renamed products (FI-CC12 / FI-CC10 are really the FI-CB8 / FI-CB10)
+      { source: '/product/fi-cc12', destination: '/product/fi-cb8/', permanent: true },
+      { source: '/product/fi-cc10', destination: '/product/fi-cb10/', permanent: true },
+      { source: '/product/fi-sub210', destination: '/product/fi-sub10u/', permanent: true },
+      { source: '/product/fi-sub215', destination: '/product/fi-sub15u/', permanent: true },
     ];
   },
 };
