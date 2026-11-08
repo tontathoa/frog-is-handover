@@ -30,6 +30,9 @@ const nextConfig: NextConfig = {
       { source: '/product/fi-cc10', destination: '/product/fi-cb10/', permanent: true },
       { source: '/product/fi-sub210', destination: '/product/fi-sub10u/', permanent: true },
       { source: '/product/fi-sub215', destination: '/product/fi-sub15u/', permanent: true },
+      // FI-CC4 / FI-CC8 are not Frog-is products (hidden in the admin since 2026-11-09)
+      { source: '/product/fi-cc4', destination: '/collection/point-source-speakers/', permanent: true },
+      { source: '/product/fi-cc8', destination: '/collection/point-source-speakers/', permanent: true },
       // WordPress left this bracket with its post id as slug
       { source: '/product/22827', destination: '/product/fs-bracket1/', permanent: true },
     ];
