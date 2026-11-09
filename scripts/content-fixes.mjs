@@ -629,6 +629,21 @@ FIXES.push({
   ],
 });
 
+// Partner (WeChat, 2026-11-09 13:23): new photos for the FI-SUB10 / FI-SUB12 subs (new cabinet and badge). The rear
+// shot is the passive SpeakON panel, so the active models get the other three; FI-SUB10A keeps its amplifier rear shot.
+FIXES.push({
+  id: '2026-11-09-fi-sub10-sub12-photos',
+  products: [
+    { slug: 'fi-sub10p', set: { images: photos('fi-sub10p', ['2614f0', '7f9955', 'b221ef', 'dc75a9']) } },
+    { slug: 'fi-sub12p', set: { images: photos('fi-sub12p', ['28096b', '818128', 'c227a7', 'a0ac4b']) } },
+    {
+      slug: 'fi-sub10a',
+      set: { images: [...photos('fi-sub10a', ['3cecb0', '2740b3', 'c87e7c']), 'uploads/products/2026/10/fi-sub10a-3-c59355.jpg'] },
+    },
+    { slug: 'fi-sub12a', set: { images: photos('fi-sub12a', ['b3c226', '63a017', 'b9c171']) } },
+  ],
+});
+
 const JSON_COLUMNS = new Set(['images', 'files', 'features', 'applications', 'specs']);
 const TEXT_COLUMNS = ['subtitle', 'description', 'features', 'applications', 'specs'];
 const COLUMNS = new Set(['title', 'subtitle', 'description', 'sort_order', 'is_active', 'is_new', 'product_line', ...JSON_COLUMNS]);
