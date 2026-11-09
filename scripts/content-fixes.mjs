@@ -644,6 +644,16 @@ FIXES.push({
   ],
 });
 
+// Partner (WeChat, 2026-11-09 10:48): retouch the side "FROG-IS" out of the FI-SUB10U real photos (done for the
+// FI-CB8 too, same cabinet family); the user also asked for a darker black level (gamma 1.5) on these photos.
+FIXES.push({
+  id: '2026-11-09-sub10u-cb8-retouched',
+  products: [
+    { slug: 'fi-sub10u', set: { images: photos('fi-sub10u', ['7e85f0', 'e0cb05', '55a8d7', 'e45086']) } },
+    { slug: 'fi-cb8', set: { images: photos('fi-cb8', ['2a2c57', 'feec9a', '56b925', '7ebdd6']) } },
+  ],
+});
+
 const JSON_COLUMNS = new Set(['images', 'files', 'features', 'applications', 'specs']);
 const TEXT_COLUMNS = ['subtitle', 'description', 'features', 'applications', 'specs'];
 const COLUMNS = new Set(['title', 'subtitle', 'description', 'sort_order', 'is_active', 'is_new', 'product_line', ...JSON_COLUMNS]);
