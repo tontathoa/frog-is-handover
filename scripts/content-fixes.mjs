@@ -654,6 +654,18 @@ FIXES.push({
   ],
 });
 
+// FI-CC4/CC8 are hidden (not Frog-is products): the FI-SUB15U copy no longer names the FI-CC series.
+FIXES.push({
+  id: '2026-11-17-sub15u-no-fi-cc',
+  products: [{ slug: 'fi-sub15u', replace: [['the FI-CC and FI-CB series', 'the FI-CB series']] }],
+});
+
+// Partner (WeChat 2026-11-09 21:27): the antenna splitter belongs with the wireless microphones, after the antenna.
+FIXES.push({
+  id: '2026-11-17-fi-sp-to-microphones',
+  products: [{ slug: 'fi-sp', collection: 'microphones-headphones', set: { sort_order: 11 } }],
+});
+
 const JSON_COLUMNS = new Set(['images', 'files', 'features', 'applications', 'specs']);
 const TEXT_COLUMNS = ['subtitle', 'description', 'features', 'applications', 'specs'];
 const COLUMNS = new Set(['title', 'subtitle', 'description', 'sort_order', 'is_active', 'is_new', 'product_line', ...JSON_COLUMNS]);
@@ -674,7 +686,7 @@ try {
     if (applied.has(fix.id)) continue;
     await db.beginTransaction();
     const notes = [];
-    for (const { slug, newSlug, set, replace = [], create } of fix.products) {
+    for (const { slug, newSlug, set = {}, replace = [], create, collection: moveTo } of fix.products) {
       let [[row]] = await db.query('SELECT id FROM products WHERE slug = ?', [slug]);
       if (create) {
         // A new product: left alone if it already exists (e.g. added in the admin meanwhile).
@@ -708,6 +720,12 @@ try {
       if (newSlug) {
         sets.push('slug = ?');
         values.push(newSlug);
+      }
+      if (moveTo) {   // move an existing product to another collection (by collection slug)
+        const [[coll]] = await db.query('SELECT id FROM collections WHERE slug = ?', [moveTo]);
+        if (!coll) throw new Error(`${fix.id}: collection ${moveTo} not found`);
+        sets.push('collection_id = ?');
+        values.push(coll.id);
       }
       // Text replacements (e.g. a model name mentioned in the copy) on the columns the fix does not set outright.
       for (const [from, to] of replace) {
