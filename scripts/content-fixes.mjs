@@ -706,6 +706,12 @@ FIXES.push({
   }],
 });
 
+// The server clock is UTC: 09:00 was still in the future there, so the post stayed hidden until then.
+FIXES.push({
+  id: '2026-11-18-zhejiang-post-time',
+  postDates: [{ slug: 'zhejiang-buddhist-academy-mahavira-hall', published_at: '2026-11-18 00:00:00' }],
+});
+
 FIXES.push({
   id: '2026-11-18-family-size-order',
   products: Object.values(FAMILY_ORDER).flatMap((slugs) => slugs.map((slug, i) => ({ slug, set: { sort_order: i + 1 } }))),
@@ -731,6 +737,10 @@ try {
     if (applied.has(fix.id)) continue;
     await db.beginTransaction();
     const notes = [];
+    for (const { slug, published_at: when } of fix.postDates ?? []) {   // move a post's publication time
+      await db.query('UPDATE posts SET published_at = ?, updated_at = NOW() WHERE slug = ?', [when, slug]);
+      notes.push(`post ${slug} -> ${when}`);
+    }
     for (const post of fix.posts ?? []) {   // a new News & projects post; left alone if the slug already exists
       const [[found]] = await db.query('SELECT id FROM posts WHERE slug = ?', [post.slug]);
       if (found) { notes.push(`post ${post.slug} exists, skipped`); continue; }
