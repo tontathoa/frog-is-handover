@@ -717,6 +717,34 @@ FIXES.push({
   products: Object.values(FAMILY_ORDER).flatMap((slugs) => slugs.map((slug, i) => ({ slug, set: { sort_order: i + 1 } }))),
 });
 
+// Logo rule (partner, WeChat 2026-11-14): Installation = white badge + green frog, Performance/Portable = black badge + white frog.
+// Retouched speaker photos saved under new names (-lg26) so caches pick them up; originals stay on disk.
+FIXES.push({
+  id: '2026-11-18-speaker-logo-badges',
+  products: [
+    { slug: 'fi-sub6a', set: { images: ["uploads/products/2026/11/fi-sub6a-1-cfa651-lg26.jpg", "uploads/products/2026/11/fi-sub6a-2-4cba61-lg26.jpg", "uploads/products/2026/11/fi-sub6a-3-731229.jpg", "uploads/products/2026/11/fi-sub6a-4-2f4241.jpg"] } },
+    { slug: 'fi-sms6eco', set: { images: ["uploads/products/2026/10/fi-sms6eco-1-16e9f3-lg26.jpg", "uploads/products/2026/10/fi-sms6eco-2-dc52de-lg26.jpg", "uploads/products/2026/10/fi-sms6eco-3-5a5075.jpg", "uploads/products/2026/10/fi-sms6eco-4-787755.jpg", "uploads/products/2026/10/fi-sms6eco-5-d50250-lg26.jpg", "uploads/2026/08/FI-SMS6ECO-06-lg26.jpg", "uploads/2026/08/FI-SMS6ECO-07.jpg", "uploads/2026/08/FI-SMS6ECO-08.jpg"] } },
+    { slug: 'fi-m50', set: { images: ["uploads/products/2026/10/fi-m50-1-5b3459-lg26.jpg", "uploads/products/2026/10/fi-m50-2-601d15-lg26.jpg", "uploads/2024/06/FI-M50-3.jpg", "uploads/products/2026/10/fi-m50-4-7c0367.jpg"] } },
+    { slug: 'fi-sms6-b-w', set: { images: ["uploads/products/2026/10/fi-sms6-b-w-1-8ba484-lg26.jpg", "uploads/products/2026/10/fi-sms6-b-w-2-28a429-lg26.jpg", "uploads/2024/03/FI-SMS6-3.jpg", "uploads/2024/03/FI-SMS6-4-lg26.jpg", "uploads/2024/03/FI-SMS6-5-lg26.jpg", "uploads/2024/03/FI-SMS6-6.jpg"] } },
+    { slug: 'fs4x3', set: { images: ["uploads/2023/11/FS4X3-1-lg26.jpg", "uploads/2023/11/FS4X3-2-lg26.jpg", "uploads/2023/11/FS4X3-3.jpg", "uploads/2023/11/FS4X3W-1-lg26.jpg", "uploads/2023/11/FS4X3W-2-lg26.jpg", "uploads/2023/11/FS4X3W-3.jpg"] } },
+    { slug: 'fs2x3', set: { images: ["uploads/2023/11/FS2X3-1-lg26.jpg", "uploads/2023/11/FS2X3-2-lg26.jpg", "uploads/2023/11/FS2X3-3.jpg", "uploads/2023/11/FS2X3W-1-lg26.jpg", "uploads/2023/11/FS2X3W-2-lg26.jpg", "uploads/2023/11/FS2X3W-3.jpg"] } },
+    { slug: 'fi-sub21p', set: { images: ["uploads/products/2026/10/fi-sub21p-1-1d1749-lg26.jpg", "uploads/2023/09/FI-SUB21P-2-1.jpg", "uploads/2023/09/FI-SUB21P-3-1.jpg", "uploads/2023/09/FI-SUB21P-4.jpg"] } },
+    { slug: 'fa-2x6t', set: { images: ["uploads/2023/08/FA-2X6T-lg26.jpg", "uploads/2023/08/FA-2X6T-a-lg26.jpg", "uploads/2023/08/FA-2X6T-b-lg26.jpg", "uploads/2023/08/FA-2X6T-c-lg26.jpg", "uploads/2023/08/FA-2X6T-d.jpg"] } },
+    { slug: 'fa-2x10s', set: { images: ["uploads/2023/08/FA-2X10S-lg26.jpg", "uploads/2023/08/FA-2X10S-3-lg26.jpg", "uploads/2023/08/FA-2X10S-1-lg26.jpg", "uploads/2023/08/FA-2X10S-1-1-lg26.jpg", "uploads/2023/08/FA-2X10S-2-1-lg26.jpg", "uploads/2023/08/FA-2X10S-3-1-lg26.jpg", "uploads/2023/08/FA-2X10S-4.jpg"] } },
+    { slug: 'fs12-array', set: { images: ["uploads/2023/08/FS12-Array-lg26.jpg"] } },
+    { slug: 'fs15-array', set: { images: ["uploads/2023/08/FS12-Array-lg26.jpg"] } },
+    { slug: 'fs-sub15p', set: { images: ["uploads/2018/09/FS-SUB15-1-lg26.jpg"] } },
+    { slug: 'fs-sub15', set: { images: ["uploads/2018/09/FS-SUB15-1-lg26.jpg", "uploads/products/2026/10/fs-sub15-2-8a10b1.jpg"] } },
+    { slug: 'fs-sub12p', set: { images: ["uploads/2018/09/FS-SUB12-1-1-lg26.jpg"] } },
+    { slug: 'fs-sub12', set: { images: ["uploads/2018/09/FS-SUB12-1-1-lg26.jpg", "uploads/2018/09/FS-SUB15-2-1.jpg"] } },
+    { slug: 'fi-sms4-b-w', set: { images: ["uploads/2018/08/FI-SMS4B-1-1-lg26.jpg", "uploads/2018/08/FI-SMS4B-2-1-lg26.jpg", "uploads/2018/08/FI-SMS4B-3-1.jpg", "uploads/2018/08/FI-SMS4B-4-1-lg26.jpg", "uploads/2018/08/FI-SMS4B-5-lg26.jpg", "uploads/2018/08/FI-SMS4B-6.jpg"] } },
+    { slug: 'fs15', set: { images: ["uploads/products/2026/10/fs15-1-52816f-lg26.jpg"] } },
+    { slug: 'fs12', set: { images: ["uploads/2023/08/FS12-lg26.jpg"] } },
+    { slug: 'fi-sms8-b-w', set: { images: ["uploads/products/2026/11/fi-sms8-b-w-1-8bb9cf-lg26.jpg", "uploads/products/2026/11/fi-sms8-b-w-2-c34961-lg26.jpg", "uploads/products/2026/11/fi-sms8-b-w-3-ff4fde.jpg", "uploads/products/2026/11/fi-sms8-b-w-4-444067.jpg"] } },
+    { slug: 'fi-mdx8', set: { images: ["uploads/products/2026/11/fi-mdx8-1-db05af-lg26.jpg", "uploads/products/2026/11/fi-mdx8-2-8bc9ee-lg26.jpg", "uploads/products/2026/11/fi-mdx8-3-e04b44.jpg", "uploads/products/2026/11/fi-mdx8-4-587540.jpg", "uploads/products/2026/11/fi-mdx8-5-15425e.jpg"] } },
+  ],
+});
+
 const JSON_COLUMNS = new Set(['images', 'files', 'features', 'applications', 'specs']);
 const TEXT_COLUMNS = ['subtitle', 'description', 'features', 'applications', 'specs'];
 const COLUMNS = new Set(['title', 'subtitle', 'description', 'sort_order', 'is_active', 'is_new', 'product_line', ...JSON_COLUMNS]);
