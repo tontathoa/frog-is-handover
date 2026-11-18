@@ -666,6 +666,51 @@ FIXES.push({
   products: [{ slug: 'fi-sp', collection: 'microphones-headphones', set: { sort_order: 11 } }],
 });
 
+// Partner (WeChat 2026-11-14, Tri): list products by family, then by size from small to big
+// (e.g. the whole FI-CT family FI-CT4IP .. FI-CT15P together). One list per collection, in display order.
+const FAMILY_ORDER = {
+  'point-source-speakers': ['fi-ct4ip', 'fi-ct5', 'fi-ct6ip', 'fi-ct8', 'fi-ct8x2', 'fi-ct15p', 'fi-cb8', 'fi-cb10',
+    'fp8', 'fp8p', 'fp12', 'fp12p', 'fp15', 'fp15p', 'fi-sms4-b-w', 'fi-sms6-b-w', 'fi-sms6eco', 'fi-sms6pro',
+    'fi-sms8-b-w', 'fi-gs6dx', 'fi-m50', 'fi-cc4', 'fi-cc8'],
+  'slimline-array-speaker-systems': ['fs2x3', 'fs4x3', 'fs4d', 'fs4ip', 'fs8ip', 'fs12-array', 'fs15-array', 'fs12', 'fs15'],
+  'high-performance-array-speaker-systems': ['fa-x4t', 'fa-2x6t', 'fa-2x8a', 'fa-2x8tp', 'fa-2x10s', 'fa-3x10t'],
+  'ceiling-speakers': ['fi-cs2w', 'fi-cs3', 'fi-cs4w', 'fi-cs5w', 'fi-cs6w', 'fi-cs6d', 'fi-cs6bt', 'fi-cs8w', 'fi-cs8d',
+    'fi-hps5w-b', 'fi-hps6w-b', 'fi-mdx8'],
+  subwoofers: ['sub6p', 'fi-sub6a', 'csub6p', 'fi-sub10p', 'fi-sub10a', 'fi-sub10u', 'fi-sub12ip', 'fi-sub12p', 'fi-sub12a',
+    'fi-sub15u', 'fi-sub18a', 'fs-sub12', 'fs-sub12p', 'fs-sub15', 'fs-sub15p', 'fa-sub18x2p', 'fi-sub21p'],
+  'amplifier-mixer': ['fi-amp4d', 'fi-amp2', 'fi-amp4', 'fi-amp8', 'fi-amp4k', 'fi-amp300x2v', 'fi-amp500x2', 'fi-amp500x2v',
+    'fi-amp850x2', 'fi-amp300dp', 'fi-amp600dsp', 'fi-amp850dsp', 'fi-amp1200dsp', 'ttm-series', 'fi-amp350ktv',
+    'fi-p4x6k', 'fi-p4x8-2', 'fi-dsp1616', 'fi-mix6', 'fi-mix8', 'fi-mix8a', 'fi-mix16', 'fi-mix24', 'fi-pow8'],
+};
+// Partner (WeChat, Gabriel): flagship project, to be featured prominently on the website.
+const ZJ = (n) => `uploads/posts/2026/11/zhejiang-buddhist-academy-${n}.jpg`;
+FIXES.push({
+  id: '2026-11-18-post-zhejiang-buddhist-academy',
+  posts: [{
+    slug: 'zhejiang-buddhist-academy-mahavira-hall',
+    title: 'Zhejiang Buddhist Academy: Frog-is sound for the Mahavira Hall',
+    excerpt: 'The most prestigious Buddhist institute in Zhejiang Province chose four Frog-is FS12 column arrays for its Mahavira Hall: clear speech and chanting for every row, with speakers that almost disappear into the architecture.',
+    featured_image: ZJ(1),
+    published_at: '2026-11-18 09:00:00',
+    content: [
+      '<p>The Zhejiang Buddhist Academy is the most prestigious Buddhist institute in Zhejiang Province, and its temple is regularly visited by senior officials and guests from across China. For the audio installation in the Academy\'s Mahavira Hall (the Great Hall of the Buddha), Frog-is supplied <strong>four FS12 column arrays</strong>.</p>',
+      `<img alt="Mahavira Hall of the Zhejiang Buddhist Academy" src="${ZJ(1)}"/>`,
+      '<p>A great hall like this is a demanding room: hard wooden floors, high timber ceilings and long rows of meditation benches. The slim FS12 columns focus the sound on the seating area instead of the ceiling, so speech, chanting and ceremonies stay clear and natural from the altar to the last row, at a comfortable level.</p>',
+      `<img alt="The hall seen from the side, rows of benches facing the altar" src="${ZJ(3)}"/>`,
+      `<img alt="Frog-is FS12 column array mounted on a pillar" src="${ZJ(6)}"/>`,
+      '<p>Mounted flat on the pillars and finished in a light colour, the columns blend into the white and timber architecture, keeping the attention on the hall itself.</p>',
+      `<img alt="Wide view of the Mahavira Hall" src="${ZJ(5)}"/>`,
+      `<img alt="The Mahavira Hall from outside" src="${ZJ(2)}"/>`,
+      '<p>Products used: <a href="/product/fs12-array/">FS12 column array</a> (4 pcs).</p>',
+    ].join('\n'),
+  }],
+});
+
+FIXES.push({
+  id: '2026-11-18-family-size-order',
+  products: Object.values(FAMILY_ORDER).flatMap((slugs) => slugs.map((slug, i) => ({ slug, set: { sort_order: i + 1 } }))),
+});
+
 const JSON_COLUMNS = new Set(['images', 'files', 'features', 'applications', 'specs']);
 const TEXT_COLUMNS = ['subtitle', 'description', 'features', 'applications', 'specs'];
 const COLUMNS = new Set(['title', 'subtitle', 'description', 'sort_order', 'is_active', 'is_new', 'product_line', ...JSON_COLUMNS]);
@@ -686,7 +731,17 @@ try {
     if (applied.has(fix.id)) continue;
     await db.beginTransaction();
     const notes = [];
-    for (const { slug, newSlug, set = {}, replace = [], create, collection: moveTo } of fix.products) {
+    for (const post of fix.posts ?? []) {   // a new News & projects post; left alone if the slug already exists
+      const [[found]] = await db.query('SELECT id FROM posts WHERE slug = ?', [post.slug]);
+      if (found) { notes.push(`post ${post.slug} exists, skipped`); continue; }
+      await db.query(
+        `INSERT INTO posts (slug, title, excerpt, content, featured_image, is_published, published_at, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, 1, ?, NOW(), NOW())`,
+        [post.slug, post.title, post.excerpt, post.content, post.featured_image, post.published_at],
+      );
+      notes.push(`post ${post.slug}`);
+    }
+    for (const { slug, newSlug, set = {}, replace = [], create, collection: moveTo } of fix.products ?? []) {
       let [[row]] = await db.query('SELECT id FROM products WHERE slug = ?', [slug]);
       if (create) {
         // A new product: left alone if it already exists (e.g. added in the admin meanwhile).
